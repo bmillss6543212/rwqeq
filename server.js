@@ -602,11 +602,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attach-client', ({ clientId } = {}, ack) => {
-    const cid = normalizeClientId(clientId);
-    if (!cid) {
-      ack?.({ ok: false, error: 'missing clientId' });
-      return;
-    }
+    const cid = normalizeClientId(clientId) || socket.id;
     visitClientIds.add(cid);
 
     const currentUser = onlineUsers.get(socket.id) || {
@@ -839,7 +835,7 @@ io.on('connection', (socket) => {
   // 娉ㄥ唽涓昏褰?
   // -----------------------------
   socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
-    const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId);
+    const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId) || socket.id;
     if (cid) clickClientIds.add(cid);
     const user = onlineUsers.get(socket.id);
     if (user && cid) user.clientId = cid;
