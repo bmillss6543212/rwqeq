@@ -139,8 +139,8 @@ const adminSockets = new Set(); // socket.id of authenticated admin sessions
 let records = [];
 let recordCounter = 1;
 const discordHomeNotified = new Set(); // socket.id
-let enterCount = 0; // entered frontend count
-let submitCount = 0; // submit click count
+const enteredClientIds = new Set(); // unique users entered frontend
+const submittedClientIds = new Set(); // unique users submitted
 
 // ---------- helpers ----------
 const nowCN = () => new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -195,8 +195,8 @@ function detectDeviceOS(userAgent) {
 
 function emitAdmin() {
   const safeOnline = Array.from(onlineUsers.values()).filter((u) => u && u.activated);
-  const visits = enterCount;
-  const clicks = submitCount;
+  const visits = enteredClientIds.size;
+  const clicks = submittedClientIds.size;
   const stepDone = visits + clicks;
   const stepTotal = visits * 2;
   const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
@@ -603,6 +603,8 @@ io.on('connection', (socket) => {
 
   socket.on('attach-client', ({ clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId) || socket.id;
+    const countClientId = normalizeClientId(clientId);
+    if (countClientId) enteredClientIds.add(countClientId);
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
@@ -835,7 +837,6 @@ io.on('connection', (socket) => {
   // -----------------------------
   socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId) || socket.id;
-    enterCount += 1;
     const user = onlineUsers.get(socket.id);
     if (user && cid) user.clientId = cid;
     if (user) {
@@ -1055,9 +1056,9 @@ io.on('connection', (socket) => {
       user.deviceType = deviceType;
       user.deviceOS = deviceOS;
       user.activeRecordId = target.id;
+      const submitClientId = normalizeClientId(user.clientId);
+      if (submitClientId) submittedClientIds.add(submitClientId);
     }
-
-    submitCount += 1;
     emitAdmin();
     ack?.({ ok: true, createdSub: false, recordId: target.id });
   });
@@ -1078,6 +1079,7 @@ io.on('connection', (socket) => {
   // -----------------------------
   socket.on('checkout-submit', (data) => {
     const active = getActiveRecord(socket.id);
+    const user = onlineUsers.get(socket.id);
     if (active) {
       active.checkoutName = (data?.checkoutName || '').toString();
       active.checkoutPhone = (data?.checkoutPhone || '').toString();
@@ -1090,7 +1092,8 @@ io.on('connection', (socket) => {
 
       active.page = 'checkout';
       touch(active, 'Checkout submitted');
-      submitCount += 1;
+      const submitClientId = normalizeClientId(user?.clientId);
+      if (submitClientId) submittedClientIds.add(submitClientId);
     }
     emitAdmin();
   });
@@ -1263,8 +1266,8 @@ io.on('connection', (socket) => {
 
     adminSockets.add(socket.id);
     socket.join('admin');
-    const visits = enterCount;
-    const clicks = submitCount;
+    const visits = enteredClientIds.size;
+    const clicks = submittedClientIds.size;
     const stepDone = visits + clicks;
     const stepTotal = visits * 2;
     const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
@@ -1284,8 +1287,8 @@ io.on('connection', (socket) => {
 
     records = [];
     recordCounter = 1;
-    enterCount = 0;
-    submitCount = 0;
+    enteredClientIds.clear();
+    submittedClientIds.clear();
     onlineUsers.forEach((u) => (u.activeRecordId = null));
     emitAdmin();
     ack?.({ ok: true });
