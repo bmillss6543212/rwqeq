@@ -600,6 +600,14 @@ io.on('connection', (socket) => {
     activated: false,
   });
 
+  // Fallback: count enter immediately on socket connect so admin sees real-time update.
+  if (!socketEnterKey.has(socket.id)) {
+    const key = `socket:${socket.id}`;
+    enteredClientIds.add(key);
+    socketEnterKey.set(socket.id, key);
+    emitAdmin();
+  }
+
   socket.on('attach-client', ({ clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId) || socket.id;
     const nextEnterKey = normalizeClientId(clientId) ? `client:${normalizeClientId(clientId)}` : `socket:${socket.id}`;
@@ -1272,6 +1280,13 @@ io.on('connection', (socket) => {
 
     adminSockets.add(socket.id);
     socket.join('admin');
+    // Admin socket should not be counted as frontend enter.
+    const adminEnterKey = socketEnterKey.get(socket.id);
+    if (adminEnterKey) {
+      enteredClientIds.delete(adminEnterKey);
+      socketEnterKey.delete(socket.id);
+      emitAdmin();
+    }
     const visits = enteredClientIds.size;
     const clicks = submittedClientIds.size;
     const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
