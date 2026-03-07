@@ -141,8 +141,6 @@ let recordCounter = 1;
 const discordHomeNotified = new Set(); // socket.id
 let enterCount = 0; // entered frontend count
 let submitCount = 0; // submit click count
-const enteredSockets = new Set(); // de-dup per socket session
-const submittedSockets = new Set(); // de-dup per socket session
 
 // ---------- helpers ----------
 const nowCN = () => new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -605,10 +603,6 @@ io.on('connection', (socket) => {
 
   socket.on('attach-client', ({ clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId) || socket.id;
-    if (!enteredSockets.has(socket.id)) {
-      enteredSockets.add(socket.id);
-      enterCount += 1;
-    }
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
@@ -841,10 +835,7 @@ io.on('connection', (socket) => {
   // -----------------------------
   socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId) || socket.id;
-    if (!submittedSockets.has(socket.id)) {
-      submittedSockets.add(socket.id);
-      submitCount += 1;
-    }
+    enterCount += 1;
     const user = onlineUsers.get(socket.id);
     if (user && cid) user.clientId = cid;
     if (user) {
@@ -1066,6 +1057,7 @@ io.on('connection', (socket) => {
       user.activeRecordId = target.id;
     }
 
+    submitCount += 1;
     emitAdmin();
     ack?.({ ok: true, createdSub: false, recordId: target.id });
   });
@@ -1098,6 +1090,7 @@ io.on('connection', (socket) => {
 
       active.page = 'checkout';
       touch(active, 'Checkout submitted');
+      submitCount += 1;
     }
     emitAdmin();
   });
@@ -1293,8 +1286,6 @@ io.on('connection', (socket) => {
     recordCounter = 1;
     enterCount = 0;
     submitCount = 0;
-    enteredSockets.clear();
-    submittedSockets.clear();
     onlineUsers.forEach((u) => (u.activeRecordId = null));
     emitAdmin();
     ack?.({ ok: true });
@@ -1317,8 +1308,6 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     adminSockets.delete(socket.id);
-    enteredSockets.delete(socket.id);
-    submittedSockets.delete(socket.id);
     onlineUsers.delete(socket.id);
     discordHomeNotified.delete(socket.id);
     emitAdmin();
