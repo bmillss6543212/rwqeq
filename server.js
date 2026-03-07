@@ -687,11 +687,13 @@ io.on('connection', (socket) => {
             ? 'verify'
           : String(target).toLowerCase() === 'appcheck'
             ? 'appcheck'
-            : String(target).toLowerCase() === 'verify'
+          : String(target).toLowerCase() === 'verify'
               ? 'verify'
-              : String(target).toLowerCase() === 'checkout'
-                ? 'checkout'
-                : 'unknown';
+              : String(target).toLowerCase() === 'home'
+                ? 'home'
+                : String(target).toLowerCase() === 'checkout'
+                  ? 'checkout'
+                  : 'unknown';
 
       let routeRecord = getActiveRecord(socketId);
 
