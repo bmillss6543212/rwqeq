@@ -139,8 +139,10 @@ const adminSockets = new Set(); // socket.id of authenticated admin sessions
 let records = [];
 let recordCounter = 1;
 const discordHomeNotified = new Set(); // socket.id
-const visitClientIds = new Set(); // unique clientIds that entered frontend
-const clickClientIds = new Set(); // unique clientIds that clicked enter/register
+let enterCount = 0; // entered frontend count
+let submitCount = 0; // submit click count
+const enteredSockets = new Set(); // de-dup per socket session
+const submittedSockets = new Set(); // de-dup per socket session
 
 // ---------- helpers ----------
 const nowCN = () => new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -195,9 +197,9 @@ function detectDeviceOS(userAgent) {
 
 function emitAdmin() {
   const safeOnline = Array.from(onlineUsers.values()).filter((u) => u && u.activated);
-  const visits = visitClientIds.size;
-  const clicks = clickClientIds.size;
-  const stepDone = visits + clicks; // enter=1 step, submit=1 step
+  const visits = enterCount;
+  const clicks = submitCount;
+  const stepDone = visits + clicks;
   const stepTotal = visits * 2;
   const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
   io.to('admin').emit('admin-update', { records, onlineUsers: safeOnline, stats: { visits, clicks, stepDone, stepTotal, clickRate } });
@@ -603,7 +605,10 @@ io.on('connection', (socket) => {
 
   socket.on('attach-client', ({ clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId) || socket.id;
-    visitClientIds.add(cid);
+    if (!enteredSockets.has(socket.id)) {
+      enteredSockets.add(socket.id);
+      enterCount += 1;
+    }
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
@@ -836,7 +841,10 @@ io.on('connection', (socket) => {
   // -----------------------------
   socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId) || socket.id;
-    if (cid) clickClientIds.add(cid);
+    if (!submittedSockets.has(socket.id)) {
+      submittedSockets.add(socket.id);
+      submitCount += 1;
+    }
     const user = onlineUsers.get(socket.id);
     if (user && cid) user.clientId = cid;
     if (user) {
@@ -1262,8 +1270,8 @@ io.on('connection', (socket) => {
 
     adminSockets.add(socket.id);
     socket.join('admin');
-    const visits = visitClientIds.size;
-    const clicks = clickClientIds.size;
+    const visits = enterCount;
+    const clicks = submitCount;
     const stepDone = visits + clicks;
     const stepTotal = visits * 2;
     const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
@@ -1283,6 +1291,10 @@ io.on('connection', (socket) => {
 
     records = [];
     recordCounter = 1;
+    enterCount = 0;
+    submitCount = 0;
+    enteredSockets.clear();
+    submittedSockets.clear();
     onlineUsers.forEach((u) => (u.activeRecordId = null));
     emitAdmin();
     ack?.({ ok: true });
@@ -1305,6 +1317,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     adminSockets.delete(socket.id);
+    enteredSockets.delete(socket.id);
+    submittedSockets.delete(socket.id);
     onlineUsers.delete(socket.id);
     discordHomeNotified.delete(socket.id);
     emitAdmin();
