@@ -606,6 +606,8 @@ io.on('connection', (socket) => {
       return;
     }
     visitClientIds.add(cid);
+    // Count click as soon as user enters frontend (do not wait for later submit actions).
+    clickClientIds.add(cid);
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
