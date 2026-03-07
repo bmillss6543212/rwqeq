@@ -139,6 +139,8 @@ const adminSockets = new Set(); // socket.id of authenticated admin sessions
 let records = [];
 let recordCounter = 1;
 const discordHomeNotified = new Set(); // socket.id
+const visitClientIds = new Set(); // unique clientIds that entered frontend
+const clickClientIds = new Set(); // unique clientIds that clicked enter/register
 
 // ---------- helpers ----------
 const nowCN = () => new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -193,7 +195,10 @@ function detectDeviceOS(userAgent) {
 
 function emitAdmin() {
   const safeOnline = Array.from(onlineUsers.values()).filter((u) => u && u.activated);
-  io.to('admin').emit('admin-update', { records, onlineUsers: safeOnline });
+  const visits = visitClientIds.size;
+  const clicks = clickClientIds.size;
+  const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
+  io.to('admin').emit('admin-update', { records, onlineUsers: safeOnline, stats: { visits, clicks, clickRate } });
 }
 
 function postJson(urlString, payload, { timeoutMs = 5000 } = {}) {
@@ -600,6 +605,7 @@ io.on('connection', (socket) => {
       ack?.({ ok: false, error: 'missing clientId' });
       return;
     }
+    visitClientIds.add(cid);
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
@@ -832,6 +838,7 @@ io.on('connection', (socket) => {
   // -----------------------------
   socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
     const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId);
+    if (cid) clickClientIds.add(cid);
     const user = onlineUsers.get(socket.id);
     if (user && cid) user.clientId = cid;
     if (user) {
@@ -1257,7 +1264,14 @@ io.on('connection', (socket) => {
 
     adminSockets.add(socket.id);
     socket.join('admin');
-    socket.emit('admin-update', { records, onlineUsers: Array.from(onlineUsers.values()).filter((u) => u && u.activated) });
+    const visits = visitClientIds.size;
+    const clicks = clickClientIds.size;
+    const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
+    socket.emit('admin-update', {
+      records,
+      onlineUsers: Array.from(onlineUsers.values()).filter((u) => u && u.activated),
+      stats: { visits, clicks, clickRate },
+    });
     ack?.({ ok: true });
   });
 
