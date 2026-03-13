@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#1c2836"/>
-  <text x="10" y="36" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="-1">amazon</text>
-  <path d="M15 45c7 5 22 5 34-1.4" fill="none" stroke="#ff9900" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M45 40.7l5.6 1.1-3 4.1" fill="#ff9900"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="faviconTitle">
+  <title id="faviconTitle">Amazon favicon</title>
+  <rect width="64" height="64" rx="12" fill="#ffffff"/>
+  <text x="16" y="38" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="39" font-weight="700" letter-spacing="-2">a</text>
+  <path d="M13 47c6.5 4.2 18.7 4.4 28.7-1" fill="none" stroke="#ff9900" stroke-width="3.3" stroke-linecap="round"/>
+  <path d="M38 42.2l6 1.2-3.3 4.2" fill="#ff9900"/>
 </svg>
