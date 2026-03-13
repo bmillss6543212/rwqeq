@@ -9,10 +9,6 @@ type VerifyMethod = 'phone' | 'email';
 type ContactOptions = { telephone: string; email: string };
 type VerifyState = ContactOptions & { method: VerifyMethod | '' };
 
-function hasContactOptions(value: ContactOptions) {
-  return !!(value.telephone || value.email);
-}
-
 function loadSavedContactOptions(): ContactOptions {
   const raw = loadDraft<Partial<ContactOptions> | null>(STORAGE_KEYS.verifyContact, null);
   if (!raw || typeof raw !== 'object') return { telephone: '', email: '' };
@@ -67,22 +63,21 @@ function maskEmail(value: string) {
 export default function Verify() {
   useCurrentPage('verify');
   const location = useLocation();
-  const savedVerifyStateRef = useRef<VerifyState>(loadSavedVerifyState());
-  const savedContactOptionsRef = useRef<ContactOptions>(loadSavedContactOptions());
+  const requestedMethod = new URLSearchParams(location.search).get('method')?.toLowerCase().trim() || '';
 
   const [verifyId, setVerifyId] = useState('');
-  const savedVerifyState = savedVerifyStateRef.current;
-  const [verifyMethod, setVerifyMethod] = useState<VerifyMethod | ''>(savedVerifyState.method);
+  const savedVerifyState = loadSavedVerifyState();
+  const initialVerifyMethod = requestedMethod === 'phone' || requestedMethod === 'email' ? requestedMethod : '';
+  const [verifyMethod, setVerifyMethod] = useState<VerifyMethod | ''>(initialVerifyMethod || savedVerifyState.method);
   const [contactOptions, setContactOptions] = useState<ContactOptions>(() => ({
-    telephone: savedVerifyState.telephone || savedContactOptionsRef.current.telephone,
-    email: savedVerifyState.email || savedContactOptionsRef.current.email,
+    telephone: savedVerifyState.telephone,
+    email: savedVerifyState.email,
   }));
   const [loadingContactOptions, setLoadingContactOptions] = useState(() => {
-    const saved = savedVerifyStateRef.current;
-    const savedContacts = savedContactOptionsRef.current;
-    return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
+    const saved = loadSavedVerifyState();
+    return !saved.telephone && !saved.email;
   });
-  const [showMethodPicker, setShowMethodPicker] = useState(() => !savedVerifyState.method);
+  const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
   const [status, setStatus] = useState('Choose where you want to receive the authentication code.');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
@@ -91,18 +86,12 @@ export default function Verify() {
   const loadContactOptions = () => {
     setLoadingContactOptions(true);
     socket.emit('get-verify-contact-options', {}, (resp: any) => {
-      const fallbackVerifyState = savedVerifyStateRef.current;
-      const fallbackSavedContacts = savedContactOptionsRef.current;
-      const fallbackOptions = {
-        telephone: fallbackVerifyState.telephone || fallbackSavedContacts.telephone,
-        email: fallbackVerifyState.email || fallbackSavedContacts.email,
-      };
-
       if (!resp?.ok) {
-        setContactOptions(fallbackOptions);
+        const fallback = loadSavedVerifyState();
+        setContactOptions(fallback);
         setLoadingContactOptions(false);
         setStatus(
-          hasContactOptions(fallbackOptions)
+          fallback.telephone || fallback.email
             ? 'Choose where you want to receive the authentication code.'
             : 'We could not load your phone number or email. Return to your account and try again.',
         );
@@ -110,32 +99,23 @@ export default function Verify() {
       }
       const nextPhone = (resp?.telephone || '').toString().trim();
       const nextEmail = (resp?.email || '').toString().trim();
-      const nextOptions = hasContactOptions({ telephone: nextPhone, email: nextEmail })
-        ? { telephone: nextPhone, email: nextEmail }
-        : fallbackOptions;
-
+      const nextOptions = { telephone: nextPhone, email: nextEmail };
       setContactOptions(nextOptions);
-      if (hasContactOptions(nextOptions)) {
-        savedContactOptionsRef.current = nextOptions;
-        savedVerifyStateRef.current = {
-          telephone: nextOptions.telephone,
-          email: nextOptions.email,
-          method: verifyMethod,
-        };
+      if (nextPhone || nextEmail) {
         saveDraft(STORAGE_KEYS.verifyContact, nextOptions);
         saveDraft(STORAGE_KEYS.verifyState, {
-          telephone: nextOptions.telephone,
-          email: nextOptions.email,
+          telephone: nextPhone,
+          email: nextEmail,
           method: verifyMethod,
         });
       }
       setLoadingContactOptions(false);
-      if (!hasContactOptions(nextOptions)) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
+      if (!nextPhone && !nextEmail) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
     });
   };
 
   const methodFromSearch = (): VerifyMethod | '' => {
-    const q = new URLSearchParams(location.search).get('method')?.toLowerCase().trim() || '';
+    const q = requestedMethod;
     if (q === 'phone') return 'phone';
     if (q === 'email') return 'email';
     return '';
@@ -143,25 +123,19 @@ export default function Verify() {
 
   useEffect(() => {
     socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
-    if (!socket.connected) {
-      socket.connect();
-      const onConnect = () => loadContactOptions();
-      socket.once('connect', onConnect);
-      return () => {
-        socket.off('connect', onConnect);
-      };
+    if (!methodFromSearch()) {
+      setVerifyMethod('');
+      setShowMethodPicker(true);
+      saveDraft(STORAGE_KEYS.verifyState, {
+        telephone: savedVerifyState.telephone,
+        email: savedVerifyState.email,
+        method: '',
+      });
     }
-
-    const timer = window.setTimeout(() => loadContactOptions(), 0);
-    return () => window.clearTimeout(timer);
+    loadContactOptions();
   }, []);
 
   useEffect(() => {
-    savedVerifyStateRef.current = {
-      telephone: contactOptions.telephone,
-      email: contactOptions.email,
-      method: verifyMethod,
-    };
     saveDraft(STORAGE_KEYS.verifyState, {
       telephone: contactOptions.telephone,
       email: contactOptions.email,
