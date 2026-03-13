@@ -114,13 +114,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  min-width: 138px;
+  min-width: 150px;
   height: 36px;
 }
 
 .alz-nav-logo-img {
   display: block;
-  width: 138px;
+  width: 150px;
   height: 36px;
   object-fit: contain;
 }
@@ -1615,12 +1615,12 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-logo {
-    min-width: 116px;
+    min-width: 126px;
     height: 30px;
   }
 
   .alz-nav-logo-img {
-    width: 116px;
+    width: 126px;
     height: 30px;
   }
 
