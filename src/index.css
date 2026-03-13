@@ -39,7 +39,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 60;
-  background: #efefef;
+  background: #f3f3f3;
   border-bottom: 0;
   box-shadow: none;
 }
@@ -79,7 +79,7 @@ body {
 .alz-nav-inner {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 12px 18px 10px;
+  padding: 10px 18px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -90,16 +90,16 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 44px;
+  min-width: 52px;
 }
 
 .alz-nav-menu {
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
-  width: 30px;
-  height: 30px;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
   border: 0;
   background: transparent;
   padding: 0;
@@ -107,7 +107,7 @@ body {
 
 .alz-nav-menu span {
   display: block;
-  width: 30px;
+  width: 34px;
   height: 4px;
   border-radius: 999px;
   background: #352d79;
@@ -124,14 +124,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 82px;
-  height: 36px;
+  min-width: 96px;
+  height: 42px;
 }
 
 .alz-nav-logo-img {
   display: block;
-  width: 82px;
-  height: 36px;
+  width: 96px;
+  height: 42px;
   object-fit: contain;
 }
 
@@ -139,15 +139,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  min-width: 44px;
+  min-width: 52px;
 }
 
 .alz-nav-search-trigger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: 0;
   background: transparent;
   padding: 0;
@@ -157,9 +157,9 @@ body {
 .alz-nav-search-box-icon {
   position: relative;
   display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 4px solid #352d79;
+  width: 19px;
+  height: 19px;
+  border: 3px solid #352d79;
   border-radius: 999px;
 }
 
@@ -167,43 +167,43 @@ body {
 .alz-nav-search-box-icon::after {
   content: "";
   position: absolute;
-  right: -8px;
-  bottom: -6px;
-  width: 10px;
-  height: 4px;
+  right: -7px;
+  bottom: -5px;
+  width: 11px;
+  height: 3px;
   border-radius: 999px;
   background: #352d79;
   transform: rotate(45deg);
 }
 
 .alz-nav-divider {
-  height: 4px;
+  height: 3px;
   background: #d40511;
 }
 
 .alz-nav-search-row {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 18px 18px 16px;
+  padding: 18px 18px 18px;
 }
 
 .alz-nav-search-shell {
   display: flex;
   align-items: stretch;
   min-height: 50px;
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
   background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(53, 45, 121, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(53, 45, 121, 0.22);
 }
 
 .alz-nav-search-input {
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 16px;
   background: #ffffff;
-  color: #101010;
+  color: #111111;
   font-size: 14px;
 }
 
@@ -211,7 +211,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
+  width: 58px;
   background: #ffffff;
   border-left: 1px solid rgba(53, 45, 121, 0.18);
 }
@@ -311,35 +311,46 @@ body {
 
 .alz-usps-hero {
   position: relative;
-  height: 138px;
+  height: 154px;
   overflow: hidden;
   background:
-    linear-gradient(90deg, rgba(255,255,255,0.84) 0%, rgba(255,255,255,0.46) 48%, rgba(255,255,255,0.1) 100%),
+    linear-gradient(90deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,0.08) 100%),
     linear-gradient(0deg, #352d79 0 20px, transparent 20px),
-    linear-gradient(90deg, #d6d3cf 0%, #f0ece7 58%, #d8c2ad 100%);
+    linear-gradient(90deg, #d8d6d3 0%, #efebe6 56%, #d7c0aa 100%);
+}
+
+.alz-usps-hero::before {
+  content: "";
+  position: absolute;
+  inset: 22px auto 30px 0;
+  width: 54%;
+  background:
+    linear-gradient(180deg, rgba(180, 180, 180, 0.24), rgba(180, 180, 180, 0.12)),
+    linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
+  filter: blur(2px);
 }
 
 .alz-usps-hero-blur {
   position: absolute;
   left: 0;
-  top: 18px;
-  width: 48%;
-  height: 84px;
-  background: rgba(145, 145, 145, 0.15);
-  filter: blur(1.5px);
+  top: 30px;
+  width: 46%;
+  height: 74px;
+  background: rgba(156, 156, 156, 0.14);
+  filter: blur(2px);
 }
 
 .alz-usps-hero-phone {
   position: absolute;
-  right: 82px;
-  top: 8px;
-  width: 54px;
-  height: 102px;
+  right: 92px;
+  top: 12px;
+  width: 58px;
+  height: 112px;
   border-radius: 10px;
   background: linear-gradient(180deg, #f9f9f9 0%, #ececec 100%);
   border: 2px solid #ffffff;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
-  transform: rotate(-11deg);
+  transform: rotate(-13deg);
 }
 
 .alz-usps-hero-phone-notch {
@@ -384,6 +395,26 @@ body {
 .alz-usps-hero-card-low {
   height: 20px;
   background: #f0f2f6;
+}
+
+.alz-usps-intro-meta {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alz-usps-intro-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border: 1px solid #d8dce6;
+  border-radius: 999px;
+  background: #f7f9fd;
+  color: #40506b;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 12px;
 }
 
 .alz-usps-page {
@@ -462,6 +493,20 @@ body {
 .alz-usps-track-meta {
   color: #616161;
   font-size: 13px;
+}
+
+.alz-usps-track-state {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 26px;
+  border-radius: 999px;
+  background: #eef3fb;
+  color: #2f67b3;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 10px;
 }
 
 .alz-usps-service-grid {
@@ -1930,12 +1975,12 @@ body[data-brand='dhl'] .alz-btn-primary {
 
 @media (min-width: 768px) {
   .alz-nav-inner {
-    padding: 10px 18px 6px;
+    padding: 9px 18px 7px;
     gap: 16px;
   }
 
   .alz-nav-search-row {
-    padding: 6px 18px 12px;
+    padding: 14px 18px 16px;
   }
 
   .alz-global-footer-inner {
@@ -1985,7 +2030,7 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-search-row {
-    padding: 18px 18px 16px;
+    padding: 14px 10px 14px;
   }
 
   .alz-usps-intro,
@@ -2015,12 +2060,14 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-usps-hero {
-    height: 120px;
+    height: 128px;
   }
 
   .alz-usps-hero-phone {
-    right: 34px;
-    top: 10px;
+    right: 30px;
+    top: 14px;
+    width: 50px;
+    height: 98px;
   }
 
   .alz-step-head {
@@ -2086,13 +2133,13 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-logo {
-    min-width: 82px;
-    height: 36px;
+    min-width: 88px;
+    height: 38px;
   }
 
   .alz-nav-logo-img {
-    width: 82px;
-    height: 36px;
+    width: 88px;
+    height: 38px;
   }
 
   .alz-order-header {
