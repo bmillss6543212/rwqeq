@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64">
-  <text x="8" y="40" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" letter-spacing="-1.2">amazon</text>
-  <path d="M26 47c20 9 69 9 111-3" fill="none" stroke="#ff9900" stroke-width="4.2" stroke-linecap="round"/>
-  <path d="M132.5 40.7l16.5 2.7-8.7 9" fill="#ff9900"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 72">
+  <text x="8" y="43" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" letter-spacing="-1.4">amazon</text>
+  <path d="M34 51c16 10 65 10 107-2" fill="none" stroke="#ff9900" stroke-width="4.4" stroke-linecap="round"/>
+  <path d="M138 44.5l15.5 2.6-8.1 8.5" fill="#ff9900"/>
 </svg>
