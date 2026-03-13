@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 184 64" role="img" aria-labelledby="amazonLogoTitle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 98" role="img" aria-labelledby="amazonLogoTitle">
   <title id="amazonLogoTitle">Amazon</title>
-  <text x="1" y="34" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="-2.15">amazon</text>
-  <path d="M38 45.8c11.4 6.7 34.3 7.2 51.8-1.1" fill="none" stroke="#ff9900" stroke-width="4.25" stroke-linecap="round"/>
-  <path d="M84.9 40.5l9.6 1.9-5.5 6" fill="#ff9900"/>
+  <text x="3" y="52" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="55" font-weight="700" letter-spacing="-4.2">amazon</text>
+  <path d="M56 70c16 13 54 14 83-1.8" fill="none" stroke="#ff9900" stroke-width="7.2" stroke-linecap="round"/>
+  <path d="M132 61.5l15 2.8-8 9.4" fill="#ff9900"/>
 </svg>
