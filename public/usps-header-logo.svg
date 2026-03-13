@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-labelledby="uspsLogoTitle">
+  <title id="uspsLogoTitle">USPS</title>
+  <rect width="240" height="64" rx="8" fill="#232f3e"/>
+  <path d="M10 42h108l12-18H22z" fill="#ffffff"/>
+  <path d="M17 46h118l7-10H24z" fill="#d01f2e"/>
+  <text x="148" y="41" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="0.5">USPS</text>
+</svg>

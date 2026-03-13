@@ -24,7 +24,7 @@
 
 body {
   color: #0f1111;
-  font-family: "Amazon Ember", "Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -184,16 +184,22 @@ body {
   border-bottom-right-radius: 4px;
 }
 
-.alz-nav-cart {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
+.alz-nav-track {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.alz-nav-cart-img {
-  display: block;
-  width: 38px;
-  height: 30px;
+.alz-nav-track-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .alz-nav-search-row {

