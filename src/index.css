@@ -309,6 +309,25 @@ body {
   background: var(--alz-navy);
 }
 
+.alz-global-footer-strip {
+  border-top: 4px solid #d40511;
+  background: #f3f3f3;
+}
+
+.alz-global-footer-strip-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  color: #2d2a7d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 .alz-usps-hero {
   position: relative;
   height: 154px;
@@ -691,6 +710,16 @@ body {
 .alz-usps-form-top {
   background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
   border-color: #d7dce7;
+  position: relative;
+  overflow: hidden;
+}
+
+.alz-usps-form-top::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2f67b3 0%, #2f67b3 72%, #d40511 72%, #d40511 100%);
 }
 
 .alz-usps-form-card,
@@ -708,6 +737,13 @@ body {
 .alz-usps-bank-frame .alz-bank-header-eyebrow,
 .alz-usps-bank-picker .alz-bank-picker-eyebrow {
   color: #2f67b3;
+}
+
+.alz-usps-form-card .alz-step-title,
+.alz-usps-form-card .alz-page-title,
+.alz-usps-form-top .alz-step-title,
+.alz-usps-side-card .alz-order-mini-title {
+  letter-spacing: -0.02em;
 }
 
 .alz-usps-form-card .alz-page-title,
@@ -731,6 +767,7 @@ body {
   background: linear-gradient(180deg, #3b7fd0 0%, #2f67b3 100%);
   border-color: #285a9c;
   box-shadow: 0 6px 14px rgba(47, 103, 179, 0.22);
+  border-radius: 6px;
 }
 
 .alz-usps-form-card .alz-btn-primary:hover,

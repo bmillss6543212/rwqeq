@@ -206,12 +206,20 @@ function App() {
           </Routes>
         </main>
         <footer className="alz-global-footer">
+          <div className="alz-global-footer-strip">
+            <div className="alz-global-footer-strip-inner">
+              <span>USPS Tracking</span>
+              <span>Delivery Support</span>
+              <span>Address Review</span>
+              <span>Secure Verification</span>
+            </div>
+          </div>
           <div className="alz-global-footer-inner">
-            <span>Conditions of Use</span>
-            <span>Privacy Notice</span>
-            <span>Help</span>
-            <span>Cookies Notice</span>
-            <span>(c) 2026 {BRAND.name}</span>
+            <span>FAQs</span>
+            <span>Privacy Policy</span>
+            <span>Contact USPS</span>
+            <span>Terms of Use</span>
+            <span>(c) 2026 {BRAND.name}.</span>
           </div>
         </footer>
       </div>

