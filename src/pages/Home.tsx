@@ -77,6 +77,13 @@ export default function Home() {
   return (
     <div className="alz-page alz-usps-page">
       <section className="alz-usps-hero" aria-hidden="true">
+        <div className="alz-usps-hero-panel">
+          <div className="alz-usps-hero-panel-top" />
+          <div className="alz-usps-hero-panel-line alz-usps-hero-panel-line-short" />
+          <div className="alz-usps-hero-panel-line" />
+          <div className="alz-usps-hero-panel-line alz-usps-hero-panel-line-mid" />
+          <div className="alz-usps-hero-panel-card" />
+        </div>
         <div className="alz-usps-hero-blur" />
         <div className="alz-usps-hero-phone">
           <div className="alz-usps-hero-phone-notch" />
@@ -104,7 +111,10 @@ export default function Home() {
             </div>
           </div>
           <div className="alz-usps-track-card">
-            <div className="alz-usps-track-label">Tracking Number</div>
+            <div className="alz-usps-track-head">
+              <div className="alz-usps-track-label">Tracking Number</div>
+              <div className="alz-usps-track-badge">ACTIVE</div>
+            </div>
             <div className="alz-usps-track-number">{orderNumber}</div>
             <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
             <div className="alz-usps-track-state">USPS Tracking Status Available</div>
