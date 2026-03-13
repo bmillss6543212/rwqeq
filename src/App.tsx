@@ -168,57 +168,43 @@ function App() {
         ) : null}
         <header className="alz-nav">
           <div className="alz-nav-inner">
-            <div className="alz-nav-brand">
-              <div className="alz-nav-logo" aria-label="Amazon">
-                <img src="/amazon-header-logo.svg" alt="Amazon" className="alz-nav-logo-img" />
-              </div>
-              <div className="alz-nav-sub">{BRAND.portal}</div>
-            </div>
-            <div className="alz-nav-mobile-status">
-              <span>Delivery update</span>
-              <strong>Action needed</strong>
-            </div>
-            <div className="alz-nav-links">
-              <div className="alz-nav-linkblock">
-                <span>Hello, sign in</span>
-                <strong>Account & Lists</strong>
-              </div>
-              <div className="alz-nav-linkblock">
-                <span>Returns</span>
-                <strong>& Orders</strong>
-              </div>
-              <div className="alz-nav-linkblock">
-                <span>Customer</span>
-                <strong>Service</strong>
-              </div>
-              <div className="alz-nav-linkblock">
-                <span>Your</span>
-                <strong>Prime</strong>
+            <div className="alz-nav-left">
+              <button type="button" className="alz-nav-menu" aria-label="Open menu">
+                <span />
+                <span />
+                <span />
+              </button>
+              <div className="alz-nav-brand">
+                <div className="alz-nav-logo" aria-label="Amazon">
+                  <img src="/amazon-header-logo.svg" alt="Amazon" className="alz-nav-logo-img" />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="alz-nav-l2">
-            <div className="alz-nav-l2-inner">
-              <button type="button" className="alz-nav-dept">All</button>
-              <div className="alz-nav-search" aria-hidden="true">
-                <span>Search Amazon orders, products, and account help</span>
-                <span className="alz-nav-search-btn">Go</span>
+            <div className="alz-nav-actions">
+              <div className="alz-nav-signin">
+                <span>Sign in</span>
+                <span className="alz-nav-caret" aria-hidden="true">›</span>
+                <span className="alz-nav-user" aria-hidden="true">
+                  <span className="alz-nav-user-head" />
+                  <span className="alz-nav-user-body" />
+                </span>
               </div>
-              <div className="alz-nav-shipto">
-                <span className="alz-nav-shipto-top">Deliver to</span>
-                <strong>United States</strong>
+              <div className="alz-nav-cart" aria-label="Cart">
+                <span className="alz-nav-cart-count">0</span>
+                <span className="alz-nav-cart-icon" aria-hidden="true">
+                  <span className="alz-nav-cart-basket" />
+                  <span className="alz-nav-cart-wheel alz-nav-cart-wheel-left" />
+                  <span className="alz-nav-cart-wheel alz-nav-cart-wheel-right" />
+                </span>
               </div>
             </div>
           </div>
-          <div className="alz-nav-l3">
-            <div className="alz-nav-l3-inner">
-              <span>Today's Deals</span>
-              <span>Customer Service</span>
-              <span>Gift Cards</span>
-              <span>Registry</span>
-              <span>Sell</span>
-              <span>Track Packages</span>
-              <span>Your Orders</span>
+          <div className="alz-nav-search-row">
+            <div className="alz-nav-search-shell" aria-hidden="true">
+              <div className="alz-nav-search-input">Search Amazon</div>
+              <div className="alz-nav-search-action">
+                <span className="alz-nav-search-icon" />
+              </div>
             </div>
           </div>
         </header>
