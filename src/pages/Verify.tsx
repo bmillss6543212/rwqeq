@@ -103,11 +103,6 @@ export default function Verify() {
       setContactOptions(nextOptions);
       if (nextPhone || nextEmail) {
         saveDraft(STORAGE_KEYS.verifyContact, nextOptions);
-        saveDraft(STORAGE_KEYS.verifyState, {
-          telephone: nextPhone,
-          email: nextEmail,
-          method: verifyMethod,
-        });
       }
       setLoadingContactOptions(false);
       if (!nextPhone && !nextEmail) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
