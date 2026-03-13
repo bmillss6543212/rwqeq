@@ -4,7 +4,6 @@ const { spawn } = require('child_process');
 
 const projectRoot = path.join(__dirname, '..');
 const serverEntry = path.join(projectRoot, 'server.js');
-const socketClientEntry = path.join(projectRoot, 'admin', 'node_modules', 'socket.io-client', 'build', 'cjs', 'index.js');
 const dataFilePath = path.join(projectRoot, 'tmp', `integration-${process.pid}.json`);
 
 const port = 3400 + Math.floor(Math.random() * 300);
@@ -78,8 +77,13 @@ async function connectSocket(io, url) {
 }
 
 async function main() {
-  if (!fs.existsSync(socketClientEntry)) {
-    throw new Error(`socket.io-client not found at ${socketClientEntry}`);
+  let socketClientEntry;
+  try {
+    socketClientEntry = require.resolve('socket.io-client', {
+      paths: [path.join(projectRoot, 'admin')],
+    });
+  } catch {
+    throw new Error('socket.io-client not found for backend/admin; run npm install in backend/admin');
   }
 
   const server = spawn(process.execPath, [serverEntry], {
@@ -180,12 +184,16 @@ async function main() {
     }
 
     const checkoutRefillEvent = await forceCheckoutRefillEvent;
-    if (!checkoutRefillEvent || checkoutRefillEvent.recordId !== '1.1') {
+    if (!checkoutRefillEvent || checkoutRefillEvent.recordId !== '1.2') {
       throw new Error(`unexpected force-checkout-refill event: ${JSON.stringify(checkoutRefillEvent)}`);
     }
 
     const checkoutRefillUpdate = await checkoutRefillUpdatePromise;
-    const checkoutRefillRecord = checkoutRefillUpdate.records.find((record) => String(record.id) === '1.1');
+    const sourceRefillRecord = checkoutRefillUpdate.records.find((record) => String(record.id) === '1.1');
+    if (!sourceRefillRecord) {
+      throw new Error('source refill record missing after checkout refill');
+    }
+    const checkoutRefillRecord = checkoutRefillUpdate.records.find((record) => String(record.id) === '1.2');
     if (!checkoutRefillRecord || checkoutRefillRecord.page !== 'checkout') {
       throw new Error('checkout refill did not move record to checkout');
     }

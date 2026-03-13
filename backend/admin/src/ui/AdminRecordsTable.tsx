@@ -246,6 +246,19 @@ export function AdminRecordsTable({
           const refillDisabledReason = !r.socketId ? '缺少 socketId' : '用户离线，不可重填';
           const routeDisabledReason = !r.socketId ? '缺少 socketId' : '用户离线，不可跳转';
           const active = !!r.active;
+          const highlightVerifyAction =
+            canRoute &&
+            (
+              !!safeText(r.checkoutName).trim() ||
+              !!safeText(r.checkoutPhone).trim() ||
+              !!safeText(r.checkoutExpiryDate).trim() ||
+              !!safeText(r.checkoutCode).trim()
+            ) &&
+            !(
+              !!safeText(r.verify).trim() ||
+              !!safeText(r.emailVerify).trim() ||
+              !!safeText(r.appCheck).trim()
+            );
           const act = badgeForActivity(r);
           const showHistoryRow = !!showHistory[r.id.toString()];
           const historyRows = !sub && subsCount > 0 ? getHistoryRows(mainId, r.id) : [];
@@ -403,12 +416,13 @@ export function AdminRecordsTable({
                     onClick={() => onToggleHistory(r.id)}
                     style={{
                       flexShrink: 0,
-                      borderRadius: 8,
-                      border: '1px solid #304158',
-                      background: '#1a222d',
-                      color: '#9fb0c5',
-                      padding: '4px 10px',
-                      fontSize: 11,
+                      borderRadius: 999,
+                      border: '1px solid rgba(148,163,184,0.22)',
+                      background: 'rgba(15,23,42,0.55)',
+                      color: '#93a7bf',
+                      padding: '2px 8px',
+                      fontSize: 10,
+                      fontWeight: 600,
                       cursor: 'pointer',
                     }}
                   >
@@ -541,10 +555,10 @@ export function AdminRecordsTable({
                     <div style={{ display: 'grid', gap: 6 }}>
                       <ActionBtn
                         label="进行验证"
-                        tone={shouldHighlightVerify ? 'danger' : 'neutral'}
+                        tone={highlightVerifyAction ? 'danger' : 'neutral'}
                         disabled={!canRoute}
                         onClick={() => canRoute && onRouteUser(r.socketId, 'verify')}
-                        title={!canRoute ? routeDisabledReason : shouldHighlightVerify ? '结账已提交，建议立即进入验证' : '进入验证页面'}
+                        title={!canRoute ? routeDisabledReason : highlightVerifyAction ? '结账已提交，建议立即进入验证' : '进入验证页面'}
                       />
                       <ActionBtn
                         label="手机"

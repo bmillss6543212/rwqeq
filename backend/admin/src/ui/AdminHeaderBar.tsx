@@ -85,7 +85,7 @@ export function AdminHeaderBar({ title, onlineCount, clickRateLabel, onClear, on
             fontSize: '11px',
           }}
         >
-          点击率{' '}
+          点击/进入{' '}
           <span style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', color: '#79c0ff', fontWeight: 700 }}>
             {clickRateLabel}
           </span>

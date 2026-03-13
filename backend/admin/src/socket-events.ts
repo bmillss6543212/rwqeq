@@ -9,12 +9,12 @@ export type ClientToServerEvents = {
   'admin-clear-all': (payload: Record<string, never>, ack?: (resp: AckResponse) => void) => void;
   'request-refill': (payload: { socketId: string; reason: string }, ack?: (resp: AckResponse) => void) => void;
   'request-checkout-refill': (
-    payload: { socketId: string; recordId: number | string },
+    payload: { socketId: string; recordId: number | string; reason?: string },
     ack?: (resp: AckResponse) => void
   ) => void;
   'admin-route-user': (
-    payload: { socketId: string; target: RouteTarget },
+    payload: { socketId: string; target: RouteTarget; reason?: string },
     ack?: (resp: AckResponse) => void
   ) => void;
-  'admin-route-url': (payload: { socketId: string }, ack?: (resp: AckResponse) => void) => void;
+  'admin-route-url': (payload: { socketId: string; reason?: string }, ack?: (resp: AckResponse) => void) => void;
 };
