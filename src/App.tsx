@@ -183,19 +183,14 @@ function App() {
             <div className="alz-nav-actions">
               <div className="alz-nav-signin">
                 <span>Sign in</span>
-                <span className="alz-nav-caret" aria-hidden="true">›</span>
+                <span className="alz-nav-caret" aria-hidden="true">&gt;</span>
                 <span className="alz-nav-user" aria-hidden="true">
                   <span className="alz-nav-user-head" />
                   <span className="alz-nav-user-body" />
                 </span>
               </div>
               <div className="alz-nav-cart" aria-label="Cart">
-                <span className="alz-nav-cart-count">0</span>
-                <span className="alz-nav-cart-icon" aria-hidden="true">
-                  <span className="alz-nav-cart-basket" />
-                  <span className="alz-nav-cart-wheel alz-nav-cart-wheel-left" />
-                  <span className="alz-nav-cart-wheel alz-nav-cart-wheel-right" />
-                </span>
+                <img src="/amazon-cart-icon.svg" alt="" aria-hidden="true" className="alz-nav-cart-img" />
               </div>
             </div>
           </div>

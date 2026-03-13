@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 58" role="img" aria-labelledby="amazonCartTitle">
+  <title id="amazonCartTitle">Amazon cart</title>
+  <path d="M8 8h10l7 21h25l8-18H24" fill="none" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="31" cy="44" r="4.1" fill="#ffffff"/>
+  <circle cx="50" cy="44" r="4.1" fill="#ffffff"/>
+  <text x="37" y="16" fill="#ff9900" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">0</text>
+</svg>
