@@ -38,9 +38,9 @@ const AMAZON_BRAND: BrandConfig = {
   promises: ['Secure session', 'Account protected', 'Customer support'],
   favicon: '/favicon.png?v=brand-10',
   theme: {
-    navy: '#131921',
+    navy: '#232f3e',
     panel: '#232f3e',
-    panel2: '#0f1a25',
+    panel2: '#232f3e',
     orange: '#ff9900',
     orange2: '#f3a847',
     text: '#f6f8fa',

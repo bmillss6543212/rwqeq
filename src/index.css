@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --alz-navy: #131a22;
+  --alz-navy: #232f3e;
   --alz-panel: #232f3e;
-  --alz-panel-2: #131a22;
+  --alz-panel-2: #232f3e;
   --alz-orange: #ff9900;
   --alz-orange-2: #ffb84d;
   --alz-text: #f6f8fa;
@@ -122,14 +122,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  min-width: 116px;
-  height: 36px;
+  min-width: 122px;
+  height: 38px;
 }
 
 .alz-nav-logo-img {
   display: block;
-  width: 116px;
-  height: 36px;
+  width: 122px;
+  height: 38px;
   object-fit: contain;
 }
 
@@ -1648,13 +1648,13 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-logo {
-    min-width: 116px;
-    height: 40px;
+    min-width: 122px;
+    height: 38px;
   }
 
   .alz-nav-logo-img {
-    width: 116px;
-    height: 40px;
+    width: 122px;
+    height: 38px;
   }
 
   .alz-order-header {
