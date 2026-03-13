@@ -39,7 +39,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 60;
-  background: var(--alz-navy);
+  background: #efefef;
   border-bottom: 0;
   box-shadow: none;
 }
@@ -79,7 +79,7 @@ body {
 .alz-nav-inner {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 6px 10px 4px;
+  padding: 12px 18px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -90,6 +90,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 44px;
 }
 
 .alz-nav-menu {
@@ -106,145 +107,64 @@ body {
 
 .alz-nav-menu span {
   display: block;
-  width: 26px;
-  height: 2.5px;
+  width: 30px;
+  height: 4px;
   border-radius: 999px;
-  background: #ffffff;
+  background: #352d79;
 }
 
 .alz-nav-brand {
   display: flex;
   align-items: center;
-  color: #f3f4f6;
+  justify-content: center;
+  flex: 1;
 }
 
 .alz-nav-logo {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  min-width: 132px;
-  height: 48px;
+  justify-content: center;
+  min-width: 82px;
+  height: 36px;
 }
 
 .alz-nav-logo-img {
   display: block;
-  width: 132px;
-  height: 48px;
+  width: 82px;
+  height: 36px;
   object-fit: contain;
 }
 
 .alz-nav-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  color: #ffffff;
+  justify-content: flex-end;
+  min-width: 44px;
 }
 
-.alz-nav-signin {
-  display: flex;
+.alz-nav-search-trigger {
+  display: inline-flex;
   align-items: center;
-  gap: 3px;
-  font-size: 14px;
-  font-weight: 700;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  padding: 0;
 }
 
-.alz-nav-caret {
-  font-size: 14px;
-  line-height: 1;
-  margin-top: 1px;
-}
-
-.alz-nav-user {
+.alz-nav-search-trigger-icon,
+.alz-nav-search-box-icon {
   position: relative;
   display: inline-block;
-  width: 24px;
-  height: 20px;
-}
-
-.alz-nav-user-head {
-  position: absolute;
-  top: 0;
-  left: 7px;
-  width: 10px;
-  height: 10px;
-  border: 2px solid #ffffff;
-  border-radius: 999px;
-}
-
-.alz-nav-user-body {
-  position: absolute;
-  bottom: 0;
-  left: 2px;
-  width: 20px;
-  height: 10px;
-  border: 2px solid #ffffff;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.alz-nav-track {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 58px;
-  min-height: 30px;
-  padding: 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.alz-nav-track-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.alz-nav-search-row {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 6px 6px 10px;
-}
-
-.alz-nav-search-shell {
-  display: flex;
-  align-items: stretch;
-  min-height: 50px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(15, 17, 17, 0.08);
-}
-
-.alz-nav-search-input {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  background: #ececec;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.alz-nav-search-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 62px;
-  background: #f3b456;
-}
-
-.alz-nav-search-icon {
-  position: relative;
   width: 18px;
   height: 18px;
-  border: 4px solid #111111;
+  border: 4px solid #352d79;
   border-radius: 999px;
 }
 
-.alz-nav-search-icon::after {
+.alz-nav-search-trigger-icon::after,
+.alz-nav-search-box-icon::after {
   content: "";
   position: absolute;
   right: -8px;
@@ -252,8 +172,48 @@ body {
   width: 10px;
   height: 4px;
   border-radius: 999px;
-  background: #111111;
+  background: #352d79;
   transform: rotate(45deg);
+}
+
+.alz-nav-divider {
+  height: 4px;
+  background: #d40511;
+}
+
+.alz-nav-search-row {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 18px 16px;
+}
+
+.alz-nav-search-shell {
+  display: flex;
+  align-items: stretch;
+  min-height: 50px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(53, 45, 121, 0.24);
+}
+
+.alz-nav-search-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: #ffffff;
+  color: #101010;
+  font-size: 14px;
+}
+
+.alz-nav-search-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  background: #ffffff;
+  border-left: 1px solid rgba(53, 45, 121, 0.18);
 }
 
 .alz-nav-l2 {
@@ -347,6 +307,336 @@ body {
   margin-top: 28px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: var(--alz-navy);
+}
+
+.alz-usps-hero {
+  position: relative;
+  height: 138px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.84) 0%, rgba(255,255,255,0.46) 48%, rgba(255,255,255,0.1) 100%),
+    linear-gradient(0deg, #352d79 0 20px, transparent 20px),
+    linear-gradient(90deg, #d6d3cf 0%, #f0ece7 58%, #d8c2ad 100%);
+}
+
+.alz-usps-hero-blur {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 48%;
+  height: 84px;
+  background: rgba(145, 145, 145, 0.15);
+  filter: blur(1.5px);
+}
+
+.alz-usps-hero-phone {
+  position: absolute;
+  right: 82px;
+  top: 8px;
+  width: 54px;
+  height: 102px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f9f9f9 0%, #ececec 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+  transform: rotate(-11deg);
+}
+
+.alz-usps-hero-phone-notch {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 18px;
+  height: 3px;
+  margin-left: -9px;
+  border-radius: 999px;
+  background: #d7d7d7;
+}
+
+.alz-usps-hero-phone-screen {
+  position: absolute;
+  inset: 11px 4px 6px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.alz-usps-hero-appbar {
+  height: 10px;
+  background: #352d79;
+}
+
+.alz-usps-hero-card {
+  margin: 5px 4px 0;
+  border-radius: 2px;
+}
+
+.alz-usps-hero-card-top {
+  height: 14px;
+  background: #e7e9f7;
+}
+
+.alz-usps-hero-card-mid {
+  height: 18px;
+  background: #2f67b3;
+}
+
+.alz-usps-hero-card-low {
+  height: 20px;
+  background: #f0f2f6;
+}
+
+.alz-usps-page {
+  background: #f3f3f3;
+}
+
+.alz-usps-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 18px;
+}
+
+.alz-usps-intro-copy,
+.alz-usps-track-card,
+.alz-usps-service-card,
+.alz-usps-info-card,
+.alz-usps-support-card {
+  border: 1px solid #d7d7d7;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+.alz-usps-intro-copy {
+  padding: 22px 22px 20px;
+}
+
+.alz-usps-eyebrow {
+  color: #6b6b6b;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alz-usps-title {
+  margin-top: 10px;
+  color: #2d2d2d;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 700;
+}
+
+.alz-usps-lead {
+  margin-top: 12px;
+  color: #4b4b4b;
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 720px;
+}
+
+.alz-usps-track-card {
+  padding: 20px 18px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+}
+
+.alz-usps-track-label {
+  color: #6b6b6b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alz-usps-track-number {
+  color: #352d79;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.alz-usps-track-meta {
+  color: #616161;
+  font-size: 13px;
+}
+
+.alz-usps-service-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 16px;
+}
+
+.alz-usps-service-card {
+  padding: 20px 20px 18px;
+}
+
+.alz-usps-service-card-primary {
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfe 100%);
+}
+
+.alz-usps-service-kicker {
+  color: #312a74;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alz-usps-service-title {
+  margin-top: 8px;
+  color: #1f1f1f;
+  font-size: 27px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.alz-usps-service-copy {
+  margin-top: 10px;
+  color: #4e4e4e;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.alz-usps-action-row {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+  max-width: 320px;
+}
+
+.alz-usps-action-note {
+  color: #616161;
+  font-size: 12px;
+}
+
+.alz-usps-detail-list {
+  margin-top: 14px;
+  display: grid;
+}
+
+.alz-usps-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.alz-usps-detail-row:last-child {
+  border-bottom: 0;
+}
+
+.alz-usps-detail-row span {
+  color: #6b6b6b;
+  font-size: 12px;
+}
+
+.alz-usps-detail-row strong {
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.alz-usps-info-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.alz-usps-info-card {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.alz-usps-info-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f1f3fb 0%, #dfe5f5 100%);
+  position: relative;
+}
+
+.alz-usps-info-icon::before {
+  content: "";
+  position: absolute;
+}
+
+.alz-usps-info-icon-package::before {
+  inset: 13px 11px;
+  border: 2px solid #352d79;
+  background: linear-gradient(180deg, transparent 0 9px, #352d79 9px 11px, transparent 11px);
+}
+
+.alz-usps-info-icon-address::before {
+  left: 16px;
+  top: 10px;
+  width: 16px;
+  height: 24px;
+  border-radius: 999px 999px 999px 0;
+  border: 2px solid #352d79;
+  transform: rotate(45deg);
+}
+
+.alz-usps-info-icon-clock::before {
+  left: 12px;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #352d79;
+  border-radius: 999px;
+  box-shadow: inset 7px -1px 0 -5px #352d79;
+}
+
+.alz-usps-info-title {
+  color: #1f1f1f;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.alz-usps-info-copy {
+  margin-top: 6px;
+  color: #565656;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.alz-usps-support-card {
+  margin-top: 18px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 18px;
+}
+
+.alz-usps-support-side {
+  border-left: 1px solid #ececec;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.alz-usps-support-status {
+  color: #352d79;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.alz-usps-support-note,
+.alz-usps-support-help {
+  color: #5d5d5d;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .alz-global-footer-inner {
@@ -1584,11 +1874,42 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-search-row {
-    padding: 6px 6px 10px;
+    padding: 18px 18px 16px;
   }
 
-  .alz-nav-signin {
-    font-size: 12px;
+  .alz-usps-intro,
+  .alz-usps-service-grid,
+  .alz-usps-info-grid,
+  .alz-usps-support-card {
+    grid-template-columns: 1fr;
+  }
+
+  .alz-usps-title {
+    font-size: 28px;
+  }
+
+  .alz-usps-track-card,
+  .alz-usps-service-card,
+  .alz-usps-info-card,
+  .alz-usps-support-card,
+  .alz-usps-intro-copy {
+    padding: 16px;
+  }
+
+  .alz-usps-support-side {
+    border-left: 0;
+    border-top: 1px solid #ececec;
+    padding-left: 0;
+    padding-top: 16px;
+  }
+
+  .alz-usps-hero {
+    height: 120px;
+  }
+
+  .alz-usps-hero-phone {
+    right: 34px;
+    top: 10px;
   }
 
   .alz-step-head {
@@ -1654,13 +1975,13 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-nav-logo {
-    min-width: 132px;
-    height: 44px;
+    min-width: 82px;
+    height: 36px;
   }
 
   .alz-nav-logo-img {
-    width: 132px;
-    height: 44px;
+    width: 82px;
+    height: 36px;
   }
 
   .alz-order-header {

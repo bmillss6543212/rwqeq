@@ -174,31 +174,24 @@ function App() {
                 <span />
                 <span />
               </button>
-              <div className="alz-nav-brand">
-                <div className="alz-nav-logo" aria-label="USPS">
-                  <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
-                </div>
+            </div>
+            <div className="alz-nav-brand">
+              <div className="alz-nav-logo" aria-label="USPS">
+                <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
               </div>
             </div>
             <div className="alz-nav-actions">
-              <div className="alz-nav-signin">
-                <span>Sign In</span>
-                <span className="alz-nav-caret" aria-hidden="true">&gt;</span>
-                <span className="alz-nav-user" aria-hidden="true">
-                  <span className="alz-nav-user-head" />
-                  <span className="alz-nav-user-body" />
-                </span>
-              </div>
-              <div className="alz-nav-track" aria-label="Track package">
-                <span className="alz-nav-track-label">Track</span>
-              </div>
+              <button type="button" className="alz-nav-search-trigger" aria-label="Search">
+                <span className="alz-nav-search-trigger-icon" />
+              </button>
             </div>
           </div>
+          <div className="alz-nav-divider" />
           <div className="alz-nav-search-row">
             <div className="alz-nav-search-shell" aria-hidden="true">
-              <div className="alz-nav-search-input">Search USPS tracking</div>
+              <div className="alz-nav-search-input">Search USPS.com or Enter Tracking Number(s)</div>
               <div className="alz-nav-search-action">
-                <span className="alz-nav-search-icon" />
+                <span className="alz-nav-search-box-icon" />
               </div>
             </div>
           </div>
