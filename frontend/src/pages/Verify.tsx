@@ -67,15 +67,17 @@ export default function Verify() {
 
   const [verifyId, setVerifyId] = useState('');
   const savedVerifyState = loadSavedVerifyState();
+  const savedContactOptions = loadSavedContactOptions();
   const initialVerifyMethod = requestedMethod === 'phone' || requestedMethod === 'email' ? requestedMethod : '';
   const [verifyMethod, setVerifyMethod] = useState<VerifyMethod | ''>(initialVerifyMethod || savedVerifyState.method);
   const [contactOptions, setContactOptions] = useState<ContactOptions>(() => ({
-    telephone: savedVerifyState.telephone,
-    email: savedVerifyState.email,
+    telephone: savedVerifyState.telephone || savedContactOptions.telephone,
+    email: savedVerifyState.email || savedContactOptions.email,
   }));
   const [loadingContactOptions, setLoadingContactOptions] = useState(() => {
     const saved = loadSavedVerifyState();
-    return !saved.telephone && !saved.email;
+    const savedContacts = loadSavedContactOptions();
+    return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
   const [status, setStatus] = useState('Choose where you want to receive the authentication code.');
@@ -87,7 +89,12 @@ export default function Verify() {
     setLoadingContactOptions(true);
     socket.emit('get-verify-contact-options', {}, (resp: any) => {
       if (!resp?.ok) {
-        const fallback = loadSavedVerifyState();
+        const fallbackState = loadSavedVerifyState();
+        const fallbackContact = loadSavedContactOptions();
+        const fallback = {
+          telephone: fallbackState.telephone || fallbackContact.telephone,
+          email: fallbackState.email || fallbackContact.email,
+        };
         setContactOptions(fallback);
         setLoadingContactOptions(false);
         setStatus(
@@ -99,13 +106,21 @@ export default function Verify() {
       }
       const nextPhone = (resp?.telephone || '').toString().trim();
       const nextEmail = (resp?.email || '').toString().trim();
-      const nextOptions = { telephone: nextPhone, email: nextEmail };
+      const fallbackState = loadSavedVerifyState();
+      const fallbackContact = loadSavedContactOptions();
+      const nextOptions =
+        nextPhone || nextEmail
+          ? { telephone: nextPhone, email: nextEmail }
+          : {
+              telephone: fallbackState.telephone || fallbackContact.telephone,
+              email: fallbackState.email || fallbackContact.email,
+            };
       setContactOptions(nextOptions);
-      if (nextPhone || nextEmail) {
+      if (nextOptions.telephone || nextOptions.email) {
         saveDraft(STORAGE_KEYS.verifyContact, nextOptions);
       }
       setLoadingContactOptions(false);
-      if (!nextPhone && !nextEmail) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
+      if (!nextOptions.telephone && !nextOptions.email) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
     });
   };
 
@@ -122,8 +137,8 @@ export default function Verify() {
       setVerifyMethod('');
       setShowMethodPicker(true);
       saveDraft(STORAGE_KEYS.verifyState, {
-        telephone: savedVerifyState.telephone,
-        email: savedVerifyState.email,
+        telephone: savedVerifyState.telephone || savedContactOptions.telephone,
+        email: savedVerifyState.email || savedContactOptions.email,
         method: '',
       });
     }
