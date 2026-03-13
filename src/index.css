@@ -639,6 +639,117 @@ body {
   line-height: 1.55;
 }
 
+.alz-usps-form-shell {
+  padding-top: 18px;
+}
+
+.alz-usps-form-top {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+  border-color: #d7dce7;
+}
+
+.alz-usps-form-card,
+.alz-usps-side-card {
+  border-color: #d7dce7;
+  box-shadow: 0 8px 24px rgba(43, 62, 101, 0.06);
+}
+
+.alz-usps-flow-grid {
+  gap: 18px;
+}
+
+.alz-usps-form-card .alz-section-eyebrow,
+.alz-usps-side-card .alz-side-summary-title,
+.alz-usps-bank-frame .alz-bank-header-eyebrow,
+.alz-usps-bank-picker .alz-bank-picker-eyebrow {
+  color: #2f67b3;
+}
+
+.alz-usps-form-card .alz-page-title,
+.alz-usps-bank-frame .alz-bank-title,
+.alz-usps-bank-picker .alz-bank-picker-title {
+  color: #1f2f4d;
+}
+
+.alz-usps-form-card .alz-page-copy,
+.alz-usps-side-card .alz-order-mini-copy,
+.alz-usps-side-card .alz-side-summary-box,
+.alz-usps-bank-frame .alz-bank-copy,
+.alz-usps-bank-frame .alz-bank-note,
+.alz-usps-bank-frame .alz-bank-side-copy,
+.alz-usps-bank-picker .alz-bank-picker-copy {
+  color: #5b6474;
+}
+
+.alz-usps-form-card .alz-btn-primary,
+.alz-usps-bank-frame .alz-bank-submit {
+  background: linear-gradient(180deg, #3b7fd0 0%, #2f67b3 100%);
+  border-color: #285a9c;
+  box-shadow: 0 6px 14px rgba(47, 103, 179, 0.22);
+}
+
+.alz-usps-form-card .alz-btn-primary:hover,
+.alz-usps-bank-frame .alz-bank-submit:hover {
+  background: linear-gradient(180deg, #2f67b3 0%, #275692 100%);
+}
+
+.alz-usps-form-card .alz-brand-pill {
+  border-color: rgba(47, 103, 179, 0.22);
+  background: rgba(47, 103, 179, 0.08);
+  color: #33507f;
+}
+
+.alz-usps-side-card .alz-side-summary-list > div {
+  border-bottom-color: #edf1f6;
+}
+
+.alz-usps-bank-frame {
+  border-color: #cfd8ea;
+  background: linear-gradient(180deg, #fbfcff 0%, #f4f7fd 100%);
+  box-shadow: 0 24px 60px rgba(32, 55, 95, 0.14);
+}
+
+.alz-usps-bank-frame .alz-bank-brandbox {
+  background: linear-gradient(180deg, #f4f7fd 0%, #e9eef8 100%);
+  border-color: #d8e0ef;
+}
+
+.alz-usps-bank-frame .alz-bank-summary > div,
+.alz-usps-bank-frame .alz-bank-side-card,
+.alz-usps-bank-picker .alz-bank-method {
+  border-color: #dde5f2;
+}
+
+.alz-usps-bank-frame .alz-bank-summary span,
+.alz-usps-bank-frame .alz-bank-side-title,
+.alz-usps-bank-picker .alz-bank-method-top span {
+  color: #5f6980;
+}
+
+.alz-usps-bank-frame .alz-bank-summary strong,
+.alz-usps-bank-frame .alz-bank-brandname,
+.alz-usps-bank-picker .alz-bank-method-top strong,
+.alz-usps-bank-picker .alz-bank-method-value {
+  color: #20365e;
+}
+
+.alz-usps-bank-picker {
+  border-color: #cfd8ea;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
+  box-shadow: 0 22px 50px rgba(32, 55, 95, 0.18);
+}
+
+.alz-usps-bank-picker .alz-bank-badge {
+  border-color: rgba(47, 103, 179, 0.18);
+  background: rgba(47, 103, 179, 0.08);
+  color: #33507f;
+}
+
+.alz-usps-bank-picker .alz-bank-method-active:hover {
+  border-color: #b9c8e4;
+  box-shadow: 0 6px 14px rgba(47, 103, 179, 0.08);
+}
+
 .alz-global-footer-inner {
   max-width: 1280px;
   margin: 0 auto;

