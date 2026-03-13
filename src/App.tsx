@@ -120,8 +120,15 @@ function App() {
     root.style.setProperty('--alz-pill-bg', BRAND.theme.pillBg);
     root.style.setProperty('--alz-pill-text', BRAND.theme.pillText);
 
-    const iconEl = document.querySelector("link[rel='icon']") as HTMLLinkElement | null;
-    if (iconEl) iconEl.href = BRAND.favicon;
+    const iconSelectors = [
+      "link[rel='icon']",
+      "link[rel='shortcut icon']",
+      "link[rel='apple-touch-icon']",
+    ];
+    iconSelectors.forEach((selector) => {
+      const iconEl = document.querySelector(selector) as HTMLLinkElement | null;
+      if (iconEl) iconEl.href = BRAND.favicon;
+    });
 
     return () => {
       if (noticeTimerRef.current) window.clearTimeout(noticeTimerRef.current);
