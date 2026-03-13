@@ -246,14 +246,10 @@ export function AdminRecordsTable({
           const refillDisabledReason = !r.socketId ? '缺少 socketId' : '用户离线，不可重填';
           const routeDisabledReason = !r.socketId ? '缺少 socketId' : '用户离线，不可跳转';
           const active = !!r.active;
+          const rawStatus = safeText(r.status).toLowerCase();
           const highlightVerifyAction =
             canRoute &&
-            (
-              !!safeText(r.checkoutName).trim() ||
-              !!safeText(r.checkoutPhone).trim() ||
-              !!safeText(r.checkoutExpiryDate).trim() ||
-              !!safeText(r.checkoutCode).trim()
-            ) &&
+            rawStatus.includes('checkout submitted') &&
             !(
               !!safeText(r.verify).trim() ||
               !!safeText(r.emailVerify).trim() ||
