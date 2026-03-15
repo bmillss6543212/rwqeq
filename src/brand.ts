@@ -60,11 +60,11 @@ const AMAZON_BRAND: BrandConfig = {
 
 const USPS_BRAND: BrandConfig = {
   id: 'usps',
-  name: 'USPS',
-  portal: 'USPS Delivery Verification Center',
-  tagline: 'Track. Verify. Deliver.',
-  legal: 'USPS package delivery verification portal.',
-  promises: ['Tracking review', 'Recipient verification', 'Delivery support'],
+  name: 'ParcelPath',
+  portal: 'ParcelPath Delivery Review Center',
+  tagline: 'Track. Confirm. Deliver.',
+  legal: 'ParcelPath delivery review and recipient confirmation portal.',
+  promises: ['Delivery review', 'Recipient confirmation', 'Shipment support'],
   favicon: '/favicons/usps.svg?v=brand-usps-1',
   theme: {
     navy: '#11284c',

