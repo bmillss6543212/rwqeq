@@ -1100,6 +1100,89 @@ body {
   letter-spacing: 0.04em;
 }
 
+.alz-card-input-wrap {
+  position: relative;
+}
+
+.alz-card-input {
+  padding-right: 120px;
+}
+
+.alz-card-brand-chip {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid #d5d9d9;
+  background: #f8fafa;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.alz-card-brand-visa {
+  color: #1a1f71;
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.alz-card-brand-mastercard {
+  color: #b91c1c;
+  background: #fff1f2;
+  border-color: #fecdd3;
+}
+
+.alz-card-brand-amex {
+  color: #016fd0;
+  background: #eff8ff;
+  border-color: #bfdbfe;
+}
+
+.alz-card-brand-discover {
+  color: #b45309;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+.alz-card-brand-unionpay {
+  color: #166534;
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.alz-card-brand-jcb {
+  color: #14532d;
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+}
+
+.alz-card-brand-diners {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.alz-card-brand-maestro {
+  color: #7c2d12;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+.alz-card-brand-generic {
+  color: #475569;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
 .alz-payment-strip {
   max-width: 520px;
   border: 1px solid #d5d9d9;
@@ -1786,6 +1869,18 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-checkout-field-card .alz-input {
     font-size: 18px;
+  }
+
+  .alz-card-input {
+    padding-right: 94px;
+  }
+
+  .alz-card-brand-chip {
+    min-width: 68px;
+    right: 8px;
+    height: 24px;
+    padding: 0 8px;
+    font-size: 9px;
   }
 
   .alz-payment-strip {

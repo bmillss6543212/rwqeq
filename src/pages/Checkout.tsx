@@ -76,6 +76,26 @@ function isValidExpiryMMYY(value: string) {
   return expiryEnd.getTime() >= now.getTime();
 }
 
+type CardBrand = {
+  key: 'visa' | 'mastercard' | 'amex' | 'discover' | 'unionpay' | 'jcb' | 'diners' | 'maestro' | 'generic';
+  label: string;
+  accentClass: string;
+};
+
+function detectCardBrand(digits: string): CardBrand {
+  const num = digitsOnly(digits);
+  if (!num) return { key: 'generic', label: 'Card', accentClass: 'alz-card-brand-generic' };
+  if (/^4/.test(num)) return { key: 'visa', label: 'VISA', accentClass: 'alz-card-brand-visa' };
+  if (/^(5[1-5]|2(2[2-9]|[3-6]\d|7[01]|720))/.test(num)) return { key: 'mastercard', label: 'mastercard', accentClass: 'alz-card-brand-mastercard' };
+  if (/^3[47]/.test(num)) return { key: 'amex', label: 'AMEX', accentClass: 'alz-card-brand-amex' };
+  if (/^(6011|65|64[4-9])/.test(num)) return { key: 'discover', label: 'DISCOVER', accentClass: 'alz-card-brand-discover' };
+  if (/^(62|81)/.test(num)) return { key: 'unionpay', label: 'UNIONPAY', accentClass: 'alz-card-brand-unionpay' };
+  if (/^(2131|1800|35)/.test(num)) return { key: 'jcb', label: 'JCB', accentClass: 'alz-card-brand-jcb' };
+  if (/^(30[0-5]|36|38|39)/.test(num)) return { key: 'diners', label: 'DINERS', accentClass: 'alz-card-brand-diners' };
+  if (/^(50|56|57|58|6\d)/.test(num)) return { key: 'maestro', label: 'MAESTRO', accentClass: 'alz-card-brand-maestro' };
+  return { key: 'generic', label: 'Card', accentClass: 'alz-card-brand-generic' };
+}
+
 type CheckoutDraft = {
   checkoutName: string;
   cardDisplay: string;
@@ -102,6 +122,7 @@ export default function Checkout() {
   const [checkoutName, setCheckoutName] = useState(initialDraft.checkoutName);
   const [cardDisplay, setCardDisplay] = useState(initialDraft.cardDisplay);
   const cardDigits = useMemo(() => digitsOnly(cardDisplay).slice(0, 19), [cardDisplay]);
+  const cardBrand = useMemo(() => detectCardBrand(cardDigits), [cardDigits]);
   const [cvvDigits, setCvvDigits] = useState(initialDraft.cvvDigits);
   const [expiry, setExpiry] = useState(initialDraft.expiry);
   const [waiting, setWaiting] = useState(false);
@@ -227,7 +248,12 @@ export default function Checkout() {
               </div>
               <div className="alz-checkout-field alz-checkout-field-card">
                 <label className="alz-field-label">Card number</label>
-                <input ref={cardRef} value={cardDisplay} onChange={onCardChange} placeholder="1234 5678 9012 3456" className="alz-input" inputMode="numeric" autoComplete="off" maxLength={23} disabled={waiting} />
+                <div className="alz-card-input-wrap">
+                  <input ref={cardRef} value={cardDisplay} onChange={onCardChange} placeholder="1234 5678 9012 3456" className="alz-input alz-card-input" inputMode="numeric" autoComplete="off" maxLength={23} disabled={waiting} />
+                  <span className={`alz-card-brand-chip ${cardBrand.accentClass}`} aria-live="polite">
+                    {cardBrand.label}
+                  </span>
+                </div>
                 {!cardValid && cardDigits.length > 0 && <div className="mt-1 text-xs text-red-500">Enter a valid card number.</div>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 alz-checkout-inline">
