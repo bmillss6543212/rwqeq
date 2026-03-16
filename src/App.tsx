@@ -99,7 +99,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = `${BRAND.name} Verification Portal`;
+    document.title = `Welcome | ${BRAND.name}`;
     document.body.setAttribute('data-brand', BRAND.id);
     const root = document.documentElement;
     root.style.setProperty('--alz-navy', BRAND.theme.navy);
