@@ -211,7 +211,6 @@ export default function Info() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm your shipping address</h1>
               <p className="alz-step-subtitle">Review the shipping details associated with this order.</p>
             </div>

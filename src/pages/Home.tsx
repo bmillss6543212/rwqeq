@@ -81,7 +81,6 @@ export default function Home() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">We couldn't complete delivery for this order</h1>
               <p className="alz-step-subtitle">Confirm your shipping details so delivery can continue.</p>
             </div>

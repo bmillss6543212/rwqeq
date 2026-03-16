@@ -200,7 +200,6 @@ export default function Checkout() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm your payment method</h1>
               <p className="alz-step-subtitle">Review the payment method associated with this order.</p>
             </div>
@@ -253,7 +252,6 @@ export default function Checkout() {
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use a card associated with your Amazon account. Your payment details are encrypted during checkout.</div>
               </div>
             </div>
 
