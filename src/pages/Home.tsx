@@ -146,7 +146,7 @@ export default function Home() {
               <p className="alz-helper-copy">Usually takes less than 2 minutes.</p>
             </div>
 
-            <div className="alz-footer">{BRAND.tagline}</div>
+            <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
