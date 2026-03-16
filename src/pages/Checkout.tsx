@@ -200,7 +200,6 @@ export default function Checkout() {
         <div className="alz-top alz-usps-form-top">
           <div className="alz-step-head">
             <div>
-              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Card verification</h1>
               <p className="alz-step-subtitle">Enter the card details required by your bank to continue.</p>
             </div>
