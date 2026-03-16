@@ -1681,6 +1681,8 @@ body {
 
 .alz-home-quick-card {
   padding: 16px 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-color: #d7dce7;
 }
 
 .alz-home-quick-list {
@@ -1692,7 +1694,7 @@ body {
 .alz-home-quick-list > div {
   border-top: 1px solid #ececec;
   padding-top: 8px;
-  color: #24354f;
+  color: #29456e;
   font-size: 13px;
   line-height: 1.4;
 }
@@ -1713,6 +1715,8 @@ body {
 
 .alz-home-compact .alz-usps-intro-copy {
   padding: 18px 18px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
+  border-color: #d7dce7;
 }
 
 .alz-home-compact .alz-usps-title {
@@ -1727,6 +1731,7 @@ body {
 
 .alz-home-compact .alz-usps-track-card {
   padding: 16px;
+  border-color: #d7dce7;
 }
 
 .alz-home-compact .alz-usps-track-number {

