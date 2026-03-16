@@ -291,7 +291,6 @@ export default function Info() {
               </p>
             </form>
 
-            <div className="alz-footer">{BRAND.name} | {BRAND.portal}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
