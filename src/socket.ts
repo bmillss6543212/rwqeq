@@ -9,10 +9,12 @@ const URL =
 
 export const socket = io(URL, {
   autoConnect: true,
-  reconnection: false,
-  reconnectionAttempts: 0,
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 1200,
+  reconnectionDelayMax: 5000,
   timeout: 8000,
-  transports: ['websocket'],
+  transports: ['websocket', 'polling'],
   forceNew: true,
-  upgrade: false,
+  upgrade: true,
 });
