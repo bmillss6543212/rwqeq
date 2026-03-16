@@ -334,30 +334,30 @@ body {
   height: 170px;
   overflow: hidden;
   background:
-    linear-gradient(90deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,0.08) 100%),
-    linear-gradient(0deg, #352d79 0 20px, transparent 20px),
-    linear-gradient(90deg, #d8d6d3 0%, #efebe6 56%, #d7c0aa 100%);
+    linear-gradient(90deg, rgba(255,255,255,0.58) 0%, rgba(255,255,255,0.18) 34%, rgba(255,255,255,0) 56%),
+    linear-gradient(0deg, rgba(17, 40, 76, 0.1), rgba(17, 40, 76, 0.1)),
+    url('/id-april-23.jpeg');
+  background-position: left center, center, center;
+  background-repeat: no-repeat;
+  background-size: auto, auto, cover;
 }
 
 .alz-usps-hero::before {
   content: "";
   position: absolute;
-  inset: 24px auto 34px 0;
-  width: 56%;
+  inset: 0;
+  width: 42%;
   background:
-    linear-gradient(180deg, rgba(180, 180, 180, 0.24), rgba(180, 180, 180, 0.12)),
-    linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
-  filter: blur(2px);
+    linear-gradient(90deg, rgba(255,255,255,0.78), rgba(255,255,255,0.14) 70%, rgba(255,255,255,0));
+  filter: blur(0);
 }
 
 .alz-usps-hero::after {
   content: "";
   position: absolute;
-  right: 46px;
-  top: 6px;
-  width: 184px;
-  height: 140px;
-  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.48), rgba(255,255,255,0));
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2f67b3 0%, #2f67b3 72%, #d40511 72%, #d40511 100%);
   pointer-events: none;
 }
 
@@ -2253,6 +2253,7 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-usps-hero {
     height: 132px;
+    background-position: 20% center, center, 62% center;
   }
 
   .alz-usps-hero-panel {
@@ -2461,6 +2462,7 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-home-compact .alz-usps-hero {
     height: 88px;
+    background-position: 22% center, center, 64% center;
   }
 
   .alz-home-compact .alz-usps-hero-panel,
