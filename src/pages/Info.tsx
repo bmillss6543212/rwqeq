@@ -212,8 +212,8 @@ export default function Info() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Shipping details</h1>
-              <p className="alz-step-subtitle">Fill in the form and continue.</p>
+              <h1 className="alz-step-title">Delivery info</h1>
+              <p className="alz-step-subtitle">Enter details below.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -238,20 +238,20 @@ export default function Info() {
                 e.preventDefault();
                 handleSubmit();
               }}
-            >
-              <div>
+              >
+              <div className="alz-info-primary-field">
                 <label className="alz-field-label">Full name</label>
                 <input ref={(el) => (inputRefs.current.fullname = el)} value={form.fullname} onChange={(e) => setField('fullname', e.target.value)} className={inputClass('fullname')} placeholder="Full Name *" autoComplete="name" enterKeyHint="next" />
                 <ErrorText name="fullname" />
               </div>
-              <div>
+              <div className="alz-info-primary-field">
                 <label className="alz-field-label">Street address</label>
                 <input ref={(el) => (inputRefs.current.address = el)} value={form.address} onChange={(e) => setField('address', e.target.value)} className={inputClass('address')} placeholder="Address *" autoComplete="address-line1" enterKeyHint="next" />
                 <ErrorText name="address" />
               </div>
               <div>
                 <label className="alz-field-label">Address line 2</label>
-                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="Apt, suite, unit, building, floor, etc. (optional)" autoComplete="address-line2" enterKeyHint="next" />
+                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="Apt, suite, unit (optional)" autoComplete="address-line2" enterKeyHint="next" />
                 <ErrorText name="fulladdress" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

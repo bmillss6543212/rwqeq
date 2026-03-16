@@ -820,6 +820,10 @@ body {
   margin: 0 auto;
 }
 
+.alz-info-primary-field .alz-input {
+  min-height: 50px;
+}
+
 .alz-usps-form-card .alz-section-eyebrow,
 .alz-usps-side-card .alz-side-summary-title,
 .alz-usps-bank-frame .alz-bank-header-eyebrow,
@@ -2162,14 +2166,14 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-top {
-    padding: 12px 12px 10px;
+    padding: 10px 10px 8px;
     border-radius: 8px;
   }
 
   .alz-card {
     border-radius: 8px;
-    padding: 14px 12px;
-    margin-top: 10px;
+    padding: 12px 10px;
+    margin-top: 8px;
     box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
   }
 
@@ -2223,7 +2227,7 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-step-head {
     display: grid;
-    gap: 8px;
+    gap: 6px;
   }
 
   .alz-step-status {
@@ -2240,30 +2244,40 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-track {
-    height: 6px;
+    height: 5px;
   }
 
   .alz-page-title {
-    margin-top: 6px;
-    font-size: 24px;
+    margin-top: 4px;
+    font-size: 22px;
     line-height: 1.12;
   }
 
   .alz-page-copy {
-    margin-top: 6px;
+    margin-top: 4px;
     font-size: 12px;
     line-height: 1.42;
   }
 
   .alz-field-label {
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     font-size: 10px;
   }
 
   .alz-input {
-    min-height: 38px;
-    padding: 9px 10px;
+    min-height: 42px;
+    padding: 10px 10px;
     font-size: 16px;
+  }
+
+  .alz-step-title {
+    margin-top: 6px;
+    font-size: 22px;
+  }
+
+  .alz-step-subtitle {
+    margin-top: 2px;
+    font-size: 12px;
   }
 
   .alz-brand-row {
@@ -2419,7 +2433,7 @@ body[data-brand='dhl'] .alz-btn-primary {
     position: sticky;
     bottom: 8px;
     z-index: 5;
-    margin-top: 8px;
+    margin-top: 6px;
     margin-bottom: 6px;
     padding: 8px;
     border: 1px solid #d7dce7;
@@ -2432,6 +2446,10 @@ body[data-brand='dhl'] .alz-btn-primary {
   .alz-info-cta-note {
     font-size: 10px;
     text-align: center;
+  }
+
+  .alz-info-primary-field .alz-input {
+    min-height: 46px;
   }
 
   .alz-checkout-inline {
