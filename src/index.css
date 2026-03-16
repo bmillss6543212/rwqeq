@@ -811,19 +811,6 @@ body {
   gap: 18px;
 }
 
-.alz-info-single-column {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.alz-info-single-column .alz-usps-form-card {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.alz-info-primary-field .alz-input {
-  min-height: 50px;
-}
-
 .alz-usps-form-card .alz-section-eyebrow,
 .alz-usps-side-card .alz-side-summary-title,
 .alz-usps-bank-frame .alz-bank-header-eyebrow,
@@ -1677,22 +1664,74 @@ body {
   max-width: 520px;
 }
 
-.alz-info-cta-row {
-  margin-top: 10px;
-  margin-bottom: 2px;
-  max-width: 520px;
+.alz-home-brand-row {
+  margin-top: 12px;
+}
+
+.alz-home-action-row {
+  margin-top: 16px;
+}
+
+.alz-home-quick-grid {
+  margin-top: 14px;
   display: grid;
-  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.alz-info-cta-button {
-  width: 100%;
+.alz-home-quick-card {
+  padding: 16px 18px;
 }
 
-.alz-info-cta-note {
-  color: #5b6474;
-  font-size: 11px;
+.alz-home-quick-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.alz-home-quick-list > div {
+  border-top: 1px solid #ececec;
+  padding-top: 8px;
+  color: #24354f;
+  font-size: 13px;
   line-height: 1.4;
+}
+
+.alz-home-quick-list > div:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.alz-home-compact .alz-usps-hero {
+  height: 132px;
+}
+
+.alz-home-compact .alz-usps-intro {
+  margin-top: 12px;
+  gap: 14px;
+}
+
+.alz-home-compact .alz-usps-intro-copy {
+  padding: 18px 18px 16px;
+}
+
+.alz-home-compact .alz-usps-title {
+  font-size: 30px;
+}
+
+.alz-home-compact .alz-usps-lead {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.alz-home-compact .alz-usps-track-card {
+  padding: 16px;
+}
+
+.alz-home-compact .alz-usps-track-number {
+  font-size: 22px;
+  line-height: 1.12;
 }
 
 .alz-checkout-field-card .alz-input {
@@ -2166,14 +2205,14 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-top {
-    padding: 10px 10px 8px;
+    padding: 12px 12px 10px;
     border-radius: 8px;
   }
 
   .alz-card {
     border-radius: 8px;
-    padding: 12px 10px;
-    margin-top: 8px;
+    padding: 14px 12px;
+    margin-top: 10px;
     box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
   }
 
@@ -2227,7 +2266,7 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-step-head {
     display: grid;
-    gap: 6px;
+    gap: 8px;
   }
 
   .alz-step-status {
@@ -2244,40 +2283,30 @@ body[data-brand='dhl'] .alz-btn-primary {
   }
 
   .alz-track {
-    height: 5px;
+    height: 6px;
   }
 
   .alz-page-title {
-    margin-top: 4px;
-    font-size: 22px;
+    margin-top: 6px;
+    font-size: 24px;
     line-height: 1.12;
   }
 
   .alz-page-copy {
-    margin-top: 4px;
+    margin-top: 6px;
     font-size: 12px;
     line-height: 1.42;
   }
 
   .alz-field-label {
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     font-size: 10px;
   }
 
   .alz-input {
-    min-height: 42px;
-    padding: 10px 10px;
+    min-height: 38px;
+    padding: 9px 10px;
     font-size: 16px;
-  }
-
-  .alz-step-title {
-    margin-top: 6px;
-    font-size: 22px;
-  }
-
-  .alz-step-subtitle {
-    margin-top: 2px;
-    font-size: 12px;
   }
 
   .alz-brand-row {
@@ -2425,31 +2454,60 @@ body[data-brand='dhl'] .alz-btn-primary {
     font-size: 16px;
   }
 
-  .alz-checkout-form {
+  .alz-home-compact .alz-usps-hero {
+    height: 88px;
+  }
+
+  .alz-home-compact .alz-usps-hero-panel,
+  .alz-home-compact .alz-usps-hero-phone,
+  .alz-home-compact .alz-usps-hero-blur {
+    display: none;
+  }
+
+  .alz-home-compact .alz-usps-intro {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .alz-home-compact .alz-usps-intro-copy,
+  .alz-home-compact .alz-usps-track-card,
+  .alz-home-compact .alz-home-quick-card {
+    padding: 14px 12px;
+  }
+
+  .alz-home-compact .alz-usps-title {
+    margin-top: 6px;
+    font-size: 24px;
+    line-height: 1.12;
+  }
+
+  .alz-home-compact .alz-usps-lead {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .alz-home-action-row {
+    margin-top: 12px;
     max-width: none;
   }
 
-  .alz-info-cta-row {
-    position: sticky;
-    bottom: 8px;
-    z-index: 5;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    padding: 8px;
-    border: 1px solid #d7dce7;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 10px 24px rgba(43, 62, 101, 0.12);
-    backdrop-filter: blur(8px);
+  .alz-home-quick-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
   }
 
-  .alz-info-cta-note {
-    font-size: 10px;
-    text-align: center;
+  .alz-home-quick-list {
+    gap: 6px;
   }
 
-  .alz-info-primary-field .alz-input {
-    min-height: 46px;
+  .alz-home-quick-list > div {
+    font-size: 12px;
+  }
+
+  .alz-checkout-form {
+    max-width: none;
   }
 
   .alz-checkout-inline {
