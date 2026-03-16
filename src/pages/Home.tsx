@@ -103,18 +103,6 @@ export default function Home() {
   return (
     <div className="alz-page">
       <div className="alz-shell">
-        <div className="alz-top">
-          <div className="alz-step-head">
-            <div>
-              <h1 className="alz-step-title">We couldn't complete delivery for this order</h1>
-              <p className="alz-step-subtitle">Confirm your shipping details so delivery can continue.</p>
-            </div>
-          </div>
-          <div className="alz-track mt-3">
-            <span />
-          </div>
-        </div>
-
         <div className="alz-home-grid alz-home-order-layout">
           <div className="alz-card alz-home-main-card">
             <div className="alz-home-kicker">Order summary</div>
