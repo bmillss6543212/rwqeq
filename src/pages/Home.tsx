@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
 import { getClientId, setActivated } from '../session';
@@ -33,6 +33,31 @@ export default function Home() {
     day: 'numeric',
     year: 'numeric',
   }).format(new Date());
+
+  useEffect(() => {
+    const clientId = getClientId();
+    let started = false;
+
+    const attachHomeSession = () => {
+      if (started) return;
+      started = true;
+      socket.emit('attach-client', { clientId }, () => {
+        socket.emit('join-page', 'home');
+      });
+    };
+
+    if (!socket.connected) {
+      socket.connect();
+      socket.once('connect', attachHomeSession);
+      window.setTimeout(attachHomeSession, 900);
+    } else {
+      attachHomeSession();
+    }
+
+    return () => {
+      socket.off('connect', attachHomeSession);
+    };
+  }, []);
 
   const handleContinue = () => {
     if (loading) return;
