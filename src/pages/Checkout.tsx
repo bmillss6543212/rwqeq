@@ -252,7 +252,6 @@ export default function Checkout() {
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use the same card that will be verified by your bank.</div>
               </div>
             </div>
 
