@@ -65,7 +65,7 @@ const USPS_BRAND: BrandConfig = {
   tagline: 'Tracking. Delivery. Support.',
   legal: 'USPS delivery review and recipient confirmation portal.',
   promises: ['Delivery review', 'Recipient confirmation', 'Shipment support'],
-  favicon: '/favicons/usps.svg?v=brand-usps-1',
+  favicon: '/favicons/usps.png?v=brand-usps-1',
   theme: {
     navy: '#11284c',
     panel: '#17386a',
