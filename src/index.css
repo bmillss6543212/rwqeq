@@ -1868,7 +1868,7 @@ body {
   align-self: start;
   border: 1px solid #d4dbe6;
   border-radius: 8px;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f8fd 100%);
   padding: 12px 14px;
 }
 
@@ -1895,7 +1895,7 @@ body {
 .alz-bank-panel {
   border: 1px solid #dde3ec;
   border-radius: 8px;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
   padding: 18px;
 }
 
@@ -1956,7 +1956,7 @@ body {
   margin-top: 14px;
   border: 1px solid #dce4ee;
   border-radius: 8px;
-  background: #f7fafc;
+  background: linear-gradient(180deg, #f8fbff 0%, #f2f7fd 100%);
   padding: 12px;
   color: #4b5d75;
   font-size: 13px;
@@ -1968,6 +1968,7 @@ body {
   letter-spacing: 0.24em;
   font-size: 18px;
   font-weight: 700;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
 }
 
 .alz-bank-side {
