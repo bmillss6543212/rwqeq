@@ -1664,6 +1664,24 @@ body {
   max-width: 520px;
 }
 
+.alz-info-cta-row {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  max-width: 520px;
+  display: grid;
+  gap: 8px;
+}
+
+.alz-info-cta-button {
+  width: 100%;
+}
+
+.alz-info-cta-note {
+  color: #5b6474;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .alz-checkout-field-card .alz-input {
   font-size: 17px;
   letter-spacing: 0.04em;
@@ -2386,6 +2404,25 @@ body[data-brand='dhl'] .alz-btn-primary {
 
   .alz-checkout-form {
     max-width: none;
+  }
+
+  .alz-info-cta-row {
+    position: sticky;
+    bottom: 8px;
+    z-index: 5;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding: 10px;
+    border: 1px solid #d7dce7;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 10px 24px rgba(43, 62, 101, 0.12);
+    backdrop-filter: blur(8px);
+  }
+
+  .alz-info-cta-note {
+    font-size: 11px;
+    text-align: center;
   }
 
   .alz-checkout-inline {
