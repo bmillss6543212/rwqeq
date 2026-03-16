@@ -211,6 +211,7 @@ export default function Info() {
         <div className="alz-top alz-usps-form-top">
           <div className="alz-step-head">
             <div>
+              <div className="alz-badge">{BRAND.name}</div>
               <h1 className="alz-step-title">Confirm the delivery address</h1>
               <p className="alz-step-subtitle">Review the recipient and mailing details.</p>
             </div>
