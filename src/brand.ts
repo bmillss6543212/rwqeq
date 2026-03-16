@@ -32,8 +32,8 @@ type BrandConfig = {
 const AMAZON_BRAND: BrandConfig = {
   id: 'amazon',
   name: 'Amazon',
-  portal: 'Amazon Account Services',
-  tagline: 'Orders. Delivery. Account security.',
+  portal: 'Amazon. Spend less. Smile more.',
+  tagline: 'Amazon. Spend less. Smile more.',
   legal: 'Amazon account and order verification portal.',
   promises: ['Secure session', 'Account protected', 'Customer support'],
   favicon: '/favicon.png?v=brand-10',

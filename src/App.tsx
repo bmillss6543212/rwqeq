@@ -176,7 +176,7 @@ function App() {
               </button>
               <div className="alz-nav-brand">
                 <div className="alz-nav-logo" aria-label="Amazon">
-                  <img src="/amazon-header-logo.svg" alt="Amazon" className="alz-nav-logo-img" />
+                  <img src="/Amazon_2024.svg" alt="Amazon. Spend less. Smile more." className="alz-nav-logo-img" />
                 </div>
               </div>
             </div>
