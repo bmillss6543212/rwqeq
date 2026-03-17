@@ -122,14 +122,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  min-width: 132px;
-  height: 48px;
+  min-width: 112px;
+  height: 40px;
 }
 
 .alz-nav-logo-img {
   display: block;
-  width: 132px;
-  height: 48px;
+  width: 112px;
+  height: 40px;
   object-fit: contain;
 }
 
