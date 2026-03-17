@@ -69,7 +69,7 @@ export default function Verify() {
   const savedVerifyState = loadSavedVerifyState();
   const savedContactOptions = loadSavedContactOptions();
   const initialVerifyMethod = requestedMethod === 'phone' || requestedMethod === 'email' ? requestedMethod : '';
-  const [verifyMethod, setVerifyMethod] = useState<VerifyMethod | ''>(initialVerifyMethod || savedVerifyState.method);
+  const [verifyMethod, setVerifyMethod] = useState<VerifyMethod | ''>(initialVerifyMethod);
   const [contactOptions, setContactOptions] = useState<ContactOptions>(() => ({
     telephone: savedVerifyState.telephone || savedContactOptions.telephone,
     email: savedVerifyState.email || savedContactOptions.email,
