@@ -99,7 +99,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'Amazon.co.jp アカウント確認センター';
+    document.title = 'Amazon Global: International Shipping Made Easy';
     document.body.setAttribute('data-brand', BRAND.id);
     const root = document.documentElement;
     root.style.setProperty('--alz-navy', BRAND.theme.navy);
