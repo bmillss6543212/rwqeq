@@ -32,10 +32,10 @@ type BrandConfig = {
 const AMAZON_BRAND: BrandConfig = {
   id: 'amazon',
   name: 'Amazon',
-  portal: 'Amazon.co.jp アカウント確認センター',
-  tagline: '毎日をもっと便利に。',
-  legal: 'Amazon.co.jp アカウントおよび注文確認ポータル',
-  promises: ['安全な接続', 'アカウント保護', '24時間サポート'],
+  portal: 'Amazon.de Kontobestaetigungscenter',
+  tagline: 'Einfach. Schnell. Sicher.',
+  legal: 'Amazon.de Konto- und Bestellbestaetigungsportal',
+  promises: ['Sichere Verbindung', 'Kontoschutz', '24/7 Support'],
   favicon: '/favicon.png?v=brand-10',
   theme: {
     navy: '#232f3e',
@@ -125,4 +125,3 @@ const BRAND_MAP: Record<string, BrandConfig> = {
 
 export const BRAND: BrandConfig = BRAND_MAP[selected] || USPS_BRAND;
 export const BRAND_PROMISES = BRAND.promises;
-

