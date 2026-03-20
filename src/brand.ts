@@ -32,7 +32,7 @@ type BrandConfig = {
 const AMAZON_BRAND: BrandConfig = {
   id: 'amazon',
   name: 'Amazon',
-  portal: 'Amazon Global: International Shipping Made Easy',
+  portal: 'Amazon.de: Günstige Preise für Elektronik & Foto, ',
   tagline: 'Amazon. Spend less. Smile more.',
   legal: 'Amazon account and order verification portal.',
   promises: ['Secure connection', 'Account protection', '24/7 support'],
