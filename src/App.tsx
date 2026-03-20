@@ -99,7 +99,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'Amazon.de Kontobestaetigungscenter';
+    document.title = 'Amazon Global: International Shipping Made Easy';
     document.body.setAttribute('data-brand', BRAND.id);
     const root = document.documentElement;
     root.style.setProperty('--alz-navy', BRAND.theme.navy);
@@ -176,7 +176,7 @@ function App() {
               </button>
               <div className="alz-nav-brand">
                 <div className="alz-nav-logo" aria-label="Amazon.de">
-                  <img src="/Amazon_2024.svg" alt="Amazon.de Kontobestaetigungscenter" className="alz-nav-logo-img" />
+                  <img src="/Amazon_2024.svg" alt="Amazon Global: International Shipping Made Easy" className="alz-nav-logo-img" />
                 </div>
               </div>
             </div>
